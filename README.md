@@ -1,5 +1,5 @@
 
-# Neelam Admin Dashboard App
+# play-school-admin-dashboard
 
 This project was created using Vite. Follow the steps below to set it up and run locally.
 
@@ -88,5 +88,4 @@ If you use yarn:
 yarn preview
 ```
 
-# neelam-admin-dashboard-app
-"# play-school-admin-dashboard" 
+# play-school-admin-dashboard
