@@ -136,6 +136,7 @@ export const AddUser = (props) => {
                             error={!!errors.email}
                             helperText={errors.email}
                             margin="normal"
+                            
                         />
                         <FormControl fullWidth margin="normal" error={!!errors.role}>
                             <InputLabel id="role-label">Role</InputLabel>

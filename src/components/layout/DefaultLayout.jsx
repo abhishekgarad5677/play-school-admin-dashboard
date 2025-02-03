@@ -43,6 +43,7 @@ import Subscription from '../../pages/Subscription/Subscription';
 import AdminManager from '../../pages/AdminManager/AdminManager';
 import Logs from '../../pages/Logs/Logs';
 import Notification from '../../pages/Notification/Notification';
+import AddCategory from '../../pages/Category/AddCategory';
 
 const drawerWidth = 240;
 
@@ -341,6 +342,7 @@ export default function DefaultLayout() {
           <Route path="reports" element={<Reports />} />
           <Route path="achievement" element={<Achievement />} />
           <Route path="category" element={<Category />} />
+          <Route path="add-category" element={<AddCategory />} />
           <Route path="age-group" element={<AgeGroup />} />
           <Route path="content" element={<Content />} />
           <Route path="subscription" element={<Subscription />} />

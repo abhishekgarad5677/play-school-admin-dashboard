@@ -3,22 +3,24 @@ import React, { useEffect, useState } from "react";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import ChildCareIcon from '@mui/icons-material/ChildCare'
 import { CommonTable } from "../../components/table/Table";
-import { usePostDataMutation } from "../../redux/slices/apiSlice";
 import { useFormattedDate } from "../../utils/Hooks";
-import UserAvatar from "../../components/Avatar/UserAvatar";
+import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
+import TableSkeleton from "../../components/skeleton/TableSkeleton";
 
 const Students = () => {
 
     const [data, setData] = useState();
 
-    const [postData, { isLoading, error, data: studentsData }] = usePostDataMutation();
+    const [postDataStudent, { isLoading, error, data: studentsData }] = useGetallstudentsinfoMutation();
 
     useEffect(() => {
-        postData({})
+        postDataStudent({})
     }, []);
 
     useEffect(() => {
-        setData(studentsData?.data)
+        if (studentsData) {
+            setData(studentsData?.data);
+        }
     }, [studentsData]);
 
     const columns = [
@@ -75,7 +77,6 @@ const Students = () => {
         { field: 'languageName', headerName: 'Language', width: 150 }
     ];
 
-    if (isLoading) return <div>Loading...</div>
 
     return (
         <>
@@ -111,11 +112,13 @@ const Students = () => {
                 </Box>
 
                 {/* students table data */}
-                <CommonTable
-                    userTableData={data}
-                    columns={columns}
-                    pageSizeOptions={[10, 15, 20, 50, 100]}
-                />
+                {isLoading ? <TableSkeleton rows={10} columns={6} /> : (
+                    <CommonTable
+                        userTableData={data}
+                        columns={columns}
+                        pageSizeOptions={[10, 15, 20, 50, 100]}
+                    />
+                )}
 
             </Paper>
         </>

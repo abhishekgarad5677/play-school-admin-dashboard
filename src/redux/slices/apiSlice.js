@@ -20,9 +20,16 @@ export const apiSlice = createApi({
         getPosts: builder.query({
             query: () => "/posts",
         }),
-        postData: builder.mutation({
+        getallstudentsinfo: builder.mutation({
             query: (data) => ({
-                url: "Students/user/getallstudentsinfo", // Replace with actual API endpoint
+                url: "Students/user/getallstudentsinfo",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getallcategories: builder.mutation({
+            query: (data) => ({
+                url: "Category/admin/getallcategories",
                 method: "POST",
                 body: data,
             }),
@@ -33,5 +40,6 @@ export const apiSlice = createApi({
 export const {
     useGetUserQuery,
     useGetPostsQuery,
-    usePostDataMutation
+    useGetallstudentsinfoMutation,
+    useGetallcategoriesMutation,
 } = apiSlice;
