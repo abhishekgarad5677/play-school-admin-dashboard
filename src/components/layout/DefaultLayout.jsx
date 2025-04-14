@@ -44,6 +44,7 @@ import AdminManager from '../../pages/AdminManager/AdminManager';
 import Logs from '../../pages/Logs/Logs';
 import Notification from '../../pages/Notification/Notification';
 import AddCategory from '../../pages/Category/AddCategory';
+import AddContent from '../../pages/Content/AddContent';
 
 const drawerWidth = 240;
 
@@ -196,7 +197,7 @@ export default function DefaultLayout() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingLeft: 1 }}>
-            {open && <img style={{ transition: 'ease' }} src={logo} alt="" width={'100%'} height={'38'} />}
+            {open && <img style={{ transition: 'ease' }} src={logo} alt="" width={'95%'} height={'60'} />}
           </Box>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -345,6 +346,7 @@ export default function DefaultLayout() {
           <Route path="add-category" element={<AddCategory />} />
           <Route path="age-group" element={<AgeGroup />} />
           <Route path="content" element={<Content />} />
+          <Route path="add-content" element={<AddContent />} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="admin-manager" element={<AdminManager />} />
           <Route path="logs" element={<Logs />} />
