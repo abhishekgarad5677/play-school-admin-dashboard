@@ -34,6 +34,20 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getDashboardSummary: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashboard/summary",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getGameSummary: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/gamesdata",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -42,4 +56,6 @@ export const {
     useGetPostsQuery,
     useGetallstudentsinfoMutation,
     useGetallcategoriesMutation,
+    useGetDashboardSummaryMutation,
+    useGetGameSummaryMutation
 } = apiSlice;

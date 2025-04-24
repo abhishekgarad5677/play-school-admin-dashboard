@@ -353,7 +353,7 @@ export default function DefaultLayout() {
           <Route path="notification" element={<Notification />} />
         </Routes>
         <Typography variant="p" fontSize={12} mt={4} textAlign={'center'} color='#ccc' noWrap component="div">
-          Copyright © 2024 TMKOC Playschool. All Rights Reserved. <br />
+          Copyright © 2025 TMKOC Playschool. All Rights Reserved. <br />
           Powered by Neela Mediatech Private Limited
         </Typography>
       </Box>
