@@ -87,7 +87,7 @@ const DashboardSummary = () => {
     }
   }, [DashboardData]);
 
-  if (isLoading) return <>laoding...</>;
+  if (isLoading) return <>loading...</>;
 
   if (error) return <>something went wrong!</>;
 

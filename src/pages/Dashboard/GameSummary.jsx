@@ -5,9 +5,11 @@ import Grid from "@mui/material/Grid2";
 import Chart from "react-apexcharts";
 import AppsIcon from "@mui/icons-material/Apps";
 import { useGetGameSummaryMutation } from "../../redux/slices/apiSlice";
+import { formatPlayTime } from "../../utils/Hooks";
 
 const GameSummary = () => {
   const [mostPlayedData, setMostPlayedData] = useState([]);
+  const [leastPlayedData, setLeastPlayedData] = useState([]);
 
   const [postGameSummary, { isLoading, error, data }] =
     useGetGameSummaryMutation();
@@ -32,7 +34,18 @@ const GameSummary = () => {
           return {
             title: ele?.name,
             subtitle: ele?.playCount,
-            value: ele?.playTimeInMinutes,
+            value: formatPlayTime(ele?.playTimeInMinutes),
+            ...colors, // apply dynamic color
+          };
+        })
+      );
+      setLeastPlayedData(
+        data?.data?.leastPlayed?.map((ele, index) => {
+          const colors = colorPalette[index % colorPalette.length];
+          return {
+            title: ele?.name,
+            subtitle: ele?.playCount,
+            value: formatPlayTime(ele?.playTimeInMinutes),
             ...colors, // apply dynamic color
           };
         })
@@ -202,7 +215,7 @@ const GameSummary = () => {
             />
 
             <Stack spacing={2} mt={2}>
-              {statItems.map((item, index) => (
+              {leastPlayedData?.map((item, index) => (
                 <Box
                   key={index}
                   display="flex"
