@@ -48,6 +48,13 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getQuery: builder.mutation({
+            query: (data) => ({
+                url: "CustomerSupport/admin/queries",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -57,5 +64,6 @@ export const {
     useGetallstudentsinfoMutation,
     useGetallcategoriesMutation,
     useGetDashboardSummaryMutation,
-    useGetGameSummaryMutation
+    useGetGameSummaryMutation,
+    useGetQueryMutation,
 } = apiSlice;

@@ -10,6 +10,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShareIcon from "@mui/icons-material/Share";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
 
 const DashboardSummary = () => {
@@ -66,23 +67,41 @@ const DashboardSummary = () => {
           valueColor: "#1fb6ff",
         },
         {
-          title: "Parents Upgraded Their Plan",
+          title: "Upgraded Plans",
           size: 3,
           value: DashboardData?.data?.upgradedPlanUsers,
           icon: <UpgradeIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
           color: "#feedfe",
           valueColor: "#c700c7",
         },
+        // {
+        //   title: "Renewed Plans",
+        //   size: 3,
+        //   value: DashboardData?.data?.upgradedPlanUsers,
+        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+        //   color: "#feedfe",
+        //   valueColor: "#c700c7",
+        // },
         {
           title: "Total Revenue",
           size: 6,
-          value: `₹${DashboardData?.data?.totalDomesticRevenue} Domestic | $${DashboardData?.data?.totalInternationalRevenue} International`,
+          value: `₹ 0 Domestic | $ 0 International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
           ),
           color: "#e6fff9",
           valueColor: "#00c292",
         },
+        // {
+        //   title: "Plans Buyed",
+        //   size: 6,
+        //   value: `₹${DashboardData?.data?.totalDomesticRevenue} Domestic | $${DashboardData?.data?.totalInternationalRevenue} International`,
+        //   icon: (
+        //     <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+        //   ),
+        //   color: "#e6fff9",
+        //   valueColor: "#00c292",
+        // },
       ]);
     }
   }, [DashboardData]);

@@ -57,11 +57,11 @@ const GameSummary = () => {
 
   const chartOptions = {
     chart: { sparkline: { enabled: true } },
-    stroke: { curve: "smooth", width: 1 },
+    stroke: { curve: "smooth", width: 2 },
     colors: ["#1fb6ff"],
     plotOptions: {
       bar: {
-        columnWidth: "35%", // You can set this to '60%', '30px', etc.
+        columnWidth: "25%", // You can set this to '60%', '30px', etc.
         borderRadius: 4, // Optional: for rounded bars
       },
     },
@@ -69,9 +69,9 @@ const GameSummary = () => {
       type: "category",
       categories: ["Mon", "Tue", "Wed", "Thu", "Fri"],
     },
-    // yaxis: { show: false },
-    // grid: { show: false },
-    // tooltip: { enabled: false },
+    yaxis: { show: true },
+    grid: { show: true },
+    tooltip: { enabled: true },
   };
 
   const chartSeries = [{ name: "Sales", data: [100, 85, 60, 50, 30] }];
@@ -153,7 +153,7 @@ const GameSummary = () => {
             <Chart
               options={chartOptions}
               series={chartSeries}
-              type="bar"
+              type="line"
               height={"40%"}
               width={"100%"}
             />
@@ -209,7 +209,7 @@ const GameSummary = () => {
             <Chart
               options={chartOptions}
               series={chartSeries}
-              type="bar"
+              type="line"
               height={"40%"}
               width={"100%"}
             />

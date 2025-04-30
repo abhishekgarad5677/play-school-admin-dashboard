@@ -1,88 +1,89 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Users from '../../pages/Users/Users';
-import logo from '../../../public/play-school-logo.png'
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import GroupIcon from '@mui/icons-material/Group';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import CategoryIcon from '@mui/icons-material/Category';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import GroupsIcon from '@mui/icons-material/Groups';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { Tooltip } from '@mui/material';
-import { ProfileAvatarMenu } from '../Avatar/ProfileAvatarMenu';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import Reports from '../../pages/Reports/Reports';
-import Dashboard from '../../pages/Dashboard/Dashboard';
-import ChildCareIcon from '@mui/icons-material/ChildCare';
-import Students from '../../pages/Students/Students';
-import Achievement from '../../pages/Achievement/Achievement';
-import Category from '../../pages/Category/Category';
-import AgeGroup from '../../pages/AgeGroup/AgeGroup';
-import Content from '../../pages/Content/Content';
-import Subscription from '../../pages/Subscription/Subscription';
-import AdminManager from '../../pages/AdminManager/AdminManager';
-import Logs from '../../pages/Logs/Logs';
-import Notification from '../../pages/Notification/Notification';
-import AddCategory from '../../pages/Category/AddCategory';
-import AddContent from '../../pages/Content/AddContent';
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import logo from "../../../public/play-school-logo.png";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import GroupIcon from "@mui/icons-material/Group";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import CategoryIcon from "@mui/icons-material/Category";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import GroupsIcon from "@mui/icons-material/Groups";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { Tooltip } from "@mui/material";
+import { ProfileAvatarMenu } from "../Avatar/ProfileAvatarMenu";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
+import Reports from "../../pages/Reports/Reports";
+import Dashboard from "../../pages/Dashboard/Dashboard";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import Students from "../../pages/Students/Students";
+import Achievement from "../../pages/Achievement/Achievement";
+import Category from "../../pages/Category/Category";
+import AgeGroup from "../../pages/AgeGroup/AgeGroup";
+import Content from "../../pages/Content/Content";
+import Subscription from "../../pages/Subscription/Subscription";
+import AdminManager from "../../pages/AdminManager/AdminManager";
+import Logs from "../../pages/Logs/Logs";
+import Notification from "../../pages/Notification/Notification";
+import AddCategory from "../../pages/Category/AddCategory";
+import AddContent from "../../pages/Content/AddContent";
+import Help from "../../pages/Help/Help";
+import Retention from "../../pages/Retention/Retention";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -92,7 +93,7 @@ const AppBar = styled(MuiAppBar, {
       style: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(["width", "margin"], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,
         }),
@@ -101,43 +102,43 @@ const AppBar = styled(MuiAppBar, {
   ],
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          ...openedMixin(theme),
-          '& .MuiDrawer-paper': openedMixin(theme),
-        },
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  variants: [
+    {
+      props: ({ open }) => open,
+      style: {
+        ...openedMixin(theme),
+        "& .MuiDrawer-paper": openedMixin(theme),
       },
-      {
-        props: ({ open }) => !open,
-        style: {
-          ...closedMixin(theme),
-          '& .MuiDrawer-paper': closedMixin(theme),
-        },
+    },
+    {
+      props: ({ open }) => !open,
+      style: {
+        ...closedMixin(theme),
+        "& .MuiDrawer-paper": closedMixin(theme),
       },
-    ],
-  }),
-);
+    },
+  ],
+}));
 
 export default function DefaultLayout() {
   const location = useLocation();
   // const isActive = location.pathname === ele.path;
 
   const acticeTabStyle = {
-    backgroundColor: '#5d87ff',
-    color: '#fff',
-  }
+    backgroundColor: "#5d87ff",
+    color: "#fff",
+  };
 
   const acticeIconStyle = {
-    color: '#fff',
-  }
+    color: "#fff",
+  };
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -151,26 +152,55 @@ export default function DefaultLayout() {
   };
 
   const navSectionOne = [
-    { title: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
-    { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
-    { title: 'Students', path: '/dashboard/students', icon: <ChildCareIcon /> },
-    { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
-    { title: 'Achievement', path: '/dashboard/achievement', icon: <EmojiEventsIcon /> },
-    { title: 'Category', path: '/dashboard/category', icon: <CategoryIcon /> },
-    { title: 'Age Group', path: '/dashboard/age-group', icon: <GroupsIcon /> },
-    { title: 'Content', path: '/dashboard/content', icon: <EditNoteIcon /> },
-    { title: 'Subscription', path: '/dashboard/subscription', icon: <CurrencyExchangeIcon /> },
-    { title: 'Admin Manager', path: '/dashboard/admin-manager', icon: <ManageAccountsIcon /> },
-    { title: 'Logs', path: '/dashboard/logs', icon: <FileCopyIcon /> },
-    { title: 'Notification', path: '/dashboard/notification', icon: <NotificationsActiveIcon /> },
-  ]
+    { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
+    { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
+    { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
+    {
+      title: "Content Management",
+      path: "/dashboard/content",
+      icon: <EditNoteIcon />,
+    },
+    {
+      title: "Retention",
+      path: "/dashboard/retention",
+      icon: <SupervisedUserCircleIcon />,
+    },
+    {
+      title: "Manage Users",
+      path: "/dashboard/manage-users",
+      icon: <GroupIcon />,
+    },
+    {
+      title: "Help Desk",
+      path: "/dashboard/help-desk",
+      icon: <GroupIcon />,
+    },
+    // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
+    // { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
+    // { title: 'Achievement', path: '/dashboard/achievement', icon: <EmojiEventsIcon /> },
+    // { title: 'Age Group', path: '/dashboard/age-group', icon: <GroupsIcon /> },
+    // { title: 'Subscription', path: '/dashboard/subscription', icon: <CurrencyExchangeIcon /> },
+    // { title: 'Admin Manager', path: '/dashboard/admin-manager', icon: <ManageAccountsIcon /> },
+    // { title: 'Logs', path: '/dashboard/logs', icon: <FileCopyIcon /> },
+    // { title: 'Notification', path: '/dashboard/notification', icon: <NotificationsActiveIcon /> },
+  ];
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ boxShadow: 'none', background: '#5d87ff' }}>
-        <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{ boxShadow: "none", background: "#5d87ff" }}
+      >
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -180,7 +210,7 @@ export default function DefaultLayout() {
                 {
                   marginRight: 5,
                 },
-                open && { display: 'none' },
+                open && { display: "none" },
               ]}
             >
               <MenuIcon />
@@ -189,25 +219,50 @@ export default function DefaultLayout() {
               Admin Dashboard
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
             <ProfileAvatarMenu />
           </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingLeft: 1 }}>
-            {open && <img style={{ transition: 'ease' }} src={logo} alt="" width={'95%'} height={'60'} />}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              paddingLeft: 1,
+            }}
+          >
+            {open && (
+              <img
+                style={{ transition: "ease" }}
+                src={logo}
+                alt=""
+                width={"95%"}
+                height={"60"}
+              />
+            )}
           </Box>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         {/* <Divider /> */}
         <List>
           {navSectionOne.map((ele, index) => (
-
-            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 component={Link}
                 to={ele.path}
@@ -219,30 +274,32 @@ export default function DefaultLayout() {
                   ele.path === location.pathname ? acticeTabStyle : null,
                   open
                     ? {
-                      justifyContent: 'initial',
-                    }
+                        justifyContent: "initial",
+                      }
                     : {
-                      justifyContent: 'center',
-                    },
+                        justifyContent: "center",
+                      },
                 ]}
               >
                 <ListItemIcon
                   sx={[
                     {
                       minWidth: 0,
-                      justifyContent: 'center',
+                      justifyContent: "center",
                     },
                     ele.path === location.pathname ? acticeIconStyle : null,
                     open
                       ? {
-                        mr: 3,
-                      }
+                          mr: 2,
+                        }
                       : {
-                        mr: 'auto',
-                      },
+                          mr: "auto",
+                        },
                   ]}
                 >
-                  {open ? ele.icon : (
+                  {open ? (
+                    ele.icon
+                  ) : (
                     <Tooltip title={ele.title} arrow placement="right">
                       {ele.icon}
                     </Tooltip>
@@ -253,11 +310,11 @@ export default function DefaultLayout() {
                   sx={[
                     open
                       ? {
-                        opacity: 1,
-                      }
+                          opacity: 1,
+                        }
                       : {
-                        opacity: 0,
-                      },
+                          opacity: 0,
+                        },
                   ]}
                 />
               </ListItemButton>
@@ -326,19 +383,19 @@ export default function DefaultLayout() {
       <Box
         component="main"
         sx={{
-          flexGrow: 1, p: 3,
-          overflow: 'auto',
-          height: '100vh',
-          scrollbarWidth: 'none', // For Firefox
-          '&::-webkit-scrollbar': {
-            display: 'none', // For Chrome, Safari
+          flexGrow: 1,
+          p: 3,
+          overflow: "auto",
+          height: "100vh",
+          scrollbarWidth: "none", // For Firefox
+          "&::-webkit-scrollbar": {
+            display: "none", // For Chrome, Safari
           },
         }}
       >
         <DrawerHeader />
         <Routes>
           <Route index path="/" element={<Dashboard />} />
-          <Route path="users" element={<Users />} />
           <Route path="students" element={<Students />} />
           <Route path="reports" element={<Reports />} />
           <Route path="achievement" element={<Achievement />} />
@@ -351,8 +408,19 @@ export default function DefaultLayout() {
           <Route path="admin-manager" element={<AdminManager />} />
           <Route path="logs" element={<Logs />} />
           <Route path="notification" element={<Notification />} />
+
+          <Route path="retention" element={<Retention />} />
+          <Route path="help-desk" element={<Help />} />
         </Routes>
-        <Typography variant="p" fontSize={12} mt={4} textAlign={'center'} color='#ccc' noWrap component="div">
+        <Typography
+          variant="p"
+          fontSize={12}
+          mt={4}
+          textAlign={"center"}
+          color="#ccc"
+          noWrap
+          component="div"
+        >
           Copyright © 2025 TMKOC Playschool. All Rights Reserved. <br />
           Powered by Neela Mediatech Private Limited
         </Typography>
