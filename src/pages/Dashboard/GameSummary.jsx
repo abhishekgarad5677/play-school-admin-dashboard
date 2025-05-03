@@ -76,7 +76,7 @@ const GameSummary = () => {
 
   const chartSeries = [{ name: "Sales", data: [100, 85, 60, 50, 30] }];
 
-  const statItems = [
+  const x = [
     {
       title: "Connect The Dot",
       subtitle: 200,
@@ -143,7 +143,7 @@ const GameSummary = () => {
   if (isLoading) return <>loading game stats...</>;
 
   return (
-    <>
+    <Box mb={4}>
       <Grid container mb={4} spacing={3}>
         <Grid size={6}>
           <Card elevation={1} sx={{ p: 3, borderRadius: 3 }}>
@@ -316,7 +316,7 @@ const GameSummary = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 

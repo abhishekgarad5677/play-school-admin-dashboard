@@ -4,6 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import DashboardSummary from "./DashboardSummary";
 import GameSummary from "./GameSummary";
+import DashboardAudioLangauge from "./DashboardAudioLangauge";
 
 const Dashboard = () => {
   return (
@@ -20,6 +21,7 @@ const Dashboard = () => {
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
         <DashboardSummary />
         <GameSummary />
+        <DashboardAudioLangauge />
       </Box>
     </>
   );

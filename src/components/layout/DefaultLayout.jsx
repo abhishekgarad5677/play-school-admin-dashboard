@@ -22,6 +22,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import CategoryIcon from "@mui/icons-material/Category";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import GroupsIcon from "@mui/icons-material/Groups";
+import HelpIcon from "@mui/icons-material/Help";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
@@ -173,7 +174,7 @@ export default function DefaultLayout() {
     {
       title: "Help Desk",
       path: "/dashboard/help-desk",
-      icon: <GroupIcon />,
+      icon: <HelpIcon />,
     },
     // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
     // { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
@@ -216,7 +217,7 @@ export default function DefaultLayout() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Admin Dashboard
+              {/* Admin Dashboard */}
             </Typography>
           </Box>
           <Box
@@ -245,9 +246,12 @@ export default function DefaultLayout() {
               <img
                 style={{ transition: "ease" }}
                 src={logo}
+                // src={
+                //   "https://www.tmkocplayschool.com/assets/playSchool-logo-B4HeImJS.png"
+                // }
                 alt=""
-                width={"95%"}
-                height={"60"}
+                width={"100%"}
+                height={"65"}
               />
             )}
           </Box>
