@@ -157,7 +157,7 @@ export default function DefaultLayout() {
     { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
     { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     {
-      title: "Content Management",
+      title: "Manage Content",
       path: "/dashboard/content",
       icon: <EditNoteIcon />,
     },
@@ -273,6 +273,9 @@ export default function DefaultLayout() {
                 sx={[
                   {
                     minHeight: 48,
+                    margin: "0 10px",
+                    borderRadius: "7px",
+                    backgroundColor: ele.path === location.pathname ? "#5d87ff" : "",
                     px: 2.5,
                   },
                   ele.path === location.pathname ? acticeTabStyle : null,

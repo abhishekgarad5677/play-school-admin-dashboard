@@ -58,50 +58,50 @@ const DashboardSummary = () => {
           color: "#feedf6",
           valueColor: "#ec007d",
         },
-        {
-          title: "Average Child Added",
-          size: 3,
-          value: DashboardData?.data?.studentCountperUser,
-          icon: <MailIcon sx={{ fontSize: 40, color: "#1fb6ff" }} />,
-          color: "#e6f6ff",
-          valueColor: "#1fb6ff",
-        },
-        {
-          title: "Upgraded Plans",
-          size: 3,
-          value: DashboardData?.data?.upgradedPlanUsers,
-          icon: <UpgradeIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-          color: "#feedfe",
-          valueColor: "#c700c7",
-        },
-        {
-          title: "Renewed Plans",
-          size: 3,
-          value: DashboardData?.data?.upgradedPlanUsers,
-          icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-          color: "#feedfe",
-          valueColor: "#c700c7",
-        },
+        // {
+        //   title: "Average Child Added",
+        //   size: 3,
+        //   value: DashboardData?.data?.studentCountperUser,
+        //   icon: <MailIcon sx={{ fontSize: 40, color: "#1fb6ff" }} />,
+        //   color: "#e6f6ff",
+        //   valueColor: "#1fb6ff",
+        // },
+        // {
+        //   title: "Upgraded Plans",
+        //   size: 3,
+        //   value: DashboardData?.data?.upgradedPlanUsers,
+        //   icon: <UpgradeIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+        //   color: "#feedfe",
+        //   valueColor: "#c700c7",
+        // },
+        // {
+        //   title: "Renewed Plans",
+        //   size: 3,
+        //   value: DashboardData?.data?.upgradedPlanUsers,
+        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+        //   color: "#feedfe",
+        //   valueColor: "#c700c7",
+        // },
         {
           title: "Total Revenue",
           size: 6,
-          value: `₹ 0 Domestic | $ 0 International`,
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenue} Domestic | $ ${DashboardData?.data?.totalInternationalRevenue} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
           ),
           color: "#e6fff9",
           valueColor: "#00c292",
         },
-        {
-          title: "Plans Buyed",
-          size: 6,
-          value: `₹${DashboardData?.data?.totalDomesticRevenue} Domestic | $${DashboardData?.data?.totalInternationalRevenue} International`,
-          icon: (
-            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
-          ),
-          color: "#e6fff9",
-          valueColor: "#00c292",
-        },
+        // {
+        //   title: "Plans Bought",
+        //   size: 6,
+        //   value: `₹${DashboardData?.data?.totalDomesticRevenue} Basic | ${DashboardData?.data?.totalInternationalRevenue} Pro`,
+        //   icon: (
+        //     <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+        //   ),
+        //   color: "#e6fff9",
+        //   valueColor: "#00c292",
+        // },
       ]);
     }
   }, [DashboardData]);
