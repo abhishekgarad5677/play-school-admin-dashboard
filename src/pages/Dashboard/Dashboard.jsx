@@ -16,7 +16,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Dashboard = () => {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
@@ -27,6 +27,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log(date);
   }, [date]);
+  console.log("startDate", "endDate", startDate, endDate);
 
   return (
     <>
@@ -63,14 +64,16 @@ const Dashboard = () => {
               label="Age"
               onChange={handleAgeChange}
             >
-              <MenuItem value={"today"}>Today</MenuItem>
-              <MenuItem value={7}>Last 7 days</MenuItem>
-              <MenuItem value={15}>Last 15 days</MenuItem>
-              <MenuItem value={30}>Last 1 month</MenuItem>
-              <MenuItem value={90}>Last 3 months</MenuItem>
-              <MenuItem value={180}>Last 6 months</MenuItem>
-              <MenuItem value={36}>Last 12 months</MenuItem>
-              <MenuItem value={"entire"}>Lifetime</MenuItem>
+              <MenuItem defaultChecked value={"today"}>
+                Today
+              </MenuItem>
+              <MenuItem value={"7days"}>Last 7 days</MenuItem>
+              <MenuItem value={"15days"}>Last 15 days</MenuItem>
+              <MenuItem value={"1month"}>Last 1 month</MenuItem>
+              <MenuItem value={"3months"}>Last 3 months</MenuItem>
+              <MenuItem value={"6months"}>Last 6 months</MenuItem>
+              <MenuItem value={"12months"}>Last 12 months</MenuItem>
+              <MenuItem value={"lifetime"}>Lifetime</MenuItem>
               <MenuItem value="custom">Custom</MenuItem>
             </Select>
           </FormControl>
@@ -99,7 +102,7 @@ const Dashboard = () => {
       </Box>
 
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
-        <DashboardSummary />
+        <DashboardSummary date={date} startDate={startDate} endDate={endDate} />
         <GameSummary />
         {/* <DashboardAudioLangauge /> */}
       </Box>
