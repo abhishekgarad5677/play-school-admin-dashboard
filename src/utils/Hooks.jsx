@@ -17,6 +17,7 @@ export const useFormattedDate = (isoString) => {
   }, [isoString]);
 };
 
+// Custom hook to format date
 export const formatDateToReadableString = (isoString) => {
   if (!isoString) return "";
   const date = new Date(isoString);
@@ -27,6 +28,7 @@ export const formatDateToReadableString = (isoString) => {
   });
 };
 
+// Custom hook to format date
 export const formatPlayTime = (playTimeInMinutes) => {
   if (playTimeInMinutes < 1) {
     const seconds = Math.round(playTimeInMinutes * 60);
@@ -44,6 +46,8 @@ export const formatPlayTime = (playTimeInMinutes) => {
     }
   }
 };
+
+// functions for processing data for charts and graphs (Most Played Games and Least Played Games)
 
 export const getProcessedMostPlayedData = (data, colorPalette) => {
   return (
@@ -124,3 +128,24 @@ export const getChartOptions = (data, colorPalette) => {
     },
   };
 };
+
+// functions for processing data for charts and graphs (Attendance Data)
+
+// export const getProcessedAttendanceData = (data, colorPalette) => {
+//   return (
+//     data?.map((ele, index) => {
+//       const colors = colorPalette[index % colorPalette.length];
+//       const colors = colorPalette[index % colorPalette.length];
+//       return {
+//         title: ele?.range,
+//         subtitle: ele?.count,
+//         ...colors,
+
+//         title: "0-30%",
+//         value: data[0]?.count,
+//         color: blue[100],
+//         textColor: blue[700],
+//       };
+//     }) || []
+//   );
+// };

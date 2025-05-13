@@ -47,6 +47,8 @@ import AddCategory from "../../pages/Category/AddCategory";
 import AddContent from "../../pages/Content/AddContent";
 import Help from "../../pages/Help/Help";
 import Retention from "../../pages/Retention/Retention";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import Games from "../../pages/Games/Games";
 
 const drawerWidth = 240;
 
@@ -154,6 +156,11 @@ export default function DefaultLayout() {
 
   const navSectionOne = [
     { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
+    {
+      title: "Games",
+      path: "/dashboard/games",
+      icon: <SportsEsportsIcon />,
+    },
     { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
     { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     {
@@ -176,6 +183,7 @@ export default function DefaultLayout() {
       path: "/dashboard/help-desk",
       icon: <HelpIcon />,
     },
+
     // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
     // { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
     // { title: 'Achievement', path: '/dashboard/achievement', icon: <EmojiEventsIcon /> },
@@ -275,7 +283,8 @@ export default function DefaultLayout() {
                     minHeight: 48,
                     margin: "0 10px",
                     borderRadius: "7px",
-                    backgroundColor: ele.path === location.pathname ? "#5d87ff" : "",
+                    backgroundColor:
+                      ele.path === location.pathname ? "#5d87ff" : "",
                     px: 2.5,
                   },
                   ele.path === location.pathname ? acticeTabStyle : null,
@@ -418,6 +427,7 @@ export default function DefaultLayout() {
 
           <Route path="retention" element={<Retention />} />
           <Route path="help-desk" element={<Help />} />
+          <Route path="games" element={<Games />} />
         </Routes>
         <Typography
           variant="p"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -14,6 +14,7 @@ import GameSummary from "./GameSummary";
 import DashboardAudioLangauge from "./DashboardAudioLangauge";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import AttendanceData from "./AttendanceData";
 
 const Dashboard = () => {
   const [date, setDate] = useState("today");
@@ -23,11 +24,6 @@ const Dashboard = () => {
   const handleAgeChange = (event) => {
     setDate(event.target.value);
   };
-
-  useEffect(() => {
-    console.log(date);
-  }, [date]);
-  console.log("startDate", "endDate", startDate, endDate);
 
   return (
     <>
@@ -104,6 +100,12 @@ const Dashboard = () => {
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
         <DashboardSummary date={date} startDate={startDate} endDate={endDate} />
         <GameSummary />
+        <AttendanceData
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          children={<div></div>}
+        />
         {/* <DashboardAudioLangauge /> */}
       </Box>
     </>

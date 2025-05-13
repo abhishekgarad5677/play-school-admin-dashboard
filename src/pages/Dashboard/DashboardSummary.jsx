@@ -13,6 +13,7 @@ import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString, useFormattedDate } from "../../utils/Hooks";
+import ChildCareIcon from '@mui/icons-material/ChildCare';
 
 const DashboardSummary = ({ date, startDate, endDate }) => {
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
       setData([
         {
           title: "Registered Users",
-          size: 3,
+          size: 4,
           value: DashboardData?.data?.registeredUsersCount,
           icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
           color: "#edf2fe",
@@ -51,7 +52,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
         },
         {
           title: "Subscribed Users",
-          size: 3,
+          size: 4,
           value: DashboardData?.data?.subscribedUsersCount,
           icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
           color: "#fff6e6",
@@ -59,7 +60,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
         },
         {
           title: "Non-subscribed Users",
-          size: 3,
+          size: 4,
           value: DashboardData?.data?.nonSubscribedUsersCount,
           icon: <EmojiEventsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />,
           color: "#fff0ed",
@@ -69,9 +70,27 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
           title: "Total Children Added",
           size: 3,
           value: DashboardData?.data?.totalChildrenCount,
-          icon: <ShareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
+          icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
           color: "#feedf6",
           valueColor: "#ec007d",
+        },
+        {
+          title: "Reports Generated (Lifetime)",
+          size: 3,
+          value: DashboardData?.data?.generatedReports,
+          icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+          color: "#feedfe",
+          valueColor: "#c700c7",
+        },
+        {
+          title: "Total Revenue",
+          size: 6,
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenue} Domestic | $ ${DashboardData?.data?.totalInternationalRevenue} International`,
+          icon: (
+            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+          ),
+          color: "#e6fff9",
+          valueColor: "#00c292",
         },
         // {
         //   title: "Average Child Added",
@@ -97,16 +116,6 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
         //   color: "#feedfe",
         //   valueColor: "#c700c7",
         // },
-        {
-          title: "Total Revenue",
-          size: 6,
-          value: `₹ ${DashboardData?.data?.totalDomesticRevenue} Domestic | $ ${DashboardData?.data?.totalInternationalRevenue} International`,
-          icon: (
-            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
-          ),
-          color: "#e6fff9",
-          valueColor: "#00c292",
-        },
         // {
         //   title: "Plans Bought",
         //   size: 6,
