@@ -129,23 +129,19 @@ export const getChartOptions = (data, colorPalette) => {
   };
 };
 
-// functions for processing data for charts and graphs (Attendance Data)
+export const getMappedId = (dateFilter, rowId) => {
+  const dateMap = {
+    today: 1,
+    "7days": 2,
+    "15days": 3,
+    "1month": 4,
+    "3months": 5,
+    "6months": 6,
+    "12months": 7,
+    lifetime: 8,
+    custom: 9,
+  };
 
-// export const getProcessedAttendanceData = (data, colorPalette) => {
-//   return (
-//     data?.map((ele, index) => {
-//       const colors = colorPalette[index % colorPalette.length];
-//       const colors = colorPalette[index % colorPalette.length];
-//       return {
-//         title: ele?.range,
-//         subtitle: ele?.count,
-//         ...colors,
-
-//         title: "0-30%",
-//         value: data[0]?.count,
-//         color: blue[100],
-//         textColor: blue[700],
-//       };
-//     }) || []
-//   );
-// };
+  const baseId = dateMap[dateFilter] || 0; // fallback to 0 if unmatched
+  return parseInt(`${baseId}${rowId}`);
+};

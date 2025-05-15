@@ -66,6 +66,20 @@ export const apiSlice = createApi({
             query: (data) => ({
                 url: "Data/admin/dashbaord/allgamesdata",
                 method: "POST",
+                body: data, 
+            }),
+        }),
+        postWeakAttendance: builder.mutation({
+            query: (data) => ({
+                url: "Notifications/send/sendnotificationByPercentage",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        postNotSubscribed: builder.mutation({
+            query: (data) => ({
+                url: "Notifications/send/sendtoUnsubsctibedUser",
+                method: "POST",
                 body: data,
             }),
         }),
@@ -81,5 +95,7 @@ export const {
     useGetGameSummaryMutation,
     useGetQueryMutation,
     useGetAttendanceDataSummaryMutation,
-    useGetGamesMutation
+    useGetGamesMutation,
+    usePostWeakAttendanceMutation,
+    usePostNotSubscribedMutation
 } = apiSlice;

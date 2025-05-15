@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/slices/authSlice";
 import API from "../../utils/api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const StyledPaper = styled(Paper)({
   padding: "2rem",
@@ -58,9 +59,10 @@ const Login = () => {
           })
         );
         navigate("/dashboard");
+        toast.success("Login successful");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error(error?.response?.data?.message || "Login failed");
     }
   };
 

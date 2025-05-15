@@ -163,21 +163,21 @@ export default function DefaultLayout() {
     },
     { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
     { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
-    {
-      title: "Manage Content",
-      path: "/dashboard/content",
-      icon: <EditNoteIcon />,
-    },
+    // {
+    //   title: "Manage Content",
+    //   path: "/dashboard/content",
+    //   icon: <EditNoteIcon />,
+    // },
     {
       title: "Retention",
       path: "/dashboard/retention",
       icon: <SupervisedUserCircleIcon />,
     },
-    {
-      title: "Manage Users",
-      path: "/dashboard/manage-users",
-      icon: <GroupIcon />,
-    },
+    // {
+    //   title: "Manage Users",
+    //   path: "/dashboard/manage-users",
+    //   icon: <GroupIcon />,
+    // },
     {
       title: "Help Desk",
       path: "/dashboard/help-desk",

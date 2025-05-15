@@ -148,7 +148,7 @@ const AttendanceData = ({ date, startDate, endDate, children }) => {
                 options={attendanceData.chartOptions}
                 series={attendanceData.graphData}
                 type="bar"
-                height={"60%"}
+                height={"70%"}
                 width={"100%"}
               />
             )}
@@ -195,11 +195,9 @@ const AttendanceData = ({ date, startDate, endDate, children }) => {
           </Card>
         </Grid>
         <Grid size={6}>
-          <Card elevation={1} sx={{ p: 3, borderRadius: 3 }}>
-            {typeof children === "function"
-              ? children({ attendanceData, isLoading })
-              : children}
-          </Card>
+          {typeof children === "function"
+            ? children({ attendanceData, isLoading, date })
+            : children}
         </Grid>
       </Grid>
     </Box>

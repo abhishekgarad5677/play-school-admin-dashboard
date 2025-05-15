@@ -74,15 +74,13 @@ const WeakAttendance = () => {
           />
         )}
       </Box>
-      {/* <AttendanceData
-        date={date}
-        startDate={startDate}
-        endDate={endDate}
-        children={<WeakAttendanceTable />}
-      /> */}
       <AttendanceData date={date} startDate={startDate} endDate={endDate}>
-        {({ attendanceData, isLoading }) => (
-          <WeakAttendanceTable data={attendanceData} isLoading={isLoading} />
+        {({ attendanceData, isLoading, date }) => (
+          <WeakAttendanceTable
+            data={attendanceData}
+            isLoading={isLoading}
+            date={date}
+          />
         )}
       </AttendanceData>
     </>

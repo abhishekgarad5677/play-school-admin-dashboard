@@ -16,6 +16,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordion from "@mui/material/Accordion";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import WeakAttendance from "./RetentionModules/WeakAttendance/WeakAttendance";
+import NotSubscribed from "./RetentionModules/NotSubscribed/NotSubscribed";
 
 const Retention = () => {
   const Accordion = styled((props) => (
@@ -55,7 +56,7 @@ const Retention = () => {
     borderTop: "1px solid rgba(0, 0, 0, .125)",
   }));
 
-  const [expanded, setExpanded] = useState("panel1");
+  const [expanded, setExpanded] = useState("");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -101,13 +102,9 @@ const Retention = () => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
+            <>
+              <NotSubscribed />
+            </>
           </AccordionDetails>
         </Accordion>
       </div>
