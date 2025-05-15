@@ -75,7 +75,7 @@ const Login = () => {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#fff",
-        backgroundImage: "url('../../public/login-bg.png')",
+        backgroundImage: "url('/login-bg.png')",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
