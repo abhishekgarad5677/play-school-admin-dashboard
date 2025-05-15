@@ -41,7 +41,7 @@ import AgeGroup from "../../pages/AgeGroup/AgeGroup";
 import Content from "../../pages/Content/Content";
 import Subscription from "../../pages/Subscription/Subscription";
 import AdminManager from "../../pages/AdminManager/AdminManager";
-import Logs from "../../pages/Logs/Logs";
+// import Logs from "../../pages/Logs/Logs";
 import Notification from "../../pages/Notification/Notification";
 import AddCategory from "../../pages/Category/AddCategory";
 import AddContent from "../../pages/Content/AddContent";
@@ -162,7 +162,7 @@ export default function DefaultLayout() {
       icon: <SportsEsportsIcon />,
     },
     { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
-    { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
+    // { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     // {
     //   title: "Manage Content",
     //   path: "/dashboard/content",
@@ -413,21 +413,20 @@ export default function DefaultLayout() {
         <Routes>
           <Route index path="/" element={<Dashboard />} />
           <Route path="students" element={<Students />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="achievement" element={<Achievement />} />
-          <Route path="category" element={<Category />} />
-          <Route path="add-category" element={<AddCategory />} />
-          <Route path="age-group" element={<AgeGroup />} />
-          <Route path="content" element={<Content />} />
-          <Route path="add-content" element={<AddContent />} />
-          <Route path="subscription" element={<Subscription />} />
-          <Route path="admin-manager" element={<AdminManager />} />
-          <Route path="logs" element={<Logs />} />
-          <Route path="notification" element={<Notification />} />
-
           <Route path="retention" element={<Retention />} />
           <Route path="help-desk" element={<Help />} />
           <Route path="games" element={<Games />} />
+          {/* <Route path="reports" element={<Reports />} /> */}
+          {/* <Route path="achievement" element={<Achievement />} /> */}
+          {/* <Route path="category" element={<Category />} /> */}
+          {/* <Route path="add-category" element={<AddCategory />} /> */}
+          {/* <Route path="age-group" element={<AgeGroup />} /> */}
+          {/* <Route path="content" element={<Content />} /> */}
+          {/* <Route path="add-content" element={<AddContent />} /> */}
+          {/* <Route path="subscription" element={<Subscription />} /> */}
+          {/* <Route path="admin-manager" element={<AdminManager />} /> */}
+          {/* <Route path="logs" element={<Logs />} /> */}
+          {/* <Route path="notification" element={<Notification />} /> */}
         </Routes>
         <Typography
           variant="p"
