@@ -55,6 +55,7 @@ const WeakAttendance = () => {
 
         {date === "custom" && (
           <DatePicker
+            maxDate={new Date()}
             selectsRange
             startDate={startDate}
             endDate={endDate}

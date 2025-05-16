@@ -161,7 +161,7 @@ export default function DefaultLayout() {
       path: "/dashboard/games",
       icon: <SportsEsportsIcon />,
     },
-    { title: "Students", path: "/dashboard/students", icon: <ChildCareIcon /> },
+    { title: "Subscribed Users", path: "/dashboard/students", icon: <ChildCareIcon /> },
     // { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     // {
     //   title: "Manage Content",
