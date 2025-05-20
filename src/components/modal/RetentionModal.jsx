@@ -19,7 +19,7 @@ const RetentionModal = ({
   open,
   onClose,
   onSubmit,
-  predefinedOptions = [],
+  predefinedOptions,
   selectedRow,
   isLoading,
 }) => {
@@ -71,7 +71,7 @@ const RetentionModal = ({
           }
         : {
             type: "predefined",
-            ...predefinedOptions.find((opt) => opt.id === selectedOption),
+            ...predefinedOptions.find((opt) => opt.id === Number(selectedOption)),
           };
 
     onSubmit(finalData, selectedRow);
