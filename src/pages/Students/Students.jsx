@@ -20,6 +20,7 @@ import {
 import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
+import { TableWithExport } from "../../components/table/TableWithExport";
 
 const Students = () => {
   const [data, setData] = useState();
@@ -105,6 +106,7 @@ const Students = () => {
       renderCell: (params) => useFormattedDate(params?.row?.dateOfBirth),
     },
     { field: "city", headerName: "City", width: 150 },
+    { field: "state", headerName: "State", width: 150 },
     { field: "country", headerName: "Country", width: 150 },
     { field: "studentId", headerName: "Student ID", width: 100 },
     {
@@ -224,7 +226,7 @@ const Students = () => {
         {isLoading ? (
           <TableSkeleton rows={10} columns={6} />
         ) : (
-          <CommonTable
+          <TableWithExport
             userTableData={data?.map((d) => ({ ...d, id: d.studentId }))}
             columns={columns}
             pageSizeOptions={[10, 15, 20, 50, 100]}

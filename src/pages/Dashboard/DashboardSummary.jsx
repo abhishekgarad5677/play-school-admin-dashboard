@@ -85,7 +85,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
         {
           title: "Total Revenue",
           size: 6,
-          value: `₹ ${DashboardData?.data?.totalDomesticRevenue} Domestic | $ ${DashboardData?.data?.totalInternationalRevenue} International`,
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
           ),
