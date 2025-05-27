@@ -80,6 +80,27 @@ export const apiSlice = createApi({
             query: (data) => ({
                 url: "Notifications/send/sendtoUnsubsctibedUser",
                 method: "POST",
+                body: data, 
+            }),
+        }),
+        getCountryStateCity: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashboard/countrycitystate",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getAgeGroupCount: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashboard/agegroupcount",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getAttendanceSummary: builder.mutation({
+            query: (data) => ({
+                url: "Data/attendancesummary",
+                method: "POST",
                 body: data,
             }),
         }),
@@ -97,5 +118,8 @@ export const {
     useGetAttendanceDataSummaryMutation,
     useGetGamesMutation,
     usePostWeakAttendanceMutation,
-    usePostNotSubscribedMutation
+    usePostNotSubscribedMutation,
+    useGetCountryStateCityMutation,
+    useGetAgeGroupCountMutation,
+    useGetAttendanceSummaryMutation
 } = apiSlice;

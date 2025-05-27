@@ -17,6 +17,17 @@ export const useFormattedDate = (isoString) => {
   }, [isoString]);
 };
 
+
+// Custom hook to format date to day and month
+export const formatDayMonth = (isoDate) => {
+  const date = new Date(isoDate);
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+  }); // e.g., "21 May"
+};
+
+
 // Custom hook to format date
 export const formatDateToReadableString = (isoString) => {
   if (!isoString) return "";

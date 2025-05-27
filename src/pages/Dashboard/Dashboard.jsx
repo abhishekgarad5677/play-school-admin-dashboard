@@ -15,14 +15,33 @@ import DashboardAudioLangauge from "./DashboardAudioLangauge";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AttendanceData from "./AttendanceData";
+import LocationData from "./LocationData";
+import AgeData from "./AgeData";
+import CustomRangeSelect from "../../utils/CustomRangeSelect";
+import {
+  dateFilterOptions,
+  appFilterOptions,
+  subPlans,
+} from "../../utils/constant";
+import AttendanceSummary from "./AttendanceSummary";
 
 const Dashboard = () => {
   const [date, setDate] = useState("today");
+  const [platform, setPlatform] = useState(1);
+  const [plan, setPlan] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
-  const handleAgeChange = (event) => {
+  const handleDateChange = (event) => {
     setDate(event.target.value);
+  };
+
+  const handlePlatformChange = (event) => {
+    setPlatform(event.target.value);
+  };
+
+  const handlePlanChange = (event) => {
+    setPlan(event.target.value);
   };
 
   return (
@@ -52,28 +71,27 @@ const Dashboard = () => {
             gap: 3,
           }}
         >
-          <FormControl sx={{ minWidth: 200 }} size="small">
-            <InputLabel id="demo-simple-select-label">Date</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              value={date}
-              label="Age"
-              onChange={handleAgeChange}
-            >
-              <MenuItem defaultChecked value={"today"}>
-                Today
-              </MenuItem>
-              <MenuItem value={"7days"}>Last 7 days</MenuItem>
-              <MenuItem value={"15days"}>Last 15 days</MenuItem>
-              <MenuItem value={"1month"}>Last 1 month</MenuItem>
-              <MenuItem value={"3months"}>Last 3 months</MenuItem>
-              <MenuItem value={"6months"}>Last 6 months</MenuItem>
-              <MenuItem value={"12months"}>Last 12 months</MenuItem>
-              <MenuItem value={"lifetime"}>Lifetime</MenuItem>
-              <MenuItem value="custom">Custom</MenuItem>
-            </Select>
-          </FormControl>
-
+          {/* subscription plan select dropdown */}
+          <CustomRangeSelect
+            value={plan}
+            label={"Select Plan"}
+            onChange={handlePlanChange}
+            options={subPlans}
+          />
+          {/* app select dropdown */}
+          {/* <CustomRangeSelect
+            value={platform}
+            label={"App"}
+            onChange={handlePlatformChange}
+            options={appFilterOptions}
+          /> */}
+          {/* date select dropdown */}
+          <CustomRangeSelect
+            value={date}
+            label={"Date"}
+            onChange={handleDateChange}
+            options={dateFilterOptions}
+          />
           {date === "custom" && (
             <DatePicker
               maxDate={new Date()}
@@ -100,13 +118,20 @@ const Dashboard = () => {
 
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
         <DashboardSummary date={date} startDate={startDate} endDate={endDate} />
+        <LocationData date={date} startDate={startDate} endDate={endDate} />
+        <AgeData date={date} startDate={startDate} endDate={endDate}  />
         <GameSummary />
-        <AttendanceData
+        <AttendanceSummary
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+        />
+        {/* <AttendanceData
           date={date}
           startDate={startDate}
           endDate={endDate}
           children={<div></div>}
-        />
+        /> */}
         {/* <DashboardAudioLangauge /> */}
       </Box>
     </>

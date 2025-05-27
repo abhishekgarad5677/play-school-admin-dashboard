@@ -1,0 +1,155 @@
+import { useEffect, useState } from "react";
+import { Box, Card, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import ApexCharts from "react-apexcharts";
+import { useGetCountryStateCityMutation } from "../../redux/slices/apiSlice";
+import { formatDateToReadableString } from "../../utils/Hooks";
+
+const LocationData = ({ date, startDate, endDate }) => {
+  const [getCountryStateCity, { isLoading, error, data }] =
+    useGetCountryStateCityMutation();
+
+  const [countryData, setCountryData] = useState({
+    country: [],
+    state: [],
+    city: [],
+  });
+
+  useEffect(() => {
+    if (date !== "custom") {
+      const formData = new FormData();
+      formData.append("FilterType", date);
+      getCountryStateCity(formData);
+    } else if (date === "custom" && startDate && endDate) {
+      const formattedStart = formatDateToReadableString(startDate);
+      const formattedEnd = formatDateToReadableString(endDate);
+
+      const formData = new FormData();
+      formData.append("FilterType", date);
+      formData.append("FromDate", formattedStart);
+      formData.append("ToDate", formattedEnd);
+
+      getCountryStateCity(formData);
+    }
+  }, [date, startDate, endDate]);
+
+  useEffect(() => {
+    if (data && data.success === true) {
+      console.log("Location Data:", data.data);
+      setCountryData({
+        country: data.data.countries,
+        state: data.data.states,
+        city: data.data.cities,
+      });
+    }
+  }, [data]);
+
+  console.log(countryData);
+
+  // Inside your component
+  const getChartConfig = (labels, values) => ({
+    options: {
+      chart: {
+        type: "bar",
+        height: 200,
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          borderRadiusApplication: "end",
+          horizontal: true,
+          barHeight: "30%",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: labels,
+        title: {
+          text: "No. of users", // 👈 Label for X-axis
+          style: {
+            fontSize: "12px",
+            fontWeight: 600,
+            color: "#333",
+          },
+        },
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return `${val} users`; // 👈 Tooltip on hover will show "30 users"
+          },
+        },
+      },
+    },
+    series: [
+      {
+        name: "", // 👈 This removes the "series-1:" prefix from tooltip
+        data: values,
+      },
+    ],
+  });
+
+  if (isLoading) return <>loading game stats...</>;
+  if (error) return <>error loading game stats...</>;
+
+  return (
+    <Box mb={4}>
+      <Grid container mb={4} spacing={3}>
+        <Grid size={4}>
+          <Card elevation={1} sx={{ p: 1, borderRadius: 3 }}>
+            <Typography ml={2} mt={1} fontWeight={600} variant="h6">
+              Top Countries
+            </Typography>
+            <ApexCharts
+              {...getChartConfig(
+                countryData.country.map((c) => c.country),
+                countryData.country.map((c) => c.count)
+              )}
+              type="bar"
+              height={350}
+            />
+          </Card>
+        </Grid>
+
+        <Grid size={4}>
+          <Card elevation={1} sx={{ p: 1, borderRadius: 3 }}>
+            <Typography ml={2} mt={1} fontWeight={600} variant="h6">
+              Top States
+            </Typography>
+            <ApexCharts
+              {...getChartConfig(
+                countryData.state.map((s) => s.state),
+                countryData.state.map((s) => s.count)
+              )}
+              type="bar"
+              height={350}
+            />
+          </Card>
+        </Grid>
+
+        <Grid size={4}>
+          <Card elevation={1} sx={{ p: 1, borderRadius: 3 }}>
+            <Typography ml={2} mt={1} fontWeight={600} variant="h6">
+              Top Cities
+            </Typography>
+            <ApexCharts
+              {...getChartConfig(
+                countryData.city.map((c) => c.city),
+                countryData.city.map((c) => c.count)
+              )}
+              type="bar"
+              height={350}
+            />
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default LocationData;
