@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid2";
 import ReactApexChart from "react-apexcharts";
 import { formatDateToReadableString, formatDayMonth } from "../../utils/Hooks";
 
-const AttendanceSummary = ({ date, startDate, endDate }) => {
+const AttendanceSummary = ({ date, startDate, endDate, plan }) => {
   const [postAttendanceDataSummary, { isLoading, error, data }] =
     useGetAttendanceSummaryMutation();
 
@@ -17,14 +17,14 @@ const AttendanceSummary = ({ date, startDate, endDate }) => {
   useEffect(() => {
     const formData = new FormData();
     formData.append("FilterType", date);
-
+    formData.append("SubPlan", plan);
     if (date === "custom" && startDate && endDate) {
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
     }
 
     postAttendanceDataSummary(formData);
-  }, [date, startDate, endDate]);
+  }, [date, startDate, endDate, plan]);
 
   useEffect(() => {
     if (data && data.status === true && Array.isArray(data.data)) {

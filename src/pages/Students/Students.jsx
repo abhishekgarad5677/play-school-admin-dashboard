@@ -21,6 +21,8 @@ import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
+import { dateFilterOptions, subPlans } from "../../utils/constant";
+import CustomRangeSelect from "../../utils/CustomRangeSelect";
 
 const Students = () => {
   const [data, setData] = useState();
@@ -78,13 +80,15 @@ const Students = () => {
       ),
     },
     { field: "childsName", headerName: "Child's Name", width: 170 },
+    { field: "email", headerName: "Email", width: 300 },
+    { field: "amount", headerName: "Amount (₹)", width: 150 },
+    { field: "planName", headerName: "Plan Name", width: 200 },
     {
       field: "registeredDate",
       headerName: "Registered Date",
       width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
     },
-    { field: "planName", headerName: "Plan Name", width: 200 },
     {
       field: "lastActiveDate",
       headerName: "Last Active Date",
@@ -178,6 +182,13 @@ const Students = () => {
               <MenuItem value="custom">Custom</MenuItem>
             </Select>
           </FormControl>
+
+          {/* <CustomRangeSelect
+            value={date}
+            label={"Select Plan"}
+            onChange={handleAgeChange}
+            options={dateFilterOptions}
+          /> */}
 
           {date === "custom" && (
             <DatePicker

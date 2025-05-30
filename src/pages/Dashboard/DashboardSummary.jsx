@@ -12,10 +12,13 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
-import { formatDateToReadableString, useFormattedDate } from "../../utils/Hooks";
-import ChildCareIcon from '@mui/icons-material/ChildCare';
+import {
+  formatDateToReadableString,
+  useFormattedDate,
+} from "../../utils/Hooks";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
 
-const DashboardSummary = ({ date, startDate, endDate }) => {
+const DashboardSummary = ({ date, startDate, endDate, plan }) => {
   const [data, setData] = useState([]);
 
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
@@ -25,6 +28,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
     if (date !== "custom") {
       const formData = new FormData();
       formData.append("FilterType", date);
+      formData.append("SubPlan", plan);
       postDashboardData(formData);
     } else if (date === "custom" && startDate && endDate) {
       const formattedStart = formatDateToReadableString(startDate);
@@ -37,7 +41,7 @@ const DashboardSummary = ({ date, startDate, endDate }) => {
 
       postDashboardData(formData);
     }
-  }, [date, startDate, endDate]);
+  }, [date, startDate, endDate, plan]);
 
   useEffect(() => {
     if (DashboardData && DashboardData?.status === true) {

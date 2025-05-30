@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import {
   Box,
   FormControl,
@@ -116,15 +116,32 @@ const Dashboard = () => {
         </Box>
       </Box>
 
+
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
-        <DashboardSummary date={date} startDate={startDate} endDate={endDate} />
-        <LocationData date={date} startDate={startDate} endDate={endDate} />
-        <AgeData date={date} startDate={startDate} endDate={endDate}  />
+        <DashboardSummary
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          plan={plan}
+        />
+        <LocationData
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          plan={plan}
+        />
+        <AgeData
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          plan={plan}
+        />
         <GameSummary />
         <AttendanceSummary
           date={date}
           startDate={startDate}
           endDate={endDate}
+          plan={plan}
         />
         {/* <AttendanceData
           date={date}
