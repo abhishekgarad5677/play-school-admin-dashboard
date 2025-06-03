@@ -6,7 +6,7 @@ import { useGetAgeGroupCountMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 // import { formatDateToReadableString } from "../../utils/Hooks"; // Make sure this exists
 
-const AgeData = ({ date, startDate, endDate, plan }) => {
+const AgeData = ({ date, startDate, endDate, plan, platform }) => {
   const [getAgeCount, { isLoading, error, data }] =
     useGetAgeGroupCountMutation();
   const [ageCount, setAgeCount] = useState(null);
@@ -16,6 +16,9 @@ const AgeData = ({ date, startDate, endDate, plan }) => {
     if (date !== "custom") {
       const formData = new FormData();
       formData.append("FilterType", date);
+      if (platform !== 4) {
+        formData.append("platform", platform);
+      }
       // formData.append("SubPlan", plan);
       getAgeCount(formData);
     } else if (date === "custom" && startDate && endDate) {
@@ -29,7 +32,7 @@ const AgeData = ({ date, startDate, endDate, plan }) => {
 
       getAgeCount(formData);
     }
-  }, [date, startDate, endDate, plan]);
+  }, [date, startDate, endDate, plan, platform]);
 
   useEffect(() => {
     if (data && data.success === true) {

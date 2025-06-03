@@ -5,6 +5,7 @@ export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+        // baseUrl: "https://10.1.1.158:7177/api/",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token;  // Getting the token directly from getState
             if (token) {
@@ -20,9 +21,10 @@ export const apiSlice = createApi({
         getPosts: builder.query({
             query: () => "/posts",
         }),
+        // get subscribed users
         getallstudentsinfo: builder.mutation({
             query: (data) => ({
-                url: "Students/user/getallstudentsinfo",
+                url: "Data/admin/subscribeduser",
                 method: "POST",
                 body: data,
             }),
@@ -104,6 +106,13 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getUnsubscribedUsers: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/nonsubscribeduser",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -121,5 +130,6 @@ export const {
     usePostNotSubscribedMutation,
     useGetCountryStateCityMutation,
     useGetAgeGroupCountMutation,
-    useGetAttendanceSummaryMutation
+    useGetAttendanceSummaryMutation,
+    useGetUnsubscribedUsersMutation,
 } = apiSlice;

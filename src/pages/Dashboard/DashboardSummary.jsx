@@ -18,7 +18,7 @@ import {
 } from "../../utils/Hooks";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 
-const DashboardSummary = ({ date, startDate, endDate, plan }) => {
+const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
 
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
@@ -29,6 +29,9 @@ const DashboardSummary = ({ date, startDate, endDate, plan }) => {
       const formData = new FormData();
       formData.append("FilterType", date);
       formData.append("SubPlan", plan);
+      if (platform !== 4) {
+        formData.append("platform", platform);
+      }
       postDashboardData(formData);
     } else if (date === "custom" && startDate && endDate) {
       const formattedStart = formatDateToReadableString(startDate);
@@ -41,7 +44,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan }) => {
 
       postDashboardData(formData);
     }
-  }, [date, startDate, endDate, plan]);
+  }, [date, startDate, endDate, plan, platform]);
 
   useEffect(() => {
     if (DashboardData && DashboardData?.status === true) {

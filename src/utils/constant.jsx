@@ -99,9 +99,11 @@ export const dateFilterOptions = [
 ];
 
 export const appFilterOptions = [
-  { label: "All", value: 1 },
+  { label: "All", value: 4 },
+  { label: "Android", value: 1 },
   { label: "Ios", value: 2 },
-  { label: "Android", value: 3 },
+  { label: "Website", value: 3 },
+  { label: "Other", value: 0 },
 ];
 
 export const subPlans = [

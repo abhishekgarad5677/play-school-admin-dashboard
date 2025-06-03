@@ -14,15 +14,26 @@ const CustomToolbar = () => {
 
 // Updated CommonTable component
 export const TableWithExport = (props) => {
-  const { userTableData, columns, pageSizeOptions } = props;
-  const paginationModel = { page: 0, pageSize: 10 };
+  const {
+    userTableData,
+    columns,
+    pageSizeOptions,
+    rowCount,
+    paginationModel,
+    onPaginationModelChange,
+    t,
+  } = props;
+  // const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <DataGrid
       rows={userTableData}
       columns={columns}
-      initialState={{ pagination: { paginationModel } }}
+      paginationMode="server"
+      paginationModel={paginationModel}
+      onPaginationModelChange={onPaginationModelChange}
       pageSizeOptions={pageSizeOptions}
+      rowCount={rowCount}
       disableRowSelectionOnClick
       slots={{ toolbar: CustomToolbar }}
       sx={{

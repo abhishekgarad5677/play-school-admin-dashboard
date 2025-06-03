@@ -27,7 +27,7 @@ import AttendanceSummary from "./AttendanceSummary";
 
 const Dashboard = () => {
   const [date, setDate] = useState("today");
-  const [platform, setPlatform] = useState(1);
+  const [platform, setPlatform] = useState(4);
   const [plan, setPlan] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -116,25 +116,27 @@ const Dashboard = () => {
         </Box>
       </Box>
 
-
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
         <DashboardSummary
           date={date}
           startDate={startDate}
           endDate={endDate}
           plan={plan}
+          platform={platform}
         />
         <LocationData
           date={date}
           startDate={startDate}
           endDate={endDate}
           plan={plan}
+          platform={platform}
         />
         <AgeData
           date={date}
           startDate={startDate}
           endDate={endDate}
           plan={plan}
+          platform={platform}
         />
         <GameSummary />
         <AttendanceSummary
@@ -142,6 +144,7 @@ const Dashboard = () => {
           startDate={startDate}
           endDate={endDate}
           plan={plan}
+          platform={platform}
         />
         {/* <AttendanceData
           date={date}

@@ -5,7 +5,7 @@ import ApexCharts from "react-apexcharts";
 import { useGetCountryStateCityMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 
-const LocationData = ({ date, startDate, endDate, plan }) => {
+const LocationData = ({ date, startDate, endDate, plan, platform }) => {
   const [getCountryStateCity, { isLoading, error, data }] =
     useGetCountryStateCityMutation();
 
@@ -20,6 +20,9 @@ const LocationData = ({ date, startDate, endDate, plan }) => {
       const formData = new FormData();
       formData.append("FilterType", date);
       formData.append("SubPlan", plan);
+      if (platform !== 4) {
+        formData.append("platform", platform);
+      }
       getCountryStateCity(formData);
     } else if (date === "custom" && startDate && endDate) {
       const formattedStart = formatDateToReadableString(startDate);
@@ -32,7 +35,7 @@ const LocationData = ({ date, startDate, endDate, plan }) => {
 
       getCountryStateCity(formData);
     }
-  }, [date, startDate, endDate, plan]);
+  }, [date, startDate, endDate, plan, platform]);
 
   useEffect(() => {
     if (data && data.success === true) {

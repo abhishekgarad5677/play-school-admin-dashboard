@@ -49,6 +49,8 @@ import Help from "../../pages/Help/Help";
 import Retention from "../../pages/Retention/Retention";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import Games from "../../pages/Games/Games";
+import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
+import UnsubscribedUsers from "../../pages/UnsubscribedUsers/UnsubscribedUsers";
 
 const drawerWidth = 240;
 
@@ -162,6 +164,7 @@ export default function DefaultLayout() {
       icon: <SportsEsportsIcon />,
     },
     { title: "Subscribed Users", path: "/dashboard/students", icon: <ChildCareIcon /> },
+    { title: "Unsubscribed users", path: "/dashboard/UnsubscribedUsers", icon: <UnsubscribeIcon /> },
     // { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     // {
     //   title: "Manage Content",
@@ -413,6 +416,7 @@ export default function DefaultLayout() {
         <Routes>
           <Route index path="/" element={<Dashboard />} />
           <Route path="students" element={<Students />} />
+          <Route path="UnsubscribedUsers" element={<UnsubscribedUsers />} />
           <Route path="retention" element={<Retention />} />
           <Route path="help-desk" element={<Help />} />
           <Route path="games" element={<Games />} />
