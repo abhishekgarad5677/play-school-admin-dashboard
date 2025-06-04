@@ -112,3 +112,9 @@ export const subPlans = [
   { label: "Basic Plan", value: 2 },
   { label: "Pro Plan", value: 3 },
 ];
+
+
+export const userTypeOptions = [
+  { label: "Subscribed User", value: 1 },
+  { label: "Registered User", value: 0 },
+];

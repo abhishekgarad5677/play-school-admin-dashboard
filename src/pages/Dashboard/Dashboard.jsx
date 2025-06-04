@@ -22,6 +22,7 @@ import {
   dateFilterOptions,
   appFilterOptions,
   subPlans,
+  userTypeOptions,
 } from "../../utils/constant";
 import AttendanceSummary from "./AttendanceSummary";
 
@@ -29,6 +30,7 @@ const Dashboard = () => {
   const [date, setDate] = useState("today");
   const [platform, setPlatform] = useState(4);
   const [plan, setPlan] = useState(1);
+  const [userType, setUserType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
@@ -36,13 +38,18 @@ const Dashboard = () => {
     setDate(event.target.value);
   };
 
-  const handlePlatformChange = (event) => {
-    setPlatform(event.target.value);
-  };
+  // const handlePlatformChange = (event) => {
+  //   setPlatform(event.target.value);
+  // };
 
   const handlePlanChange = (event) => {
     setPlan(event.target.value);
   };
+
+  const handleUserType = (event) => {
+    setUserType(event.target.value);
+  };
+
 
   return (
     <>
@@ -77,6 +84,12 @@ const Dashboard = () => {
             label={"Select Plan"}
             onChange={handlePlanChange}
             options={subPlans}
+          />
+          <CustomRangeSelect
+            value={userType}
+            label={"User Type"}
+            onChange={handleUserType}
+            options={userTypeOptions}
           />
           {/* app select dropdown */}
           {/* <CustomRangeSelect
@@ -130,6 +143,7 @@ const Dashboard = () => {
           endDate={endDate}
           plan={plan}
           platform={platform}
+          userType={userType}
         />
         <AgeData
           date={date}

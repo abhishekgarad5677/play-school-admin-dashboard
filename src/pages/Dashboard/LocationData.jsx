@@ -5,7 +5,14 @@ import ApexCharts from "react-apexcharts";
 import { useGetCountryStateCityMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 
-const LocationData = ({ date, startDate, endDate, plan, platform }) => {
+const LocationData = ({
+  date,
+  startDate,
+  endDate,
+  plan,
+  platform,
+  userType,
+}) => {
   const [getCountryStateCity, { isLoading, error, data }] =
     useGetCountryStateCityMutation();
 
@@ -16,26 +23,26 @@ const LocationData = ({ date, startDate, endDate, plan, platform }) => {
   });
 
   useEffect(() => {
+    const formData = new FormData();
+    let shouldFetch = true;
+    formData.append("SubPlan", plan);
+    formData.append("UsersType", userType);
+
     if (date !== "custom") {
-      const formData = new FormData();
       formData.append("FilterType", date);
-      formData.append("SubPlan", plan);
-      if (platform !== 4) {
-        formData.append("platform", platform);
-      }
-      getCountryStateCity(formData);
-    } else if (date === "custom" && startDate && endDate) {
-      const formattedStart = formatDateToReadableString(startDate);
-      const formattedEnd = formatDateToReadableString(endDate);
+      // if (platform !== 4) {
+      //   formData.append("platform", platform);
+      // }
+    } else if (startDate && endDate) {
+      formData.append("FilterType", "custom");
+      formData.append("FromDate", formatDateToReadableString(startDate));
+      formData.append("ToDate", formatDateToReadableString(endDate));
+    }
 
-      const formData = new FormData();
-      formData.append("FilterType", date);
-      formData.append("FromDate", formattedStart);
-      formData.append("ToDate", formattedEnd);
-
+    if (shouldFetch) {
       getCountryStateCity(formData);
     }
-  }, [date, startDate, endDate, plan, platform]);
+  }, [date, startDate, endDate, plan, platform, userType]);
 
   useEffect(() => {
     if (data && data.success === true) {
