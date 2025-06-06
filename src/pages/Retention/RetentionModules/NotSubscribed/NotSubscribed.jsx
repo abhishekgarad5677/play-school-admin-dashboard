@@ -85,23 +85,23 @@ const NotSubscribed = () => {
       sx={{
         p: 3,
         borderRadius: 2,
-        bgcolor: "#fef4f4",
-        border: "1px solid #f44336",
+        bgcolor: "#fff",
+        border: "1px solid #000",
         textAlign: "center",
       }}
     >
       <Stack spacing={2} alignItems="center">
-        <Typography variant="h6" color="error" fontWeight={600}>
-          User is not subscribed to notifications
+        <Typography variant="h6" color="textSecondary" fontWeight={600}>
+          Send Notification to Non-Subscribed Users
         </Typography>
 
-        <Typography variant="body2" color="text.secondary" align="center">
+        {/* <Typography variant="body2" color="text.secondary" align="center">
           This user hasn’t subscribed to receive notifications. You can still
           send a manual reminder prompting them to enable notifications for
           updates, offers, and alerts.
-        </Typography>
+        </Typography> */}
 
-        <Button variant="contained" color="error" onClick={() => setOpen(true)}>
+        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
           Send Notification Reminder
         </Button>
       </Stack>

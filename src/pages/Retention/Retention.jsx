@@ -83,7 +83,7 @@ const Retention = () => {
         >
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
             <Typography component="span" fontWeight={500}>
-              Weak Attendance
+              Attendance Report
             </Typography>
           </AccordionSummary>
           <AccordionDetails>

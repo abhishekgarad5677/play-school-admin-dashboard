@@ -115,6 +115,6 @@ export const subPlans = [
 
 
 export const userTypeOptions = [
-  { label: "Subscribed User", value: 1 },
-  { label: "Registered User", value: 0 },
+  { label: "Subscribed Users", value: 1 },
+  { label: "All Users", value: 0 },
 ];
