@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ApexCharts from "react-apexcharts";
 import { useGetCountryStateCityMutation } from "../../redux/slices/apiSlice";
@@ -105,8 +105,26 @@ const LocationData = ({
     ],
   });
 
-  if (isLoading) return <>loading game stats...</>;
-  if (error) return <>error loading game stats...</>;
+  if (isLoading)
+    return (
+      <Grid container mb={4} spacing={2}>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={350} />
+        </Grid>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={350} />
+        </Grid>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={350} />
+        </Grid>
+      </Grid>
+    );
+  if (error)
+    return (
+      <Typography variant="body2" color="error" mb={4}>
+        Error loading location data.
+      </Typography>
+    );
 
   return (
     <Box mb={4}>

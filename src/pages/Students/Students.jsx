@@ -23,6 +23,7 @@ import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
 import { dateFilterOptions, subPlans } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
+import { saveAs } from "file-saver";
 
 const Students = () => {
   const [data, setData] = useState();
@@ -133,6 +134,71 @@ const Students = () => {
     { field: "languageName", headerName: "Language", width: 150 },
   ];
 
+  const convertToCSV = (array) => {
+    const keys = Object.keys(array[0] || {});
+    const header = keys.join(",");
+    const rows = array.map((row) =>
+      keys
+        .map((key) => `"${String(row[key] ?? "").replace(/"/g, '""')}"`)
+        .join(",")
+    );
+    return [header, ...rows].join("\n");
+  };
+
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleBatchedExport = async () => {
+    setIsExporting(true);
+    const allData = [];
+    const batchSize = 100;
+    let page = 1;
+    let keepFetching = true;
+
+    while (keepFetching) {
+      const formData = new FormData();
+
+      formData.append("FilterType", date);
+
+      if (date === "custom" && startDate && endDate) {
+        formData.append("FromDate", formatDateToReadableString(startDate));
+        formData.append("ToDate", formatDateToReadableString(endDate));
+      }
+
+      formData.append("PageSize", batchSize);
+      formData.append("PageNumber", page);
+
+      try {
+        const res = await postDataStudent(formData).unwrap();
+        const currentBatch = res?.data || [];
+
+        allData.push(...currentBatch);
+
+        if (currentBatch.length < batchSize) {
+          keepFetching = false;
+        } else {
+          page += 1;
+          await new Promise((r) => setTimeout(r, 200)); // avoid API spam
+        }
+      } catch (err) {
+        console.error("Error fetching batch:", err);
+        break;
+      }
+    }
+
+    if (allData.length) {
+      const csv = convertToCSV(allData);
+
+      // 🔥 BOM prefix ensures correct UTF-8 rendering in Excel
+      const BOM = "\uFEFF";
+      const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
+
+      saveAs(blob, "students_data.csv");
+    } else {
+      alert("No data available to export.");
+    }
+    setIsExporting(false);
+  };
+
   return (
     <>
       <Box
@@ -171,6 +237,7 @@ const Students = () => {
               <MenuItem defaultChecked value={"today"}>
                 Today
               </MenuItem>
+              <MenuItem value={"yesterday"}>Yesterday</MenuItem>
               <MenuItem value={"7days"}>Last 7 days</MenuItem>
               <MenuItem value={"15days"}>Last 15 days</MenuItem>
               <MenuItem value={"1month"}>Last 1 month</MenuItem>
@@ -209,6 +276,15 @@ const Students = () => {
                 />
               }
             />
+          )}
+          {data?.length > 1 && (
+            <Button
+              variant="contained"
+              onClick={handleBatchedExport}
+              disabled={isExporting}
+            >
+              {isExporting ? "Exporting..." : "Export All Data"}
+            </Button>
           )}
         </Box>
       </Box>

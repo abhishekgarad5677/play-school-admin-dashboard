@@ -49,10 +49,12 @@ import Help from "../../pages/Help/Help";
 import Retention from "../../pages/Retention/Retention";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import Games from "../../pages/Games/Games";
-import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
+import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
 import UnsubscribedUsers from "../../pages/UnsubscribedUsers/UnsubscribedUsers";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import TopRegion from "../../pages/TopRegion/TopRegion";
 
-const drawerWidth = 240;
+const drawerWidth = 255;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -163,8 +165,21 @@ export default function DefaultLayout() {
       path: "/dashboard/games",
       icon: <SportsEsportsIcon />,
     },
-    { title: "Subscribed Users", path: "/dashboard/students", icon: <ChildCareIcon /> },
-    { title: "Unsubscribed users", path: "/dashboard/UnsubscribedUsers", icon: <UnsubscribeIcon /> },
+    {
+      title: "Subscribed Users",
+      path: "/dashboard/students",
+      icon: <ChildCareIcon />,
+    },
+    {
+      title: "Non Subscribed Users",
+      path: "/dashboard/UnsubscribedUsers",
+      icon: <UnsubscribeIcon />,
+    },
+    {
+      title: "Location Analytics",
+      path: "/dashboard/top-cities",
+      icon: <LocationCityIcon />,
+    },
     // { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
     // {
     //   title: "Manage Content",
@@ -420,6 +435,7 @@ export default function DefaultLayout() {
           <Route path="retention" element={<Retention />} />
           <Route path="help-desk" element={<Help />} />
           <Route path="games" element={<Games />} />
+          <Route path="top-cities" element={<TopRegion />} />
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
           {/* <Route path="category" element={<Category />} /> */}

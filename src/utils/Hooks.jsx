@@ -17,7 +17,6 @@ export const useFormattedDate = (isoString) => {
   }, [isoString]);
 };
 
-
 // Custom hook to format date to day and month
 export const formatDayMonth = (isoDate) => {
   const date = new Date(isoDate);
@@ -26,7 +25,6 @@ export const formatDayMonth = (isoDate) => {
     month: "short",
   }); // e.g., "21 May"
 };
-
 
 // Custom hook to format date
 export const formatDateToReadableString = (isoString) => {
@@ -56,6 +54,23 @@ export const formatPlayTime = (playTimeInMinutes) => {
       return `${hours} hr`;
     }
   }
+};
+
+export const formatTimeFromDecimalMinutes = (minutes) => {
+  if (!minutes || minutes <= 0) return "0 sec";
+
+  const totalSeconds = Math.round(minutes * 60);
+  const hours = Math.floor(totalSeconds / 3600);
+  const remainingSeconds = totalSeconds % 3600;
+  const mins = Math.floor(remainingSeconds / 60);
+  const secs = remainingSeconds % 60;
+
+  let result = "";
+  if (hours > 0) result += `${hours} hr `;
+  if (mins > 0) result += `${mins} min `;
+  if (secs > 0 || result === "") result += `${secs} sec`;
+
+  return result.trim();
 };
 
 // functions for processing data for charts and graphs (Most Played Games and Least Played Games)

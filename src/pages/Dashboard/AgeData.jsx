@@ -1,4 +1,12 @@
-import { Avatar, Box, Card, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Card,
+  Skeleton,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
@@ -127,8 +135,23 @@ const AgeData = ({ date, startDate, endDate, plan, platform }) => {
     },
   };
 
-  if (isLoading) return <>Loading age data...</>;
-  if (error) return <>Error loading age data.</>;
+  if (isLoading)
+    return (
+      <Grid container mb={4} spacing={2}>
+        <Grid size={6}>
+          <Skeleton variant="rounded" width={"100%"} height={350} />
+        </Grid>
+        <Grid size={6}>
+          <Skeleton variant="rounded" width={"100%"} height={350} />
+        </Grid>
+      </Grid>
+    );
+  if (error)
+    return (
+      <Typography variant="body2" color="error" mb={4}>
+        Error loading age data.
+      </Typography>
+    );
 
   return (
     <Box mb={4}>

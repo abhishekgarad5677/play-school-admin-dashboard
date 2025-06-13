@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
@@ -137,9 +137,36 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     }
   }, [DashboardData]);
 
-  if (isLoading) return <>loading...</>;
+  if (isLoading)
+    return (
+      <Grid container mb={4} spacing={2}>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={4}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={3}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={3}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={6}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+      </Grid>
+    );
 
-  if (error) return <>something went wrong!</>;
+  if (error)
+    return (
+      <Typography variant="body2" color="error" mb={4}>
+        Error loading dashboard summary data.
+      </Typography>
+    );
 
   return (
     <Grid container mb={4} spacing={2}>

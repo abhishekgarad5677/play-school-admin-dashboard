@@ -5,7 +5,7 @@ export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-        // baseUrl: "https://10.1.1.151:7177/api/",
+        // baseUrl: "https://10.1.1.217:7177/api/",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token;  // Getting the token directly from getState
             if (token) {
@@ -113,6 +113,13 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getTopCities: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashboard/topcitieswithaveragetime",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -132,4 +139,5 @@ export const {
     useGetAgeGroupCountMutation,
     useGetAttendanceSummaryMutation,
     useGetUnsubscribedUsersMutation,
+    useGetTopCitiesMutation,
 } = apiSlice;

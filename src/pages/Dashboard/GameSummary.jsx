@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Box, Card, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Card, Skeleton, Stack, Typography } from "@mui/material";
 import { blue, green, red, yellow, orange } from "@mui/material/colors";
 import Grid from "@mui/material/Grid2";
 import Chart from "react-apexcharts";
@@ -56,8 +56,23 @@ const GameSummary = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>loading game stats...</>;
-  if (error) return <>error loading game stats...</>;
+  if (isLoading)
+    return (
+      <Grid container mb={4} spacing={2}>
+        <Grid size={6}>
+          <Skeleton variant="rounded" width={"100%"} height={550} />
+        </Grid>
+        <Grid size={6}>
+          <Skeleton variant="rounded" width={"100%"} height={550} />
+        </Grid>
+      </Grid>
+    );
+  if (error)
+    return (
+      <Typography variant="body2" color="error" mb={4}>
+        Error loading game summary data.
+      </Typography>
+    );
 
   return (
     <Box mb={4}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGetAttendanceSummaryMutation } from "../../redux/slices/apiSlice";
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ReactApexChart from "react-apexcharts";
 import { formatDateToReadableString, formatDayMonth } from "../../utils/Hooks";
@@ -107,6 +107,7 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
       },
     },
+
     tooltip: {
       y: [
         {
@@ -119,8 +120,20 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
     },
   };
 
-  if (isLoading) return <>Loading attendance summary...</>;
-  if (error) return <>Error loading attendance summary...</>;
+  if (isLoading)
+    return (
+      <Grid container mb={4} spacing={2}>
+        <Grid size={12}>
+          <Skeleton variant="rounded" width={"100%"} height={400} />
+        </Grid>
+      </Grid>
+    );
+  if (error)
+    return (
+      <Typography variant="body2" color="error" mb={4}>
+        Error loading attendance summary data.
+      </Typography>
+    );
 
   return (
     <Box mb={4}>

@@ -35,7 +35,7 @@ export const TableWithExport = (props) => {
       pageSizeOptions={pageSizeOptions}
       rowCount={rowCount}
       disableRowSelectionOnClick
-      slots={{ toolbar: CustomToolbar }}
+      // slots={{ toolbar: CustomToolbar }}
       sx={{
         border: 0,
         width: "100%",

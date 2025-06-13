@@ -50,7 +50,6 @@ const Dashboard = () => {
     setUserType(event.target.value);
   };
 
-
   return (
     <>
       <Box
