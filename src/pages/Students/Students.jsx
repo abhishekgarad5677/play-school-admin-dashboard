@@ -96,12 +96,12 @@ const Students = () => {
       renderCell: (params) => useFormattedDate(params?.row?.lastActiveDate),
     },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    {
-      field: "subscriptionStartDate",
-      headerName: "Subscription Start Date",
-      width: 200,
-      renderCell: (params) => useFormattedDate(params?.row?.subscriptionStartDate),
-    },
+    // {
+    //   field: "subscriptionStartDate",
+    //   headerName: "Subscription Start Date",
+    //   width: 200,
+    //   renderCell: (params) => useFormattedDate(params?.row?.subscriptionStartDate),
+    // },
     // { field: "email", headerName: "Email", width: 230 },
     {
       field: "planExpiryDate",
