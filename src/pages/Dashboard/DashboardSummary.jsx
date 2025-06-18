@@ -81,17 +81,17 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           color: "#feedf6",
           valueColor: "#ec007d",
         },
-        {
-          title: "Reports Generated (Lifetime)",
-          size: 3,
-          value: DashboardData?.data?.generatedReports,
-          icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-          color: "#feedfe",
-          valueColor: "#c700c7",
-        },
+        // {
+        //   title: "Reports Generated (Lifetime)",
+        //   size: 3,
+        //   value: DashboardData?.data?.generatedReports,
+        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+        //   color: "#feedfe",
+        //   valueColor: "#c700c7",
+        // },
         {
           title: "Total Revenue",
-          size: 6,
+          size: 9,
           value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
