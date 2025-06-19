@@ -102,13 +102,13 @@ const TopRegion = () => {
     setUserType(event.target.value);
   };
 
-  if (error) {
-    return (
-      <Box sx={{ padding: 3 }}>
-        <Chip label="Error fetching data" color="error" />
-      </Box>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <Box sx={{ padding: 3 }}>
+  //       <Chip label="Error fetching data" color="error" />
+  //     </Box>
+  //   );
+  // }
 
   return (
     <>
