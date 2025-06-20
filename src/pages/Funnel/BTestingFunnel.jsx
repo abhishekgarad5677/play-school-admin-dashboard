@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
@@ -42,7 +43,7 @@ const BTestingFunnel = ({ funnelData }) => {
   useEffect(() => {
     if (funnelData) {
       const steps = [
-        { key: "otpSentCount", label: "OTP Sent", color: "#008FFB" },
+        { key: "otpSentCount", label: "OTP Requested", color: "#008FFB" },
         { key: "otpVerifiedCount", label: "OTP Verified", color: "#00E396" },
         {
           key: "freeTrialStartCount",
@@ -74,12 +75,26 @@ const BTestingFunnel = ({ funnelData }) => {
   }, [funnelData]);
 
   return (
-    <ReactApexChart
-      options={state.options}
-      series={state.series}
-      type="bar"
-      height={400}
-    />
+    <div>
+      <Typography
+        variant="body1"
+        gutterBottom
+        sx={{
+          display: "block",
+          color: "#464646",
+          textAlign: "center",
+          fontWeight: 600,
+        }}
+      >
+        Data starting from 11th June 2025
+      </Typography>
+      <ReactApexChart
+        options={state.options}
+        series={state.series}
+        type="bar"
+        height={400}
+      />
+    </div>
   );
 };
 

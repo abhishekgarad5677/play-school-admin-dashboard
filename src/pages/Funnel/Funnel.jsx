@@ -86,6 +86,9 @@ const Funnel = () => {
     };
   }
 
+  const minSelectableDate =
+    value === 1 || value === 2 ? new Date("06-20-2025") : null;
+
   return (
     <>
       <Box
@@ -121,6 +124,7 @@ const Funnel = () => {
           />
           {date === "custom" && (
             <DatePicker
+              minDate={minSelectableDate}
               maxDate={new Date()}
               selectsRange
               startDate={startDate}
@@ -150,13 +154,13 @@ const Funnel = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Over All Data" {...a11yProps(0)} />
+              <Tab label="Overall" {...a11yProps(0)} />
               <Tab label="A Testing" {...a11yProps(1)} />
               <Tab label="B Testing" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            {isLoading ? (
+            {allFunnelDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
               <AllFunnelData funnelData={allFunnelData?.data} />
