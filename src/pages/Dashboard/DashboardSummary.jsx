@@ -12,6 +12,8 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
+import MobileFriendlyIcon from "@mui/icons-material/MobileFriendly";
+import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 import {
   formatDateToReadableString,
   useFormattedDate,
@@ -50,24 +52,40 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     if (DashboardData && DashboardData?.status === true) {
       setData([
         {
-          title: "Registered Users",
-          size: 4,
-          value: DashboardData?.data?.registeredUsersCount,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
-          color: "#edf2fe",
-          valueColor: "#2f74ff",
+          title: "OTP Sent Count",
+          size: 3,
+          value: DashboardData?.data?.otpSentCount,
+          icon: <SendToMobileIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+          color: "#FFE4EC", // light pink background
+          valueColor: "#E91E63", // main pink
+        },
+        {
+          title: "OTP Verified Users",
+          size: 3,
+          value: DashboardData?.data?.otpVerifiedCount || 0,
+          icon: <MobileFriendlyIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+          color: "#feedfe",
+          valueColor: "#c700c7",
         },
         {
           title: "Subscribed Users",
-          size: 4,
+          size: 3,
           value: DashboardData?.data?.subscribedUsersCount,
           icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
           color: "#fff6e6",
           valueColor: "#ff9900",
         },
         {
+          title: "Registered Users",
+          size: 3,
+          value: DashboardData?.data?.registeredUsersCount,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
+          color: "#edf2fe",
+          valueColor: "#2f74ff",
+        },
+        {
           title: "Non-subscribed Users",
-          size: 4,
+          size: 3,
           value: DashboardData?.data?.nonSubscribedUsersCount,
           icon: <EmojiEventsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />,
           color: "#fff0ed",
@@ -91,7 +109,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         // },
         {
           title: "Total Revenue",
-          size: 9,
+          size: 6,
           value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />

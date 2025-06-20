@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-       baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-        //  baseUrl: "http://10.1.1.108:7177/api/",
+    //    baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+         baseUrl: "http://10.1.1.184:7177/api/",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token;  // Getting the token directly from getState
             if (token) {
@@ -120,6 +120,20 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getABTestingFunnel: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/ABTestingFunnel",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getAllFunnelData: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/funnel",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -140,4 +154,6 @@ export const {
     useGetAttendanceSummaryMutation,
     useGetUnsubscribedUsersMutation,
     useGetTopCitiesMutation,
+    useGetABTestingFunnelMutation,
+    useGetAllFunnelDataMutation
 } = apiSlice;

@@ -53,6 +53,8 @@ import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
 import UnsubscribedUsers from "../../pages/UnsubscribedUsers/UnsubscribedUsers";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import TopRegion from "../../pages/TopRegion/TopRegion";
+import Funnel from "../../pages/Funnel/Funnel";
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const drawerWidth = 255;
 
@@ -186,6 +188,11 @@ export default function DefaultLayout() {
     //   path: "/dashboard/content",
     //   icon: <EditNoteIcon />,
     // },
+    {
+      title: "Funnel Metrics",
+      path: "/dashboard/funnel",
+      icon: <BarChartIcon />,
+    },
     {
       title: "Retention",
       path: "/dashboard/retention",
@@ -436,6 +443,7 @@ export default function DefaultLayout() {
           <Route path="help-desk" element={<Help />} />
           <Route path="games" element={<Games />} />
           <Route path="top-cities" element={<TopRegion />} />
+          <Route path="funnel" element={<Funnel />} />
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
           {/* <Route path="category" element={<Category />} /> */}

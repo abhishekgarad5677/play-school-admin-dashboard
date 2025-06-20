@@ -10,9 +10,9 @@ const TopStates = ({ topCitiesData }) => {
 
   useEffect(() => {
     if (topCitiesData && topCitiesData.status === true) {
-      const states = topCitiesData.data.topStates.map((item) => item.state);
-      const usersData = topCitiesData.data.topStates.map((item) => item.users);
-      const avgTimeSpentData = topCitiesData.data.topStates.map(
+      const states = topCitiesData?.data?.topStates?.map((item) => item.state);
+      const usersData = topCitiesData?.data?.topStates?.map((item) => item.users);
+      const avgTimeSpentData = topCitiesData?.data?.topStates?.map(
         (item) => item.averageTimeSpent
       );
 
