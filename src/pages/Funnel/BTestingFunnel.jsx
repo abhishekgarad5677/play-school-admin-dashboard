@@ -43,7 +43,7 @@ const BTestingFunnel = ({ funnelData }) => {
   useEffect(() => {
     if (funnelData) {
       const steps = [
-        { key: "otpSentCount", label: "OTP Requested", color: "#008FFB" },
+        // { key: "otpSentCount", label: "OTP Requested", color: "#008FFB" },
         { key: "otpVerifiedCount", label: "OTP Verified", color: "#00E396" },
         {
           key: "freeTrialStartCount",
@@ -86,7 +86,7 @@ const BTestingFunnel = ({ funnelData }) => {
           fontWeight: 600,
         }}
       >
-        Data starting from 11th June 2025
+        Data starting from 20th June 2025
       </Typography>
       <ReactApexChart
         options={state.options}

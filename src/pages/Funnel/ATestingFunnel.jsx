@@ -43,7 +43,7 @@ const ATestingFunnel = ({ funnelData }) => {
   useEffect(() => {
     if (funnelData) {
       const steps = [
-        { key: "otpSentCount", label: "OTP Requested", color: "#008FFB" },
+        // { key: "otpSentCount", label: "OTP Requested", color: "#008FFB" },
         { key: "otpVerifiedCount", label: "OTP Verified", color: "#00E396" },
         { key: "subscirbedCount", label: "Subscribed", color: "#FEB019" },
         { key: "registeredCount", label: "Registered", color: "#775DD0" },
