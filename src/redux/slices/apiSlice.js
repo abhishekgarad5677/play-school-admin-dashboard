@@ -134,6 +134,20 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getFunnelGoogleSignInData: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/googlesigninfunnel",
+                method: "POST",
+                body: data,
+            }),
+        }),
+        getFunnelSmsOtpFunnel: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/smsotpfunnel",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -155,5 +169,7 @@ export const {
     useGetUnsubscribedUsersMutation,
     useGetTopCitiesMutation,
     useGetABTestingFunnelMutation,
-    useGetAllFunnelDataMutation
+    useGetAllFunnelDataMutation,
+    useGetFunnelGoogleSignInDataMutation,
+    useGetFunnelSmsOtpFunnelMutation
 } = apiSlice;

@@ -52,32 +52,40 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     if (DashboardData && DashboardData?.status === true) {
       setData([
         {
-          title: "OTP Sent Count",
-          size: 3,
-          value: DashboardData?.data?.otpSentCount,
+          title: "Google Sign-In Users (from 26th June)",
+          size: 4,
+          value: DashboardData?.data?.googleSignInCount,
           icon: <SendToMobileIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
           color: "#FFE4EC", // light pink background
           valueColor: "#E91E63", // main pink
         },
         {
-          title: "OTP Verified Users",
-          size: 3,
-          value: DashboardData?.data?.otpVerifiedCount || 0,
-          icon: <MobileFriendlyIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-          color: "#feedfe",
-          valueColor: "#c700c7",
-        },
-        {
           title: "Subscribed Users",
-          size: 3,
+          size: 4,
           value: DashboardData?.data?.subscribedUsersCount,
           icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
           color: "#fff6e6",
           valueColor: "#ff9900",
         },
         {
+          title: "Google Sign-In Conversion (from 26th June)",
+          size: 4,
+          value: `${DashboardData?.data?.googleSignInConvertion}%` || 0,
+          icon: <MobileFriendlyIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+          color: "#feedfe",
+          valueColor: "#c700c7",
+        },
+        // {
+        //   title: "Dropoffs Rate (from 26th June)",
+        //   size: 4,
+        //   value: `${DashboardData?.data?.dropoffsRate}%`,
+        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+        //   color: "#feedfe",
+        //   valueColor: "#c700c7",
+        // },
+        {
           title: "Registered Users",
-          size: 3,
+          size: 2.3,
           value: DashboardData?.data?.registeredUsersCount,
           icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
           color: "#edf2fe",
@@ -85,7 +93,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Non-subscribed Users",
-          size: 3,
+          size: 2.3,
           value: DashboardData?.data?.nonSubscribedUsersCount,
           icon: <EmojiEventsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />,
           color: "#fff0ed",
@@ -93,29 +101,11 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Total Children Added",
-          size: 3,
+          size: 2.3,
           value: DashboardData?.data?.totalChildrenCount,
           icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
           color: "#feedf6",
           valueColor: "#ec007d",
-        },
-        // {
-        //   title: "Reports Generated (Lifetime)",
-        //   size: 3,
-        //   value: DashboardData?.data?.generatedReports,
-        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-        //   color: "#feedfe",
-        //   valueColor: "#c700c7",
-        // },
-        {
-          title: "Total Revenue",
-          size: 6,
-          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
-          icon: (
-            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
-          ),
-          color: "#e6fff9",
-          valueColor: "#00c292",
         },
         // {
         //   title: "Average Child Added",
@@ -125,6 +115,16 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   color: "#e6f6ff",
         //   valueColor: "#1fb6ff",
         // },
+        {
+          title: "Total Revenue",
+          size: 5.1,
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
+          icon: (
+            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+          ),
+          color: "#e6fff9",
+          valueColor: "#00c292",
+        },
         // {
         //   title: "Upgraded Plans",
         //   size: 3,
