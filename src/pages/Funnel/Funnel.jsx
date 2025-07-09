@@ -185,9 +185,7 @@ const Funnel = () => {
             {smsOtpLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
-              <SmsOtpFunnel
-                funnelData={smsOtpData?.data}
-              />
+              <SmsOtpFunnel funnelData={smsOtpData?.data} />
             )}
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>

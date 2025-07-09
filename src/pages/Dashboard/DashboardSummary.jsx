@@ -83,25 +83,25 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   color: "#feedfe",
         //   valueColor: "#c700c7",
         // },
-        {
-          title: "Registered Users",
-          size: 2.3,
-          value: DashboardData?.data?.registeredUsersCount,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
-          color: "#edf2fe",
-          valueColor: "#2f74ff",
-        },
-        {
-          title: "Non-subscribed Users",
-          size: 2.3,
-          value: DashboardData?.data?.nonSubscribedUsersCount,
-          icon: <EmojiEventsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />,
-          color: "#fff0ed",
-          valueColor: "#ff4d4d",
-        },
+        // {
+        //   title: "Registered Users",
+        //   size: 2.3,
+        //   value: DashboardData?.data?.registeredUsersCount,
+        //   icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
+        //   color: "#edf2fe",
+        //   valueColor: "#2f74ff",
+        // },
+        // {
+        //   title: "Non-subscribed Users",
+        //   size: 2.3,
+        //   value: DashboardData?.data?.nonSubscribedUsersCount,
+        //   icon: <EmojiEventsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />,
+        //   color: "#fff0ed",
+        //   valueColor: "#ff4d4d",
+        // },
         {
           title: "Total Children Added",
-          size: 2.3,
+          size: 4,
           value: DashboardData?.data?.totalChildrenCount,
           icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
           color: "#feedf6",
@@ -117,7 +117,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         // },
         {
           title: "Total Revenue",
-          size: 5.1,
+          size: 8,
           value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
