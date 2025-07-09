@@ -92,8 +92,34 @@ const Funnel = () => {
   }, [date, startDate, endDate]);
 
   const handleDateChange = (event) => {
-    setDate(event.target.value);
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+
+    if (selectedDate === "custom") {
+      // Store the custom date range in sessionStorage
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.setItem("startDate", startDate);
+      sessionStorage.setItem("endDate", endDate);
+    } else {
+      // Store the selected date (e.g., "today", "yesterday", etc.)
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.removeItem("startDate");
+      sessionStorage.removeItem("endDate");
+    }
   };
+
+  useEffect(() => {
+    const storedDate = sessionStorage.getItem("selectedDate");
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+
+    if (storedDate) {
+      setDate(storedDate); // Set the stored date to default value
+    }
+    if (storedStartDate && storedEndDate) {
+      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
+    }
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -144,13 +170,15 @@ const Funnel = () => {
           />
           {date === "custom" && (
             <DatePicker
-              minDate={minSelectableDate}
               maxDate={new Date()}
               selectsRange
               startDate={startDate}
               endDate={endDate}
               onChange={(update) => {
                 setDateRange(update);
+                const [start, end] = update;
+                sessionStorage.setItem("startDate", start); // Store the start date
+                sessionStorage.setItem("endDate", end); // Store the end date
               }}
               dateFormat="dd/MM/yyyy"
               placeholderText="Select date range"
@@ -174,18 +202,20 @@ const Funnel = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="sms otp" {...a11yProps(0)} />
+              <Tab label="Google Sign in" {...a11yProps(0)} />
               <Tab label="WhatsApp otp" {...a11yProps(1)} />
               <Tab label="Direct subscription" {...a11yProps(2)} />
               <Tab label="Free trial" {...a11yProps(3)} />
-              <Tab label="Google Sign in" {...a11yProps(4)} />
+              <Tab label="sms otp" {...a11yProps(4)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            {smsOtpLoading ? (
+            {GoogleSignInDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
-              <SmsOtpFunnel funnelData={smsOtpData?.data} />
+              <GoogleSignInDataFunnel
+                funnelData={GoogleSignInData?.data?.flowGFunnel}
+              />
             )}
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
@@ -210,12 +240,10 @@ const Funnel = () => {
             )}
           </CustomTabPanel>
           <CustomTabPanel value={value} index={4}>
-            {GoogleSignInDataLoading ? (
+            {smsOtpLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
-              <GoogleSignInDataFunnel
-                funnelData={GoogleSignInData?.data?.flowGFunnel}
-              />
+              <SmsOtpFunnel funnelData={smsOtpData?.data} />
             )}
           </CustomTabPanel>
         </Box>

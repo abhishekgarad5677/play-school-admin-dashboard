@@ -70,8 +70,34 @@ const TopRegion = () => {
     useGetTopCitiesMutation();
 
   const handleDateChange = (event) => {
-    setDate(event.target.value);
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+
+    if (selectedDate === "custom") {
+      // Store the custom date range in sessionStorage
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.setItem("startDate", startDate);
+      sessionStorage.setItem("endDate", endDate);
+    } else {
+      // Store the selected date (e.g., "today", "yesterday", etc.)
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.removeItem("startDate");
+      sessionStorage.removeItem("endDate");
+    }
   };
+
+  useEffect(() => {
+    const storedDate = sessionStorage.getItem("selectedDate");
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+
+    if (storedDate) {
+      setDate(storedDate); // Set the stored date to default value
+    }
+    if (storedStartDate && storedEndDate) {
+      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
+    }
+  }, []);
 
   useEffect(() => {
     const formData = new FormData();
@@ -163,6 +189,9 @@ const TopRegion = () => {
               endDate={endDate}
               onChange={(update) => {
                 setDateRange(update);
+                const [start, end] = update;
+                sessionStorage.setItem("startDate", start); // Store the start date
+                sessionStorage.setItem("endDate", end); // Store the end date
               }}
               dateFormat="dd/MM/yyyy"
               placeholderText="Select date range"

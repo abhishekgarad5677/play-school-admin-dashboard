@@ -39,9 +39,35 @@ const UnsubscribedUsers = () => {
     pageSize: 10,
   });
 
-  const handleAgeChange = (event) => {
-    setDate(event.target.value);
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+
+    if (selectedDate === "custom") {
+      // Store the custom date range in sessionStorage
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.setItem("startDate", startDate);
+      sessionStorage.setItem("endDate", endDate);
+    } else {
+      // Store the selected date (e.g., "today", "yesterday", etc.)
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.removeItem("startDate");
+      sessionStorage.removeItem("endDate");
+    }
   };
+
+  useEffect(() => {
+    const storedDate = sessionStorage.getItem("selectedDate");
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+
+    if (storedDate) {
+      setDate(storedDate); // Set the stored date to default value
+    }
+    if (storedStartDate && storedEndDate) {
+      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
+    }
+  }, []);
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
     useGetUnsubscribedUsersMutation();
@@ -89,10 +115,10 @@ const UnsubscribedUsers = () => {
       width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
     },
-    { field: "city", headerName: "City", width: 150 },
-    { field: "state", headerName: "State", width: 150 },
-    { field: "country", headerName: "Country", width: 150 },
-    { field: "languageName", headerName: "Language", width: 150 },
+    // { field: "city", headerName: "City", width: 150 },
+    // { field: "state", headerName: "State", width: 150 },
+    // { field: "country", headerName: "Country", width: 150 },
+    // { field: "languageName", headerName: "Language", width: 150 },
   ];
 
   return (
@@ -122,7 +148,7 @@ const UnsubscribedUsers = () => {
             gap: 3,
           }}
         >
-          <FormControl sx={{ minWidth: 200 }} size="small">
+          {/* <FormControl sx={{ minWidth: 200 }} size="small">
             <InputLabel id="demo-simple-select-label">Date</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -142,25 +168,34 @@ const UnsubscribedUsers = () => {
               <MenuItem value={"lifetime"}>Lifetime</MenuItem>
               <MenuItem value="custom">Custom</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           {/* <CustomRangeSelect
             value={date}
             label={"Select Plan"}
             onChange={handleAgeChange}
             options={dateFilterOptions}
-          /> */}
+            /> */}
 
+          <CustomRangeSelect
+            value={date}
+            label={"Date"}
+            onChange={handleDateChange}
+            options={dateFilterOptions}
+          />
           {date === "custom" && (
             <DatePicker
+              maxDate={new Date()}
               selectsRange
               startDate={startDate}
               endDate={endDate}
               onChange={(update) => {
                 setDateRange(update);
+                const [start, end] = update;
+                sessionStorage.setItem("startDate", start); // Store the start date
+                sessionStorage.setItem("endDate", end); // Store the end date
               }}
               dateFormat="dd/MM/yyyy"
-              maxDate={new Date()}
               placeholderText="Select date range"
               customInput={
                 <TextField

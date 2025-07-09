@@ -9,6 +9,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShareIcon from "@mui/icons-material/Share";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
@@ -116,8 +117,16 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   valueColor: "#1fb6ff",
         // },
         {
+          title: "Drop Offs After Sign In",
+          size: 3,
+          value: DashboardData?.data?.dropOffsAfterSignIn,
+          icon: <ArrowDownwardIcon sx={{ fontSize: 40, color: "#1fb6ff" }} />,
+          color: "#e6f6ff",
+          valueColor: "#1fb6ff",
+        },
+        {
           title: "Total Revenue",
-          size: 8,
+          size: 5,
           value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
