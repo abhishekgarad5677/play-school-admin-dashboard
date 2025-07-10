@@ -107,11 +107,11 @@ const UnsubscribedUsers = () => {
         </div>
       ),
     },
-    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
+    // { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     { field: "email", headerName: "Email", width: 300 },
     {
       field: "registeredDate",
-      headerName: "Registered Date",
+      headerName: "Google Sign-In Date",
       width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
     },
