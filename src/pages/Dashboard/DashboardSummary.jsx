@@ -9,7 +9,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShareIcon from "@mui/icons-material/Share";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
@@ -20,6 +20,7 @@ import {
   useFormattedDate,
 } from "../../utils/Hooks";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
+import { useNavigate } from "react-router-dom";
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
@@ -164,6 +165,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     }
   }, [DashboardData]);
 
+  const navigate = useNavigate();
+
   if (isLoading)
     return (
       <Grid container mb={4} spacing={2}>
@@ -197,8 +200,10 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
 
   return (
     <Grid container mb={4} spacing={2}>
-      {data?.map((card, index) => (
-        <Grid size={card?.size} key={index}>
+      {data?.map((card, index) => {
+        const isSubscribedCard = card.title === "Subscribed Users";
+
+        const content = (
           <Paper
             elevation={0}
             sx={{
@@ -206,6 +211,9 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               p: 2,
               textAlign: "center",
               borderRadius: 2,
+              transition: "transform 0.2s ease-in-out",
+              // "&:hover": isSubscribedCard ? { transform: "scale(1.03)" } : {},
+              cursor: isSubscribedCard ? "pointer" : "default",
             }}
           >
             <Box mb={1}>{card.icon}</Box>
@@ -219,8 +227,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               {card.value}
             </Typography>
           </Paper>
-        </Grid>
-      ))}
+        );
+
+        return (
+          <Grid size={card?.size} key={index}>
+            {isSubscribedCard ? (
+              <Box onClick={() => navigate("/dashboard/students")}>{content}</Box>
+            ) : (
+              content
+            )}
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
