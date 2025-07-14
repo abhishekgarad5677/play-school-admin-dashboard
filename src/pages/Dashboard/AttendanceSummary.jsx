@@ -4,6 +4,7 @@ import { Box, Card, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ReactApexChart from "react-apexcharts";
 import { formatDateToReadableString, formatDayMonth } from "../../utils/Hooks";
+import { useNavigate } from "react-router-dom";
 
 const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [postAttendanceDataSummary, { isLoading, error, data }] =
@@ -120,6 +121,8 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
     },
   };
 
+  const navigate = useNavigate();
+
   if (isLoading)
     return (
       <Grid container mb={4} spacing={2}>
@@ -138,7 +141,11 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
   return (
     <Box mb={4}>
       <Grid container spacing={3}>
-        <Grid size={12}>
+        <Grid
+          size={12}
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard/retention")}
+        >
           <Card elevation={3} sx={{ p: 3, borderRadius: 4 }}>
             <Typography mb={2} fontWeight={700} variant="h6">
               Attendance Summary Chart

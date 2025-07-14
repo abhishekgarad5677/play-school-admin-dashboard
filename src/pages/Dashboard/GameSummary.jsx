@@ -10,6 +10,7 @@ import {
   getGraphSeriesData,
   getProcessedMostPlayedData,
 } from "../../utils/Hooks";
+import { useNavigate } from "react-router-dom";
 
 const GameSummary = () => {
   const [mostPlayedData, setMostPlayedData] = useState({
@@ -56,6 +57,8 @@ const GameSummary = () => {
     }
   }, [data]);
 
+  const navigate = useNavigate();
+
   if (isLoading)
     return (
       <Grid container mb={4} spacing={2}>
@@ -77,7 +80,11 @@ const GameSummary = () => {
   return (
     <Box mb={4}>
       <Grid container mb={4} spacing={3}>
-        <Grid size={6}>
+        <Grid
+          size={6}
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard/games")}
+        >
           <Card elevation={1} sx={{ p: 3, borderRadius: 3 }}>
             <Typography mb={4} fontWeight={600} variant="h6">
               Top 5 Most Played Games (Lifetime)
@@ -132,7 +139,11 @@ const GameSummary = () => {
             </Stack>
           </Card>
         </Grid>
-        <Grid size={6}>
+        <Grid
+          size={6}
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard/games")}
+        >
           <Card elevation={1} sx={{ p: 3, borderRadius: 3 }}>
             <Typography mb={4} fontWeight={600} variant="h6">
               Top 5 Least Played Games (Lifetime)

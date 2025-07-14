@@ -202,6 +202,14 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     <Grid container mb={4} spacing={2}>
       {data?.map((card, index) => {
         const isSubscribedCard = card.title === "Subscribed Users";
+        const isDropOffCard = card.title === "Drop Offs After Sign In";
+
+        const isClickable = isSubscribedCard || isDropOffCard;
+
+        const handleClick = () => {
+          if (isSubscribedCard) navigate("/dashboard/students");
+          else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
+        };
 
         const content = (
           <Paper
@@ -212,8 +220,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               textAlign: "center",
               borderRadius: 2,
               transition: "transform 0.2s ease-in-out",
-              // "&:hover": isSubscribedCard ? { transform: "scale(1.03)" } : {},
-              cursor: isSubscribedCard ? "pointer" : "default",
+              "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
+              cursor: isClickable ? "pointer" : "default",
             }}
           >
             <Box mb={1}>{card.icon}</Box>
@@ -231,11 +239,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
 
         return (
           <Grid size={card?.size} key={index}>
-            {isSubscribedCard ? (
-              <Box onClick={() => navigate("/dashboard/students")}>{content}</Box>
-            ) : (
-              content
-            )}
+            {isClickable ? <Box onClick={handleClick}>{content}</Box> : content}
           </Grid>
         );
       })}

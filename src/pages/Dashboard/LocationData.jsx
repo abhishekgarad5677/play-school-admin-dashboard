@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid2";
 import ApexCharts from "react-apexcharts";
 import { useGetCountryStateCityMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
+import { useNavigate } from "react-router-dom";
 
 const LocationData = ({
   date,
@@ -55,7 +56,7 @@ const LocationData = ({
     }
   }, [data]);
 
-  console.log(countryData);
+  const navigate = useNavigate();
 
   // Inside your component
   const getChartConfig = (labels, values) => ({
@@ -145,7 +146,11 @@ const LocationData = ({
           </Card>
         </Grid>
 
-        <Grid size={4}>
+        <Grid
+          size={4}
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard/top-cities")}
+        >
           <Card elevation={1} sx={{ p: 1, borderRadius: 3 }}>
             <Typography ml={2} mt={1} fontWeight={600} variant="h6">
               Top States
@@ -161,7 +166,11 @@ const LocationData = ({
           </Card>
         </Grid>
 
-        <Grid size={4}>
+        <Grid
+          size={4}
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/dashboard/top-cities")}
+        >
           <Card elevation={1} sx={{ p: 1, borderRadius: 3 }}>
             <Typography ml={2} mt={1} fontWeight={600} variant="h6">
               Top Cities
