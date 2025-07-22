@@ -211,8 +211,8 @@ const Funnel = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="monthly build" {...a11yProps(0)} />
-              <Tab label="Only yearly" {...a11yProps(1)} />
+              <Tab label="Only yearly" {...a11yProps(0)} />
+              <Tab label="monthly build" {...a11yProps(1)} />
               <Tab label="Google Sign in" {...a11yProps(2)} />
               <Tab label="WhatsApp otp" {...a11yProps(3)} />
               <Tab label="Direct subscription" {...a11yProps(4)} />
