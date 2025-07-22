@@ -148,6 +148,13 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getFunnel506Build: builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/dashbaord/funnel506build",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -171,5 +178,6 @@ export const {
     useGetABTestingFunnelMutation,
     useGetAllFunnelDataMutation,
     useGetFunnelGoogleSignInDataMutation,
-    useGetFunnelSmsOtpFunnelMutation
+    useGetFunnelSmsOtpFunnelMutation,
+    useGetFunnel506BuildMutation,
 } = apiSlice;

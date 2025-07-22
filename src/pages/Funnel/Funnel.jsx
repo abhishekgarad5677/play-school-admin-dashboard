@@ -11,6 +11,7 @@ import {
   useGetAllFunnelDataMutation,
   useGetFunnelGoogleSignInDataMutation,
   useGetFunnelSmsOtpFunnelMutation,
+  useGetFunnel506BuildMutation,
 } from "../../redux/slices/apiSlice";
 import ATestingFunnel from "./ATestingFunnel";
 import BTestingFunnel from "./BTestingFunnel";
@@ -18,6 +19,8 @@ import AllFunnelData from "./AllFunnelData";
 import { formatDateToReadableString } from "../../utils/Hooks";
 import GoogleSignInDataFunnel from "./GoogleSignInData";
 import SmsOtpFunnel from "./SmsOtpFunnel";
+import Funnel506Abuild from "./Funnel506Abuild";
+import Funnel506Bbuild from "./Funnel506Bbuild";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,7 +76,12 @@ const Funnel = () => {
     { isLoading: smsOtpLoading, error: smsOtpError, data: smsOtpData },
   ] = useGetFunnelSmsOtpFunnelMutation();
 
-  console.log(smsOtpData);
+  const [
+    post506BuildData,
+    { isLoading: new506BuildDataLoading, error: new506BuildDataError, data: new506BuildData },
+  ] = useGetFunnel506BuildMutation();
+
+  console.log(new506BuildData, smsOtpData);
 
   useEffect(() => {
     const formData = new FormData();
@@ -89,6 +97,7 @@ const Funnel = () => {
     postGetABTestingFunnel(formData);
     postGoogleSignInData(formData);
     postSmsOtpData(formData);
+    post506BuildData(formData);
   }, [date, startDate, endDate]);
 
   const handleDateChange = (event) => {
@@ -202,14 +211,30 @@ const Funnel = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Google Sign in" {...a11yProps(0)} />
-              <Tab label="WhatsApp otp" {...a11yProps(1)} />
-              <Tab label="Direct subscription" {...a11yProps(2)} />
-              <Tab label="Free trial" {...a11yProps(3)} />
-              <Tab label="sms otp" {...a11yProps(4)} />
+              <Tab label="monthly build" {...a11yProps(0)} />
+              <Tab label="Only yearly" {...a11yProps(1)} />
+              <Tab label="Google Sign in" {...a11yProps(2)} />
+              <Tab label="WhatsApp otp" {...a11yProps(3)} />
+              <Tab label="Direct subscription" {...a11yProps(4)} />
+              <Tab label="Free trial" {...a11yProps(5)} />
+              <Tab label="sms otp" {...a11yProps(6)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
+            {smsOtpLoading ? (
+              <Skeleton variant="rounded" width={"100%"} height={400} />
+            ) : (
+              <Funnel506Abuild funnelData={new506BuildData?.data?.flowGFunnel} />
+            )}
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            {smsOtpLoading ? (
+              <Skeleton variant="rounded" width={"100%"} height={400} />
+            ) : (
+              <Funnel506Bbuild funnelData={new506BuildData?.data?.flowGFunnel} />
+            )}
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
             {GoogleSignInDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
@@ -218,28 +243,28 @@ const Funnel = () => {
               />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
+          <CustomTabPanel value={value} index={3}>
             {allFunnelDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
               <AllFunnelData funnelData={allFunnelData?.data} />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
+          <CustomTabPanel value={value} index={4}>
             {isLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
               <ATestingFunnel funnelData={funnelData?.data?.flowAFunnel} />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
+          <CustomTabPanel value={value} index={5}>
             {isLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
               <BTestingFunnel funnelData={funnelData?.data?.flowBFunnel} />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={4}>
+          <CustomTabPanel value={value} index={6}>
             {smsOtpLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
