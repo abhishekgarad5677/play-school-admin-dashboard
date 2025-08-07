@@ -70,21 +70,47 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#ff9900",
         },
         {
-          title: "Google Sign-In Conversion (from 26th June)",
+          title: "Renewed Subscribed Users",
           size: 4,
+          value: `${DashboardData?.data?.renewedSubscribedUsersCount}`,
+          icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
+          color: "#feedfe",
+          valueColor: "#c700c7",
+        },
+        {
+          title: "Google Sign-In Conversion (from 26th June)",
+          size: 6,
           value: `${DashboardData?.data?.googleSignInConvertion}%` || 0,
           icon: <MobileFriendlyIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
           color: "#feedfe",
           valueColor: "#c700c7",
         },
-        // {
-        //   title: "Dropoffs Rate (from 26th June)",
-        //   size: 4,
-        //   value: `${DashboardData?.data?.dropoffsRate}%`,
-        //   icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
-        //   color: "#feedfe",
-        //   valueColor: "#c700c7",
-        // },
+        {
+          title: "Drop Offs After Sign In",
+          size: 6,
+          value: DashboardData?.data?.dropOffsAfterSignIn,
+          icon: <ArrowDownwardIcon sx={{ fontSize: 40, color: "#1fb6ff" }} />,
+          color: "#e6f6ff",
+          valueColor: "#1fb6ff",
+        },
+        {
+          title: "Total Children Added",
+          size: 6,
+          value: DashboardData?.data?.totalChildrenCount,
+          icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
+          color: "#feedf6",
+          valueColor: "#ec007d",
+        },
+        {
+          title: "Total Revenue",
+          size: 6,
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
+          icon: (
+            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+          ),
+          color: "#e6fff9",
+          valueColor: "#00c292",
+        },
         // {
         //   title: "Registered Users",
         //   size: 2.3,
@@ -101,14 +127,6 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   color: "#fff0ed",
         //   valueColor: "#ff4d4d",
         // },
-        {
-          title: "Total Children Added",
-          size: 4,
-          value: DashboardData?.data?.totalChildrenCount,
-          icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
-          color: "#feedf6",
-          valueColor: "#ec007d",
-        },
         // {
         //   title: "Average Child Added",
         //   size: 3,
@@ -117,24 +135,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   color: "#e6f6ff",
         //   valueColor: "#1fb6ff",
         // },
-        {
-          title: "Drop Offs After Sign In",
-          size: 3,
-          value: DashboardData?.data?.dropOffsAfterSignIn,
-          icon: <ArrowDownwardIcon sx={{ fontSize: 40, color: "#1fb6ff" }} />,
-          color: "#e6f6ff",
-          valueColor: "#1fb6ff",
-        },
-        {
-          title: "Total Revenue",
-          size: 5,
-          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
-          icon: (
-            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
-          ),
-          color: "#e6fff9",
-          valueColor: "#00c292",
-        },
+
         // {
         //   title: "Upgraded Plans",
         //   size: 3,
