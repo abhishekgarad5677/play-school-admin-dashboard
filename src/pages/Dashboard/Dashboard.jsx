@@ -25,6 +25,7 @@ import {
   userTypeOptions,
 } from "../../utils/constant";
 import AttendanceSummary from "./AttendanceSummary";
+import ActiveUserSummary from "./ActiveUserSummary";
 
 const Dashboard = () => {
   const [date, setDate] = useState("today");
@@ -159,6 +160,13 @@ const Dashboard = () => {
 
       <Box sx={{ minHeight: "85vh", width: "100%" }}>
         <DashboardSummary
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          plan={plan}
+          platform={platform}
+        />
+        <ActiveUserSummary
           date={date}
           startDate={startDate}
           endDate={endDate}

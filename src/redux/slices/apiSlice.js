@@ -5,7 +5,7 @@ export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
        baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-        //  baseUrl: "http://10.1.1.184:7177/api/",
+        //  baseUrl: "http://10.1.1.202:7177/api/",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token;  // Getting the token directly from getState
             if (token) {
@@ -155,6 +155,13 @@ export const apiSlice = createApi({
                 body: data,
             }),
         }),
+        getActiveUserSummary:builder.mutation({
+            query: (data) => ({
+                url: "Data/admin/active-user-summary",
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -180,4 +187,5 @@ export const {
     useGetFunnelGoogleSignInDataMutation,
     useGetFunnelSmsOtpFunnelMutation,
     useGetFunnel506BuildMutation,
+    useGetActiveUserSummaryMutation,
 } = apiSlice;
