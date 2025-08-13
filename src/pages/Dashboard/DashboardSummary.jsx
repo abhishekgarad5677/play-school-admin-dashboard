@@ -72,7 +72,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         {
           title: "Renewed Subscribed Users",
           size: 4,
-          value: `${DashboardData?.data?.renewedSubscribedUsersCount}`,
+          value: `${DashboardData?.data?.renewedSubscribedUsersCount} / ${DashboardData?.data?.renewalDueUsersCount}`,
           icon: <AutorenewIcon sx={{ fontSize: 40, color: "#c700c7" }} />,
           color: "#feedfe",
           valueColor: "#c700c7",
