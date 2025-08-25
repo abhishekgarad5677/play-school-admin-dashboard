@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-    baseUrl: "http://3.111.148.23/api",
+    baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+    // baseUrl: "http://3.111.148.23/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token; // Getting the token directly from getState
       if (token) {
