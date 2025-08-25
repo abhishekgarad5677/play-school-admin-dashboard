@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-       baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-    // baseUrl: "http://10.1.1.206:7177/api/",
+    // baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+    baseUrl: "http://3.111.148.23/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token; // Getting the token directly from getState
       if (token) {
@@ -162,6 +162,41 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getAllGameCategories: builder.mutation({
+      query: (data) => ({
+        url: "Category/admin/getallcategories",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAddGames: builder.mutation({
+      query: (data) => ({
+        url: "Category/admin/addcategory",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getGamesByCategory: builder.mutation({
+      query: (data) => ({
+        url: "Category/getgamesbycategoryId",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAddGameCategory: builder.mutation({
+      query: (data) => ({
+        url: "Game/admin/addgame",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getDeleteGame: builder.mutation({
+      query: (data) => ({
+        url: "Category/deletegamebyId",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -188,4 +223,9 @@ export const {
   useGetFunnelSmsOtpFunnelMutation,
   useGetFunnel506BuildMutation,
   useGetActiveUserSummaryMutation,
+  useGetAllGameCategoriesMutation,
+  useGetAddGamesMutation,
+  useGetGamesByCategoryMutation,
+  useGetAddGameCategoryMutation,
+  useGetDeleteGameMutation,
 } = apiSlice;

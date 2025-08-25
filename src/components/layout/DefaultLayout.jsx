@@ -54,7 +54,12 @@ import UnsubscribedUsers from "../../pages/UnsubscribedUsers/UnsubscribedUsers";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import TopRegion from "../../pages/TopRegion/TopRegion";
 import Funnel from "../../pages/Funnel/Funnel";
-import BarChartIcon from '@mui/icons-material/BarChart';
+import BarChartIcon from "@mui/icons-material/BarChart";
+import GamesList from "../../pages/GamesList/GamesList";
+import ExtensionIcon from "@mui/icons-material/Extension";
+import ViewGame from "../../pages/GamesList/ViewGame";
+import AddGamesCategory from "../../pages/GamesList/AddGamesCategory";
+import AddGames from "../../pages/GamesList/AddGames";
 
 const drawerWidth = 255;
 
@@ -207,6 +212,11 @@ export default function DefaultLayout() {
       title: "Help Desk",
       path: "/dashboard/help-desk",
       icon: <HelpIcon />,
+    },
+    {
+      title: "Add Games",
+      path: "/dashboard/games-list",
+      icon: <ExtensionIcon />,
     },
 
     // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
@@ -444,6 +454,10 @@ export default function DefaultLayout() {
           <Route path="games" element={<Games />} />
           <Route path="top-cities" element={<TopRegion />} />
           <Route path="funnel" element={<Funnel />} />
+          <Route path="games-list" element={<GamesList />} />
+          <Route path="add-games-category" element={<AddGamesCategory />} />
+          <Route path="add-games/:id" element={<AddGames />} />
+          <Route path="view-game/:id" element={<ViewGame />} />
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
           {/* <Route path="category" element={<Category />} /> */}
