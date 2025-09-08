@@ -27,14 +27,35 @@ export const formatDayMonth = (isoDate) => {
 };
 
 // Custom hook to format date
+// export const formatDateToReadableString = (isoString) => {
+//   if (!isoString) return "";
+//   const date = new Date(isoString);
+//   return date.toLocaleDateString("en-GB", {
+//     day: "2-digit",
+//     month: "short", // or use "long" for full month names
+//     year: "numeric",
+//   });
+// };
+
 export const formatDateToReadableString = (isoString) => {
   if (!isoString) return "";
-  const date = new Date(isoString);
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short", // or use "long" for full month names
-    year: "numeric",
-  });
+  const d = new Date(isoString);
+  const months = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+  ];
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`;
 };
 
 // Custom hook to format date
