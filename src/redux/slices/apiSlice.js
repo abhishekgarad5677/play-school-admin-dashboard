@@ -197,6 +197,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getFunnelDataSevenDay: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/sevenday-freetrial",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -228,4 +235,5 @@ export const {
   useGetGamesByCategoryMutation,
   useGetAddGameCategoryMutation,
   useGetDeleteGameMutation,
+  useGetFunnelDataSevenDayMutation
 } = apiSlice;
