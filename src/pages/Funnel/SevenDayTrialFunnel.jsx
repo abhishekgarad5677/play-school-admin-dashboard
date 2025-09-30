@@ -46,34 +46,34 @@ const SevenDayTrialFunnel = ({ subscriptionData }) => {
     if (subscriptionData?.playServiceSubscription) {
       const steps = [
         {
+          key: "totalSubscription",
+          label: "Total",
+          color: "#546E7A",
+        },
+        {
           key: "subscriptioN_ACTIVE",
-          label: "Active",
+          label: "Free Trial Started",
           color: "#008FFB",
         },
         {
           key: "subscriptioN_RENEWED",
-          label: "Renewed",
+          label: "Paid After Free Trial",
           color: "#00E396",
         },
         {
           key: "subscriptioN_CANCELED",
-          label: "Canceled",
+          label: "Auto Pay Canceled",
           color: "#FF4560",
         },
         {
           key: "subscriptioN_EXPIRED",
-          label: "Expired",
+          label: "Free Trial Expired",
           color: "#FEB019",
         },
         {
           key: "subscriptioN_IN_GRACE_PERIOD",
-          label: "In Grace Period",
+          label: "Auto Pay In Grace Period",
           color: "#775DD0",
-        },
-        {
-          key: "totalSubscription",
-          label: "Total",
-          color: "#546E7A",
         },
       ];
 

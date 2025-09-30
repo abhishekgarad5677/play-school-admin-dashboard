@@ -20,6 +20,8 @@ import {
   useFormattedDate,
 } from "../../utils/Hooks";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
 import { useNavigate } from "react-router-dom";
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
@@ -60,6 +62,24 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           icon: <SendToMobileIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
           color: "#FFE4EC", // light pink background
           valueColor: "#E91E63", // main pink
+        },
+        {
+          title: "Free Trial Started",
+          size: 4,
+          value: DashboardData?.data?.freeTrialStarted,
+          icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
+          color: "#edf2fe",
+          valueColor: "#2f74ff",
+        },
+        {
+          title: "Free Trial Ended",
+          size: 4,
+          value: DashboardData?.data?.freeTrialEnded,
+          icon: (
+            <HourglassDisabledIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
         },
         {
           title: "Subscribed Users",

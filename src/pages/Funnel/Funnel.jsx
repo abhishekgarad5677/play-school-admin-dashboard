@@ -226,10 +226,10 @@ const Funnel = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Only yearly" {...a11yProps(0)} />
-              <Tab label="monthly build" {...a11yProps(1)} />
-              <Tab label="Google Sign in" {...a11yProps(2)} />
-              <Tab label="7 day free trial funnel" {...a11yProps(3)} />
+              <Tab label="7 day free trial funnel" {...a11yProps(0)} />
+              <Tab label="Only yearly" {...a11yProps(1)} />
+              <Tab label="monthly build" {...a11yProps(2)} />
+              <Tab label="Google Sign in" {...a11yProps(3)} />
               {/* <Tab label="WhatsApp otp" {...a11yProps(3)} />
               <Tab label="Direct subscription" {...a11yProps(4)} />
               <Tab label="Free trial" {...a11yProps(5)} />
@@ -237,6 +237,15 @@ const Funnel = () => {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
+            {GoogleSignInDataLoading ? (
+              <Skeleton variant="rounded" width={"100%"} height={400} />
+            ) : (
+              <SevenDayTrialFunnel
+                subscriptionData={sevenDayTrialData?.data}
+              />
+            )}
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
             {smsOtpLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
@@ -245,7 +254,7 @@ const Funnel = () => {
               />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
+          <CustomTabPanel value={value} index={2}>
             {smsOtpLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
@@ -254,21 +263,12 @@ const Funnel = () => {
               />
             )}
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
+          <CustomTabPanel value={value} index={3}>
             {GoogleSignInDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
               <GoogleSignInDataFunnel
                 funnelData={GoogleSignInData?.data?.flowGFunnel}
-              />
-            )}
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
-            {GoogleSignInDataLoading ? (
-              <Skeleton variant="rounded" width={"100%"} height={400} />
-            ) : (
-              <SevenDayTrialFunnel
-                subscriptionData={sevenDayTrialData?.data}
               />
             )}
           </CustomTabPanel>
