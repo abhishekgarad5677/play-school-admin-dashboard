@@ -46,35 +46,31 @@ const SevenDayTrialFunnel = ({ subscriptionData }) => {
     if (subscriptionData?.playServiceSubscription) {
       const steps = [
         {
-          key: "totalSubscription",
-          label: "Total",
+          key: "googleSignIn",
+          label: "Google Sign-In",
           color: "#546E7A",
         },
         {
-          key: "subscriptioN_ACTIVE",
+          key: "freeTrilaStarted",
           label: "Free Trial Started",
           color: "#008FFB",
         },
         {
-          key: "subscriptioN_RENEWED",
-          label: "Paid After Free Trial",
+          key: "freeTrialEndS",
+          label: "Free Trial Ended",
           color: "#00E396",
         },
         {
-          key: "subscriptioN_CANCELED",
-          label: "Auto Pay Canceled",
+          key: "freeTrialCancelled",
+          label: "Free Trial Cancelled",
           color: "#FF4560",
         },
         {
-          key: "subscriptioN_EXPIRED",
-          label: "Free Trial Expired",
+          key: "subscriptionAfterFreeTrail",
+          label: "Subscribed After Free Trial",
           color: "#FEB019",
         },
-        {
-          key: "subscriptioN_IN_GRACE_PERIOD",
-          label: "Auto Pay In Grace Period",
-          color: "#775DD0",
-        },
+
       ];
 
       const labels = steps.map((s) => s.label);
@@ -110,7 +106,7 @@ const SevenDayTrialFunnel = ({ subscriptionData }) => {
           fontWeight: 600,
         }}
       >
-        7-Day Free Trial Funnel
+        7-Day Free Trial Funnel Data starting from 30th Sept 2025
       </Typography>
       <ReactApexChart
         options={state.options}
