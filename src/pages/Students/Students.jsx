@@ -111,6 +111,24 @@ const Students = () => {
     },
     { field: "childsName", headerName: "Child's Name", width: 170 },
     { field: "email", headerName: "Email", width: 300 },
+    {
+      field: "isActive",
+      headerName: "Subscription Plan",
+      width: 200,
+      renderCell: (params) => (
+        <Chip
+          size="small"
+          label={params?.row?.isActive ? "Active" : "Inactive"}
+          sx={{
+            backgroundColor:
+              params?.row?.isActive === true ? "green" : "red",
+            color: "white",
+            fontWeight: "medium",
+            padding: "5px",
+          }}
+        />
+      ),
+    },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     { field: "planName", headerName: "Plan Name", width: 200 },
     { field: "amount", headerName: "Amount (₹)", width: 150 },
