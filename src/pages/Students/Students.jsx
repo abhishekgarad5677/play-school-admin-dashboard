@@ -236,9 +236,6 @@ const Students = () => {
     setIsExporting(false);
   };
 
-  if (error) {
-    return <div>Error: Something went wrong</div>;
-  }
 
   return (
     <>
