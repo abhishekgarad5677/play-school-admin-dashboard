@@ -60,6 +60,12 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import ViewGame from "../../pages/GamesList/ViewGame";
 import AddGamesCategory from "../../pages/GamesList/AddGamesCategory";
 import AddGames from "../../pages/GamesList/AddGames";
+import FreeTrialStarted from "../../pages/FreeTrialStarted/FreeTrialStarted";
+import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import FreeTrialEnded from "../../pages/FreeTrialEnded/FreeTrialEnded";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
 
 const drawerWidth = 255;
 
@@ -176,6 +182,21 @@ export default function DefaultLayout() {
       title: "Subscribed Users",
       path: "/dashboard/students",
       icon: <ChildCareIcon />,
+    },
+    {
+      title: "Free Trial Started",
+      path: "/dashboard/free-trial-started",
+      icon: <CardGiftcardIcon />,
+    },
+    {
+      title: "Free Trial Ended",
+      path: "/dashboard/free-trial-ended",
+      icon: <HourglassDisabledIcon />,
+    },
+    {
+      title: "Domestic Revenue",
+      path: "/dashboard/domestic-revenue",
+      icon: <AccountBalanceWalletIcon />,
     },
     {
       title: "Non Subscribed Users",
@@ -458,6 +479,9 @@ export default function DefaultLayout() {
           <Route path="add-games-category" element={<AddGamesCategory />} />
           <Route path="add-games/:id" element={<AddGames />} />
           <Route path="view-game/:id" element={<ViewGame />} />
+          <Route path="free-trial-started" element={<FreeTrialStarted />} />
+          <Route path="free-trial-ended" element={<FreeTrialEnded />} />
+          <Route path="domestic-revenue" element={<DomesticRevenue />} />
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
           {/* <Route path="category" element={<Category />} /> */}

@@ -204,6 +204,20 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getSevenDayTrialUserData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/sevendayfree-trial-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getDomesticRevenue: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/revenuedomestic",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -235,5 +249,7 @@ export const {
   useGetGamesByCategoryMutation,
   useGetAddGameCategoryMutation,
   useGetDeleteGameMutation,
-  useGetFunnelDataSevenDayMutation
+  useGetFunnelDataSevenDayMutation,
+  useGetSevenDayTrialUserDataMutation,
+  useGetDomesticRevenueMutation,
 } = apiSlice;

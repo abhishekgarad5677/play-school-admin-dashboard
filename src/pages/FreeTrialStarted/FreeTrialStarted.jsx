@@ -6,7 +6,7 @@ import {
   formatDateToReadableString,
   useFormattedDate,
 } from "../../utils/Hooks";
-import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
+import { useGetSevenDayTrialUserDataMutation } from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
@@ -14,7 +14,7 @@ import { dateFilterOptions } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
 
-const Students = () => {
+const FreeTrialStarted = () => {
   const [data, setData] = useState();
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
@@ -57,7 +57,7 @@ const Students = () => {
   }, []);
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
-    useGetallstudentsinfoMutation();
+    useGetSevenDayTrialUserDataMutation();
 
   useEffect(() => {
     const formData = new FormData();
@@ -72,6 +72,7 @@ const Students = () => {
 
     formData.append("PageSize", paginationModel.pageSize);
     formData.append("PageNumber", paginationModel.page + 1); // API is 1-indexed
+    formData.append("isFreeActive", true);
 
     postDataStudent(formData);
   }, [date, startDate, endDate, paginationModel]);
@@ -97,15 +98,22 @@ const Students = () => {
     { field: "childsName", headerName: "Child's Name", width: 170 },
     { field: "email", headerName: "Email", width: 300 },
     {
-      field: "isActive",
-      headerName: "Subscription Plan",
+      field: "subscriptionStatus",
+      headerName: "Subscription Status",
       width: 200,
       renderCell: (params) => (
         <Chip
           size="small"
-          label={params?.row?.isActive ? "Active" : "Inactive"}
+          label={
+            params?.row?.subscriptionStatus === "SUBSCRIPTION_ACTIVE"
+              ? "Active"
+              : "Inactive"
+          }
           sx={{
-            backgroundColor: params?.row?.isActive === true ? "green" : "red",
+            backgroundColor:
+              params?.row?.subscriptionStatus === "SUBSCRIPTION_ACTIVE"
+                ? "green"
+                : "red",
             color: "white",
             fontWeight: "medium",
             padding: "5px",
@@ -113,15 +121,6 @@ const Students = () => {
         />
       ),
     },
-    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    { field: "planName", headerName: "Plan Name", width: 200 },
-    { field: "amount", headerName: "Amount (₹)", width: 150 },
-    // {
-    //   field: "lastActiveDate",
-    //   headerName: "Last Active Date",
-    //   width: 200,
-    //   renderCell: (params) => useFormattedDate(params?.row?.lastActiveDate),
-    // },
     {
       field: "subscriptionStartDate",
       headerName: "Subscription Start Date",
@@ -130,27 +129,25 @@ const Students = () => {
         useFormattedDate(params?.row?.subscriptionStartDate),
     },
     {
+      field: "planExpiryDate",
+      headerName: "Plan Expiry Date",
+      width: 200,
+      renderCell: (params) =>
+        useFormattedDate(params?.row?.subscriptionStartDate),
+    },
+    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
+    // { field: "planName", headerName: "Plan Name", width: 200 },
+    // { field: "amount", headerName: "Amount (₹)", width: 150 },
+
+    {
       field: "registeredDate",
       headerName: "Registered Date",
       width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
     },
-    // {
-    //   field: "planExpiryDate",
-    //   headerName: "Plan Expiry Date",
-    //   width: 200,
-    //   renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
-    // },
-    // {
-    //   field: "dateOfBirth",
-    //   headerName: "Date of Birth",
-    //   width: 180,
-    //   renderCell: (params) => useFormattedDate(params?.row?.dateOfBirth),
-    // },
-    { field: "city", headerName: "City", width: 150 },
-    { field: "state", headerName: "State", width: 150 },
-    { field: "country", headerName: "Country", width: 150 },
-    // { field: "studentId", headerName: "Student ID", width: 100 },
+    // { field: "city", headerName: "City", width: 150 },
+    // { field: "state", headerName: "State", width: 150 },
+    // { field: "country", headerName: "Country", width: 150 },
     {
       field: "gender",
       headerName: "Gender",
@@ -203,6 +200,7 @@ const Students = () => {
 
       formData.append("PageSize", batchSize);
       formData.append("PageNumber", page);
+      formData.append("isFreeActive", true);
 
       try {
         const res = await postDataStudent(formData).unwrap();
@@ -235,10 +233,6 @@ const Students = () => {
     }
     setIsExporting(false);
   };
-
-  if (error) {
-    return <div>Error: Something went wrong</div>;
-  }
 
   return (
     <>
@@ -328,4 +322,4 @@ const Students = () => {
   );
 };
 
-export default Students;
+export default FreeTrialStarted;

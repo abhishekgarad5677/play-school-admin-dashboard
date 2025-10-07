@@ -232,12 +232,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
       {data?.map((card, index) => {
         const isSubscribedCard = card.title === "Subscribed Users";
         const isDropOffCard = card.title === "Drop Offs After Sign In";
+        const freeTrial = card.title === "Free Trial Started";
+        const freeTrialEnded = card.title === "Free Trial Ended";
+        const domesticRevenue = card.title === "Total Revenue";
 
-        const isClickable = isSubscribedCard || isDropOffCard;
+        const isClickable = isSubscribedCard || isDropOffCard || freeTrial || freeTrialEnded || domesticRevenue;
 
         const handleClick = () => {
           if (isSubscribedCard) navigate("/dashboard/students");
           else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
+          else if (freeTrial) navigate("/dashboard/free-trial-started");
+          else if (freeTrialEnded) navigate("/dashboard/free-trial-ended");
+          else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
         };
 
         const content = (

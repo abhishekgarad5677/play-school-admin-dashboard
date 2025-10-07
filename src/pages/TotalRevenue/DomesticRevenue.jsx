@@ -2,11 +2,15 @@ import { Box, Button, Chip, Paper, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {
   formatDateToReadableString,
   useFormattedDate,
 } from "../../utils/Hooks";
-import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
+import {
+  useGetallstudentsinfoMutation,
+  useGetDomesticRevenueMutation,
+} from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
@@ -14,7 +18,7 @@ import { dateFilterOptions } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
 
-const Students = () => {
+const DomesticRevenue = () => {
   const [data, setData] = useState();
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
@@ -57,7 +61,7 @@ const Students = () => {
   }, []);
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
-    useGetallstudentsinfoMutation();
+    useGetDomesticRevenueMutation();
 
   useEffect(() => {
     const formData = new FormData();
@@ -78,96 +82,26 @@ const Students = () => {
 
   useEffect(() => {
     if (studentsData) {
-      setData(studentsData?.data);
-      setRowCount(studentsData?.totalUser);
+      setData(studentsData?.data?.domesticRevenue);
+      setRowCount(studentsData?.data?.totalUser);
     }
   }, [studentsData]);
 
   const columns = [
     {
-      field: "parentName",
+      field: "name",
       headerName: "Parent Name",
       width: 180,
-      renderCell: (params) => (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span>{params?.row?.parentName}</span>
-        </div>
-      ),
     },
-    { field: "childsName", headerName: "Child's Name", width: 170 },
     { field: "email", headerName: "Email", width: 300 },
-    {
-      field: "isActive",
-      headerName: "Subscription Plan",
-      width: 200,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.isActive ? "Active" : "Inactive"}
-          sx={{
-            backgroundColor: params?.row?.isActive === true ? "green" : "red",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
-    },
-    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    { field: "planName", headerName: "Plan Name", width: 200 },
     { field: "amount", headerName: "Amount (₹)", width: 150 },
-    // {
-    //   field: "lastActiveDate",
-    //   headerName: "Last Active Date",
-    //   width: 200,
-    //   renderCell: (params) => useFormattedDate(params?.row?.lastActiveDate),
-    // },
+
+    { field: "planName", headerName: "Plan Name", width: 300 },
     {
-      field: "subscriptionStartDate",
-      headerName: "Subscription Start Date",
+      field: "planExpiryDate",
+      headerName: "Plan Expiry Date",
       width: 200,
-      renderCell: (params) =>
-        useFormattedDate(params?.row?.subscriptionStartDate),
-    },
-    {
-      field: "registeredDate",
-      headerName: "Registered Date",
-      width: 180,
-      renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
-    },
-    // {
-    //   field: "planExpiryDate",
-    //   headerName: "Plan Expiry Date",
-    //   width: 200,
-    //   renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
-    // },
-    // {
-    //   field: "dateOfBirth",
-    //   headerName: "Date of Birth",
-    //   width: 180,
-    //   renderCell: (params) => useFormattedDate(params?.row?.dateOfBirth),
-    // },
-    { field: "city", headerName: "City", width: 150 },
-    { field: "state", headerName: "State", width: 150 },
-    { field: "country", headerName: "Country", width: 150 },
-    // { field: "studentId", headerName: "Student ID", width: 100 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      width: 100,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.gender}
-          sx={{
-            backgroundColor:
-              params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
+      renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
     },
   ];
 
@@ -206,7 +140,7 @@ const Students = () => {
 
       try {
         const res = await postDataStudent(formData).unwrap();
-        const currentBatch = res?.data || [];
+        const currentBatch = res?.data?.domesticRevenue || [];
 
         allData.push(...currentBatch);
 
@@ -229,7 +163,7 @@ const Students = () => {
       const BOM = "\uFEFF";
       const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
 
-      saveAs(blob, "students_data.csv");
+      saveAs(blob, "Revenue_data.csv");
     } else {
       alert("No data available to export.");
     }
@@ -252,9 +186,9 @@ const Students = () => {
         <CustomBreadcrumbs
           items={[
             {
-              label: "Students",
-              href: "/dashboard/students",
-              icon: <ChildCareIcon fontSize="small" />,
+              label: "Domestic Revenue",
+              href: "/dashboard/domestic-revenue",
+              icon: <AccountBalanceWalletIcon fontSize="small" />,
             },
           ]}
         />
@@ -328,4 +262,4 @@ const Students = () => {
   );
 };
 
-export default Students;
+export default DomesticRevenue;
