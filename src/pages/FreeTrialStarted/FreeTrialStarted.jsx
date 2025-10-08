@@ -133,7 +133,7 @@ const FreeTrialStarted = () => {
       headerName: "Plan Expiry Date",
       width: 200,
       renderCell: (params) =>
-        useFormattedDate(params?.row?.subscriptionStartDate),
+        useFormattedDate(params?.row?.planExpiryDate),
     },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     // { field: "planName", headerName: "Plan Name", width: 200 },
