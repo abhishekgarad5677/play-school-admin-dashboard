@@ -100,21 +100,17 @@ const FreeTrialStarted = () => {
     {
       field: "subscriptionStatus",
       headerName: "Subscription Status",
-      width: 200,
+      width: 250,
       renderCell: (params) => (
         <Chip
           size="small"
-          label={
-            params?.row?.subscriptionStatus === "SUBSCRIPTION_ACTIVE"
-              ? "Active"
-              : "Inactive"
-          }
+          label={params?.row?.subscriptionStatus}
           sx={{
-            backgroundColor:
-              params?.row?.subscriptionStatus === "SUBSCRIPTION_ACTIVE"
-                ? "green"
-                : "red",
-            color: "white",
+            // backgroundColor:
+            //   params?.row?.subscriptionStatus === "SUBSCRIPTION_ACTIVE"
+            //     ? "green"
+            //     : "red",
+            color: "#464646",
             fontWeight: "medium",
             padding: "5px",
           }}
@@ -132,8 +128,7 @@ const FreeTrialStarted = () => {
       field: "planExpiryDate",
       headerName: "Plan Expiry Date",
       width: 200,
-      renderCell: (params) =>
-        useFormattedDate(params?.row?.planExpiryDate),
+      renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
     },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     // { field: "planName", headerName: "Plan Name", width: 200 },
