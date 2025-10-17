@@ -66,6 +66,7 @@ import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import FreeTrialEnded from "../../pages/FreeTrialEnded/FreeTrialEnded";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
+import CashFree from "../../pages/CashFree/CashFree";
 
 const drawerWidth = 255;
 
@@ -184,13 +185,18 @@ export default function DefaultLayout() {
       icon: <ChildCareIcon />,
     },
     {
-      title: "Free Trial Started",
+      title: "Play Services Started",
       path: "/dashboard/free-trial-started",
       icon: <CardGiftcardIcon />,
     },
+    // {
+    //   title: "Free Trial Ended",
+    //   path: "/dashboard/free-trial-ended",
+    //   icon: <HourglassDisabledIcon />,
+    // },
     {
-      title: "Free Trial Ended",
-      path: "/dashboard/free-trial-ended",
+      title: "Cash Free Trial Started",
+      path: "/dashboard/cash-free-trial-started",
       icon: <HourglassDisabledIcon />,
     },
     {
@@ -393,64 +399,6 @@ export default function DefaultLayout() {
             </ListItem>
           ))}
         </List>
-        {/* <Divider /> */}
-        {/* <List>
-          {navSectionTwo.map((ele, index) => (
-            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                component={Link}
-                to={ele.path}
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                      justifyContent: 'initial',
-                    }
-                    : {
-                      justifyContent: 'center',
-                    },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
-                    },
-                    open
-                      ? {
-                        mr: 3,
-                      }
-                      : {
-                        mr: 'auto',
-                      },
-                  ]}
-                >
-                  {open ? ele.icon : (
-                    <Tooltip title={ele.title} arrow placement="right">
-                      {ele.icon}
-                    </Tooltip>
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={ele.title}
-                  sx={[
-                    open
-                      ? {
-                        opacity: 1,
-                      }
-                      : {
-                        opacity: 0,
-                      },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Box
         component="main"
@@ -480,8 +428,9 @@ export default function DefaultLayout() {
           <Route path="add-games/:id" element={<AddGames />} />
           <Route path="view-game/:id" element={<ViewGame />} />
           <Route path="free-trial-started" element={<FreeTrialStarted />} />
-          <Route path="free-trial-ended" element={<FreeTrialEnded />} />
           <Route path="domestic-revenue" element={<DomesticRevenue />} />
+          <Route path="cash-free-trial-started" element={<CashFree />} />
+          {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
           {/* <Route path="category" element={<Category />} /> */}

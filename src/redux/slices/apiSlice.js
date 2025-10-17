@@ -218,6 +218,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getCashFreeTrialData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/cashfree-trial-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -252,4 +259,5 @@ export const {
   useGetFunnelDataSevenDayMutation,
   useGetSevenDayTrialUserDataMutation,
   useGetDomesticRevenueMutation,
+  useGetCashFreeTrialDataMutation,
 } = apiSlice;

@@ -64,7 +64,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#E91E63", // main pink
         },
         {
-          title: "Free Trial Started",
+          title: "Play Services Started",
           size: 4,
           value: DashboardData?.data?.freeTrialStarted,
           icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
@@ -72,7 +72,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#2f74ff",
         },
         {
-          title: "Free Trial Ended",
+          title: "Cash Free Trial Started",
           size: 4,
           value: DashboardData?.data?.freeTrialEnded,
           icon: (
@@ -232,8 +232,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
       {data?.map((card, index) => {
         const isSubscribedCard = card.title === "Subscribed Users";
         const isDropOffCard = card.title === "Drop Offs After Sign In";
-        const freeTrial = card.title === "Free Trial Started";
-        const freeTrialEnded = card.title === "Free Trial Ended";
+        const freeTrial = card.title === "Play Services Started";
+        const freeTrialEnded = card.title === "Cash Free Trial Started";
         const domesticRevenue = card.title === "Total Revenue";
 
         const isClickable = isSubscribedCard || isDropOffCard || freeTrial || freeTrialEnded || domesticRevenue;
@@ -242,7 +242,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           if (isSubscribedCard) navigate("/dashboard/students");
           else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
           else if (freeTrial) navigate("/dashboard/free-trial-started");
-          else if (freeTrialEnded) navigate("/dashboard/free-trial-ended");
+          else if (freeTrialEnded) navigate("/dashboard/cash-free-trial-started");
           else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
         };
 
