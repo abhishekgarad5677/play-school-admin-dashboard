@@ -239,7 +239,7 @@ const Students = () => {
 
   return (
     <>
-      <Boxj
+      <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -305,7 +305,7 @@ const Students = () => {
             </Button>
           )}
         </Box>
-      </Boxj>
+      </Box>
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
         {/* students table data */}
         {isLoading ? (
