@@ -225,6 +225,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getRazorPayFreeTrialData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/razorpay-trial-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -260,4 +267,5 @@ export const {
   useGetSevenDayTrialUserDataMutation,
   useGetDomesticRevenueMutation,
   useGetCashFreeTrialDataMutation,
+  useGetRazorPayFreeTrialDataMutation,
 } = apiSlice;

@@ -67,8 +67,10 @@ import FreeTrialEnded from "../../pages/FreeTrialEnded/FreeTrialEnded";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
 import CashFree from "../../pages/CashFree/CashFree";
+import PeopleIcon from "@mui/icons-material/People";
+import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
 
-const drawerWidth = 255;
+const drawerWidth = 270;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -183,6 +185,11 @@ export default function DefaultLayout() {
       title: "Subscribed Users",
       path: "/dashboard/students",
       icon: <ChildCareIcon />,
+    },
+    {
+      title: "Razorpay Free Trial Users",
+      path: "/dashboard/razor-pay-free-trial",
+      icon: <PeopleIcon />,
     },
     {
       title: "Play Services Started",
@@ -430,6 +437,7 @@ export default function DefaultLayout() {
           <Route path="free-trial-started" element={<FreeTrialStarted />} />
           <Route path="domestic-revenue" element={<DomesticRevenue />} />
           <Route path="cash-free-trial-started" element={<CashFree />} />
+          <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
           {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}

@@ -83,7 +83,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscribed Users",
-          size: 4,
+          size: 6,
           value: DashboardData?.data?.subscribedUsersCount,
           icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
           color: "#fff6e6",
@@ -123,7 +123,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         // },
         {
           title: "Total Children Added",
-          size: 4,
+          size: 6,
           value: DashboardData?.data?.totalChildrenCount,
           icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
           color: "#feedf6",
@@ -131,7 +131,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Total Revenue",
-          size: 4,
+          size: 6,
           value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
@@ -139,14 +139,14 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           color: "#e6fff9",
           valueColor: "#00c292",
         },
-        // {
-        //   title: "Registered Users",
-        //   size: 2.3,
-        //   value: DashboardData?.data?.registeredUsersCount,
-        //   icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
-        //   color: "#edf2fe",
-        //   valueColor: "#2f74ff",
-        // },
+        {
+          title: "Razorpay Free Trial Users",
+          size: 6,
+          value: DashboardData?.data?.razorpayFreeTrial,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
+          color: "#edf2fe",
+          valueColor: "#2f74ff",
+        },
         // {
         //   title: "Non-subscribed Users",
         //   size: 2.3,
