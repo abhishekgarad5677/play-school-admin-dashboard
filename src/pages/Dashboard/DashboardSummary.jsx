@@ -235,15 +235,24 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         const freeTrial = card.title === "Play Services Started";
         const freeTrialEnded = card.title === "Cash Free Trial Started";
         const domesticRevenue = card.title === "Total Revenue";
+        const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
 
-        const isClickable = isSubscribedCard || isDropOffCard || freeTrial || freeTrialEnded || domesticRevenue;
+        const isClickable =
+          isSubscribedCard ||
+          isDropOffCard ||
+          freeTrial ||
+          freeTrialEnded ||
+          domesticRevenue ||
+          razorpayFreeTiral;
 
         const handleClick = () => {
           if (isSubscribedCard) navigate("/dashboard/students");
           else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
           else if (freeTrial) navigate("/dashboard/free-trial-started");
-          else if (freeTrialEnded) navigate("/dashboard/cash-free-trial-started");
+          else if (freeTrialEnded)
+            navigate("/dashboard/cash-free-trial-started");
           else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
+          else if (razorpayFreeTiral) navigate("/dashboard/razor-pay-free-trial");
         };
 
         const content = (
