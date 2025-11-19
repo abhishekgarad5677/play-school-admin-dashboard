@@ -64,13 +64,14 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#E91E63", // main pink
         },
         {
-          title: "Play Services Started",
+          title: "Razorpay Free Trial Users",
           size: 4,
-          value: DashboardData?.data?.freeTrialStarted,
-          icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
+          value: DashboardData?.data?.razorpayFreeTrial,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
           color: "#edf2fe",
           valueColor: "#2f74ff",
         },
+
         {
           title: "Cash Free Trial Started",
           size: 4,
@@ -140,10 +141,10 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#00c292",
         },
         {
-          title: "Razorpay Free Trial Users",
+          title: "Play Services Started",
           size: 6,
-          value: DashboardData?.data?.razorpayFreeTrial,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
+          value: DashboardData?.data?.freeTrialStarted,
+          icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
           color: "#edf2fe",
           valueColor: "#2f74ff",
         },
@@ -252,7 +253,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           else if (freeTrialEnded)
             navigate("/dashboard/cash-free-trial-started");
           else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
-          else if (razorpayFreeTiral) navigate("/dashboard/razor-pay-free-trial");
+          else if (razorpayFreeTiral)
+            navigate("/dashboard/razor-pay-free-trial");
         };
 
         const content = (
