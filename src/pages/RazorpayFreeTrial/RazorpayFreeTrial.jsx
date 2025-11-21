@@ -104,7 +104,7 @@ const RazorpayFreeTrial = () => {
       renderCell: (params) => (
         <Chip
           size="small"
-          label={params?.row?.subscriptionStatus === "authenticated" ? 'Active' : params?.row?.subscriptionStatus}
+          label={params?.row?.subscriptionStatus === "authenticated" ? 'Free Trial Started' : params?.row?.subscriptionStatus}
           sx={{
             fontWeight: "medium",
             padding: "5px",
