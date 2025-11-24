@@ -30,7 +30,7 @@ import ActiveUserSummary from "./ActiveUserSummary";
 const Dashboard = () => {
   const [date, setDate] = useState("today");
   const [platform, setPlatform] = useState(4);
-  const [plan, setPlan] = useState(1);
+  const [plan, setPlan] = useState(0);
   const [userType, setUserType] = useState(1);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
