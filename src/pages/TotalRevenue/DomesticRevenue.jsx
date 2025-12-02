@@ -98,6 +98,12 @@ const DomesticRevenue = () => {
 
     { field: "planName", headerName: "Plan Name", width: 300 },
     {
+      field: "createdAt",
+      headerName: "Created On",
+      width: 200,
+      renderCell: (params) => useFormattedDate(params?.row?.createdAt),
+    },
+    {
       field: "planExpiryDate",
       headerName: "Plan Expiry Date",
       width: 200,
