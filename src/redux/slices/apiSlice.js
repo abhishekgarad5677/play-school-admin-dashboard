@@ -4,7 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+    // baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
+    baseUrl: "http://10.1.1.175:7177/api/",
     // baseUrl: "http://3.111.148.23/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token; // Getting the token directly from getState
@@ -232,6 +233,37 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getAnalyticsEvents: builder.query({
+      query: (arg) => {
+        // case 1: simple string filter ("today", "7daysAgo", etc.)
+        if (typeof arg === "string") {
+          return {
+            url: "Analytics/analyticsEvents",
+            params: { FilterType: arg },
+          };
+        }
+
+        // case 2: custom range object from AnalyticsEventsChart
+        if (arg && arg.FilterType === "custom") {
+          const { FilterType, FromDate, ToDate } = arg;
+
+          return {
+            url: "Analytics/analyticsEvents",
+            params: {
+              FilterType,
+              FromDate,
+              ToDate,
+            },
+          };
+        }
+
+        // fallback (if something weird is passed)
+        return {
+          url: "Analytics/analyticsEvents",
+          params: { FilterType: "today" },
+        };
+      },
+    }),
   }),
 });
 
@@ -268,4 +300,5 @@ export const {
   useGetDomesticRevenueMutation,
   useGetCashFreeTrialDataMutation,
   useGetRazorPayFreeTrialDataMutation,
+  useGetAnalyticsEventsQuery,
 } = apiSlice;

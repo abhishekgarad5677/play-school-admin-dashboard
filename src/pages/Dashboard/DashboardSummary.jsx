@@ -23,6 +23,11 @@ import ChildCareIcon from "@mui/icons-material/ChildCare";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
 import { useNavigate } from "react-router-dom";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
@@ -72,19 +77,69 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#2f74ff",
         },
 
+        // {
+        //   title: "Cash Free Trial Started",
+        //   size: 4,
+        //   value: DashboardData?.data?.freeTrialEnded,
+        //   icon: (
+        //     <HourglassDisabledIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+        //   ), // vibrant pink
+        //   color: "#fff0ed",
+        //   valueColor: "#ff4d4d",
+        // },
         {
-          title: "Cash Free Trial Started",
+          title: "Free Trial Started Count",
           size: 4,
-          value: DashboardData?.data?.freeTrialEnded,
+          value: DashboardData?.data?.freeTrialStartedCount,
           icon: (
-            <HourglassDisabledIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+            <PlayCircleOutlineIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
+          title: "Subscription Due Count",
+          size: 4,
+          value: DashboardData?.data?.subscriptionDueCount,
+          icon: (
+            <ProductionQuantityLimitsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
+          title: "Subscription Started Count",
+          size: 4,
+          value: DashboardData?.data?.subscriptionStartedCount,
+          icon: (
+            <ShoppingBasketIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
+          title: "Subscription Cancelled Count",
+          size: 4,
+          value: DashboardData?.data?.subscriptionCancelledCount,
+          icon: (
+            <CancelPresentationIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
+          title: "Subscription Renewed Count",
+          size: 4,
+          value: DashboardData?.data?.subscriptionRenewedCount,
+          icon: (
+            <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
           ), // vibrant pink
           color: "#fff0ed",
           valueColor: "#ff4d4d",
         },
         {
           title: "Subscribed Users",
-          size: 6,
+          size: 4,
           value: DashboardData?.data?.subscribedUsersCount,
           icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
           color: "#fff6e6",
@@ -140,14 +195,14 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           color: "#e6fff9",
           valueColor: "#00c292",
         },
-        {
-          title: "Play Services Started",
-          size: 6,
-          value: DashboardData?.data?.freeTrialStarted,
-          icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
-          color: "#edf2fe",
-          valueColor: "#2f74ff",
-        },
+        // {
+        //   title: "Play Services Started",
+        //   size: 6,
+        //   value: DashboardData?.data?.freeTrialStarted,
+        //   icon: <CardGiftcardIcon sx={{ fontSize: 40, color: "#5f2eff" }} />, // vibrant pink
+        //   color: "#edf2fe",
+        //   valueColor: "#2f74ff",
+        // },
         // {
         //   title: "Non-subscribed Users",
         //   size: 2.3,

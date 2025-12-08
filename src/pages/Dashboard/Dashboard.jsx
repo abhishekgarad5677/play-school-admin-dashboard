@@ -188,7 +188,7 @@ const Dashboard = () => {
           plan={plan}
           platform={platform}
         />
-        <GameSummary />
+        {/* <GameSummary /> */}
         <AttendanceSummary
           date={date}
           startDate={startDate}

@@ -24,6 +24,7 @@ import Funnel506Abuild from "./Funnel506Abuild";
 import Funnel506Bbuild from "./Funnel506Bbuild";
 import SevenDayTrialFunnel from "./SevenDayTrialFunnel";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import AnalyticsEventsChart from "./AnalyticsEventsChart";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -107,12 +108,12 @@ const Funnel = () => {
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
     }
-    postGetAllFunnelData(formData);
-    postGetABTestingFunnel(formData);
-    postGoogleSignInData(formData);
-    postSmsOtpData(formData);
-    post506BuildData(formData);
-    postSevenDayTrialData(formData);
+    // postGetAllFunnelData(formData);
+    // postGetABTestingFunnel(formData);
+    // postGoogleSignInData(formData);
+    // postSmsOtpData(formData);
+    // post506BuildData(formData);
+    // postSevenDayTrialData(formData);
   }, [date, startDate, endDate]);
 
   const handleDateChange = (event) => {
@@ -220,23 +221,23 @@ const Funnel = () => {
       </Box>
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
         <Box sx={{ width: "100%" }}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
+          {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}> */}
+          {/* <Tabs
               value={value}
               onChange={handleChange}
               aria-label="basic tabs example"
-            >
-              <Tab label="7 day free trial funnel" {...a11yProps(0)} />
+            > */}
+          {/* <Tab label="7 day free trial funnel" {...a11yProps(0)} />
               <Tab label="Only yearly" {...a11yProps(1)} />
               <Tab label="monthly build" {...a11yProps(2)} />
-              <Tab label="Google Sign in" {...a11yProps(3)} />
-              {/* <Tab label="WhatsApp otp" {...a11yProps(3)} />
+              <Tab label="Google Sign in" {...a11yProps(3)} /> */}
+          {/* <Tab label="WhatsApp otp" {...a11yProps(3)} />
               <Tab label="Direct subscription" {...a11yProps(4)} />
               <Tab label="Free trial" {...a11yProps(5)} />
               <Tab label="sms otp" {...a11yProps(6)} /> */}
-            </Tabs>
-          </Box>
-          <CustomTabPanel value={value} index={0}>
+          {/* </Tabs> */}
+          {/* </Box> */}
+          {/* <CustomTabPanel value={value} index={0}>
             {GoogleSignInDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
             ) : (
@@ -271,7 +272,7 @@ const Funnel = () => {
                 funnelData={GoogleSignInData?.data?.flowGFunnel}
               />
             )}
-          </CustomTabPanel>
+          </CustomTabPanel> */}
           {/* <CustomTabPanel value={value} index={3}>
             {allFunnelDataLoading ? (
               <Skeleton variant="rounded" width={"100%"} height={400} />
@@ -300,6 +301,11 @@ const Funnel = () => {
               <SmsOtpFunnel funnelData={smsOtpData?.data} />
             )}
           </CustomTabPanel> */}
+          <AnalyticsEventsChart
+            filterDate={date}
+            startDate={startDate}
+            endDate={endDate}
+          />
         </Box>
       </Paper>
     </>
