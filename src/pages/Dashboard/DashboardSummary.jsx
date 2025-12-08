@@ -24,10 +24,10 @@ import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
 import { useNavigate } from "react-router-dom";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import PaymentIcon from '@mui/icons-material/Payment';
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import PaymentIcon from "@mui/icons-material/Payment";
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
@@ -76,7 +76,14 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           color: "#edf2fe",
           valueColor: "#2f74ff",
         },
-
+        {
+          title: "Subscribed Users",
+          size: 4,
+          value: DashboardData?.data?.subscribedUsersCount,
+          icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
+          color: "#fff6e6",
+          valueColor: "#ff9900",
+        },
         // {
         //   title: "Cash Free Trial Started",
         //   size: 4,
@@ -89,7 +96,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         // },
         {
           title: "Free Trial Started Count",
-          size: 4,
+          size: 2.4,
           value: DashboardData?.data?.freeTrialStartedCount,
           icon: (
             <PlayCircleOutlineIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
@@ -99,27 +106,27 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscription Due Count",
-          size: 4,
+          size: 2.4,
           value: DashboardData?.data?.subscriptionDueCount,
           icon: (
-            <ProductionQuantityLimitsIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+            <ProductionQuantityLimitsIcon
+              sx={{ fontSize: 40, color: "#ff4d4d" }}
+            />
           ), // vibrant pink
           color: "#fff0ed",
           valueColor: "#ff4d4d",
         },
         {
           title: "Subscription Started Count",
-          size: 4,
+          size: 2.4,
           value: DashboardData?.data?.subscriptionStartedCount,
-          icon: (
-            <ShoppingBasketIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
-          ), // vibrant pink
+          icon: <ShoppingBasketIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
           color: "#fff0ed",
           valueColor: "#ff4d4d",
         },
         {
           title: "Subscription Cancelled Count",
-          size: 4,
+          size: 2.4,
           value: DashboardData?.data?.subscriptionCancelledCount,
           icon: (
             <CancelPresentationIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
@@ -129,22 +136,13 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscription Renewed Count",
-          size: 4,
+          size: 2.4,
           value: DashboardData?.data?.subscriptionRenewedCount,
-          icon: (
-            <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
-          ), // vibrant pink
+          icon: <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
           color: "#fff0ed",
           valueColor: "#ff4d4d",
         },
-        {
-          title: "Subscribed Users",
-          size: 4,
-          value: DashboardData?.data?.subscribedUsersCount,
-          icon: <BusinessCenterIcon sx={{ fontSize: 40, color: "#ff9900" }} />,
-          color: "#fff6e6",
-          valueColor: "#ff9900",
-        },
+
         // {
         //   title: "Google Sign-In Conversion (from 26th June)",
         //   size: 4,
@@ -326,9 +324,33 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             }}
           >
             <Box mb={1}>{card.icon}</Box>
-            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-              {card.title}
-            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 500 }}
+              dangerouslySetInnerHTML={{
+                __html: (() => {
+                  const titlesToBreak = [
+                    "Free Trial Started Count",
+                    "Subscription Due Count",
+                    "Subscription Started Count",
+                    "Subscription Cancelled Count",
+                    "Subscription Renewed Count",
+                  ];
+
+                  if (titlesToBreak.includes(card.title)) {
+                    return card.title
+                      .replace(/ Count$/, "<br />Count")
+                      .replace(/ Due /, "<br />Due ")
+                      .replace(/ Started /, "<br />Started ")
+                      .replace(/ Cancelled /, "<br />Cancelled ")
+                      .replace(/ Renewed /, "<br />Renewed ");
+                  }
+
+                  return card.title;
+                })(),
+              }}
+            />
+
             <Typography
               variant="h5"
               sx={{ color: card.valueColor, fontWeight: "bold" }}
