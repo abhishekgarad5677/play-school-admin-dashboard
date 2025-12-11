@@ -12,7 +12,10 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
+import {
+  useGetActiveUserMetricsQuery,
+  useGetDashboardSummaryMutation,
+} from "../../redux/slices/apiSlice";
 import MobileFriendlyIcon from "@mui/icons-material/MobileFriendly";
 import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 import {
@@ -31,9 +34,46 @@ import PaymentIcon from "@mui/icons-material/Payment";
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
     useGetDashboardSummaryMutation();
+
+  const { data: userActiveData, isLoading: userActiveDataLoading } =
+    useGetActiveUserMetricsQuery();
+
+  console.log(userActiveData);
+
+  useEffect(() => {
+    if (userActiveData && userActiveData?.status === true) {
+      setUserData([
+        {
+          title: "Daily Active Users",
+          size: 4,
+          value: userActiveData?.data?.dau,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+          color: "#FFE4EC",
+          valueColor: "#E91E63",
+        },
+        {
+          title: "Weekly Active Users",
+          size: 4,
+          value: userActiveData?.data?.wau,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+          color: "#FFE4EC",
+          valueColor: "#E91E63",
+        },
+        {
+          title: "Monthly Active Users",
+          size: 4,
+          value: userActiveData?.data?.mau,
+          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+          color: "#FFE4EC",
+          valueColor: "#E91E63",
+        },
+      ]);
+    }
+  }, [userActiveData]);
 
   useEffect(() => {
     if (date !== "custom") {
@@ -282,91 +322,135 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     );
 
   return (
-    <Grid container mb={4} spacing={2}>
-      {data?.map((card, index) => {
-        const isSubscribedCard = card.title === "Subscribed Users";
-        const isDropOffCard = card.title === "Drop Offs After Sign In";
-        const freeTrial = card.title === "Play Services Started";
-        const freeTrialEnded = card.title === "Cash Free Trial Started";
-        const domesticRevenue = card.title === "Total Revenue";
-        const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
+    <>
+      <Grid container mb={2} spacing={2}>
+        {data?.map((card, index) => {
+          const isSubscribedCard = card.title === "Subscribed Users";
+          const isDropOffCard = card.title === "Drop Offs After Sign In";
+          const freeTrial = card.title === "Play Services Started";
+          const freeTrialEnded = card.title === "Cash Free Trial Started";
+          const domesticRevenue = card.title === "Total Revenue";
+          const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
 
-        const isClickable =
-          isSubscribedCard ||
-          isDropOffCard ||
-          freeTrial ||
-          freeTrialEnded ||
-          domesticRevenue ||
-          razorpayFreeTiral;
+          const isClickable =
+            isSubscribedCard ||
+            isDropOffCard ||
+            freeTrial ||
+            freeTrialEnded ||
+            domesticRevenue ||
+            razorpayFreeTiral;
 
-        const handleClick = () => {
-          if (isSubscribedCard) navigate("/dashboard/students");
-          else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
-          else if (freeTrial) navigate("/dashboard/free-trial-started");
-          else if (freeTrialEnded)
-            navigate("/dashboard/cash-free-trial-started");
-          else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
-          else if (razorpayFreeTiral)
-            navigate("/dashboard/razor-pay-free-trial");
-        };
+          const handleClick = () => {
+            if (isSubscribedCard) navigate("/dashboard/students");
+            else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
+            else if (freeTrial) navigate("/dashboard/free-trial-started");
+            else if (freeTrialEnded)
+              navigate("/dashboard/cash-free-trial-started");
+            else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
+            else if (razorpayFreeTiral)
+              navigate("/dashboard/razor-pay-free-trial");
+          };
 
-        const content = (
-          <Paper
-            elevation={0}
-            sx={{
-              backgroundColor: card.color,
-              p: 2,
-              textAlign: "center",
-              borderRadius: 2,
-              transition: "transform 0.2s ease-in-out",
-              "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
-              cursor: isClickable ? "pointer" : "default",
-            }}
-          >
-            <Box mb={1}>{card.icon}</Box>
-            <Typography
-              variant="subtitle2"
-              sx={{ fontWeight: 500 }}
-              dangerouslySetInnerHTML={{
-                __html: (() => {
-                  const titlesToBreak = [
-                    "Free Trial Started Count",
-                    "Subscription Due Count",
-                    "Subscription Started Count",
-                    "Subscription Cancelled Count",
-                    "Subscription Renewed Count",
-                  ];
-
-                  if (titlesToBreak.includes(card.title)) {
-                    return card.title
-                      .replace(/ Count$/, "<br />Count")
-                      .replace(/ Due /, "<br />Due ")
-                      .replace(/ Started /, "<br />Started ")
-                      .replace(/ Cancelled /, "<br />Cancelled ")
-                      .replace(/ Renewed /, "<br />Renewed ");
-                  }
-
-                  return card.title;
-                })(),
+          const content = (
+            <Paper
+              elevation={0}
+              sx={{
+                backgroundColor: card.color,
+                p: 2,
+                textAlign: "center",
+                borderRadius: 2,
+                transition: "transform 0.2s ease-in-out",
+                "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
+                cursor: isClickable ? "pointer" : "default",
               }}
-            />
-
-            <Typography
-              variant="h5"
-              sx={{ color: card.valueColor, fontWeight: "bold" }}
             >
-              {card.value}
-            </Typography>
-          </Paper>
-        );
+              <Box mb={1}>{card.icon}</Box>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: 500 }}
+                dangerouslySetInnerHTML={{
+                  __html: (() => {
+                    const titlesToBreak = [
+                      "Free Trial Started Count",
+                      "Subscription Due Count",
+                      "Subscription Started Count",
+                      "Subscription Cancelled Count",
+                      "Subscription Renewed Count",
+                    ];
 
-        return (
-          <Grid size={card?.size} key={index}>
-            {isClickable ? <Box onClick={handleClick}>{content}</Box> : content}
-          </Grid>
-        );
-      })}
-    </Grid>
+                    if (titlesToBreak.includes(card.title)) {
+                      return card.title
+                        .replace(/ Count$/, "<br />Count")
+                        .replace(/ Due /, "<br />Due ")
+                        .replace(/ Started /, "<br />Started ")
+                        .replace(/ Cancelled /, "<br />Cancelled ")
+                        .replace(/ Renewed /, "<br />Renewed ");
+                    }
+
+                    return card.title;
+                  })(),
+                }}
+              />
+
+              <Typography
+                variant="h5"
+                sx={{ color: card.valueColor, fontWeight: "bold" }}
+              >
+                {card.value}
+              </Typography>
+            </Paper>
+          );
+
+          return (
+            <Grid size={card?.size} key={index}>
+              {isClickable ? (
+                <Box onClick={handleClick}>{content}</Box>
+              ) : (
+                content
+              )}
+            </Grid>
+          );
+        })}
+      </Grid>
+      {/* Active User Metrics Section */}
+      {userData.length > 0 && (
+        <Grid container spacing={2} mb={2}>
+          {userData.map((card, index) => {
+            const content = (
+              <Paper
+                elevation={0}
+                sx={{
+                  backgroundColor: card.color,
+                  p: 2,
+                  textAlign: "center",
+                  borderRadius: 2,
+                  transition: "transform 0.2s ease-in-out",
+                }}
+              >
+                <Box mb={1}>{card.icon}</Box>
+
+                <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                  {card.title}
+                </Typography>
+
+                <Typography
+                  variant="h5"
+                  sx={{ color: card.valueColor, fontWeight: "bold" }}
+                >
+                  {card.value}
+                </Typography>
+              </Paper>
+            );
+
+            return (
+              <Grid size={card.size} key={index}>
+                {content}
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
+    </>
   );
 };
 

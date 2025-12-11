@@ -264,6 +264,13 @@ export const apiSlice = createApi({
         };
       },
     }),
+    getActiveUserMetrics: builder.query({
+      query: (params) => ({
+        url: `Data/admin/active-user-metrics`,
+        method: "GET",
+        params, 
+      }),
+    }),
   }),
 });
 
@@ -301,4 +308,5 @@ export const {
   useGetCashFreeTrialDataMutation,
   useGetRazorPayFreeTrialDataMutation,
   useGetAnalyticsEventsQuery,
+  useGetActiveUserMetricsQuery
 } = apiSlice;

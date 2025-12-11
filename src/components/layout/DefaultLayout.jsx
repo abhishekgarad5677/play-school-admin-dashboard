@@ -242,11 +242,11 @@ export default function DefaultLayout() {
     //   path: "/dashboard/manage-users",
     //   icon: <GroupIcon />,
     // },
-    {
-      title: "Help Desk",
-      path: "/dashboard/help-desk",
-      icon: <HelpIcon />,
-    },
+    // {
+    //   title: "Help Desk",
+    //   path: "/dashboard/help-desk",
+    //   icon: <HelpIcon />,
+    // },
     {
       title: "Add Games",
       path: "/dashboard/games-list",
