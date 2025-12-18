@@ -69,6 +69,7 @@ import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
 import CashFree from "../../pages/CashFree/CashFree";
 import PeopleIcon from "@mui/icons-material/People";
 import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
+import InfoIcon from '@mui/icons-material/Info';
 
 const drawerWidth = 270;
 
@@ -187,6 +188,11 @@ export default function DefaultLayout() {
       icon: <ChildCareIcon />,
     },
     {
+      title: "Subscription Status",
+      path: "/dashboard/subscription",
+      icon: <InfoIcon />,
+    },
+    {
       title: "Razorpay Free Trial Users",
       path: "/dashboard/razor-pay-free-trial",
       icon: <PeopleIcon />,
@@ -232,11 +238,11 @@ export default function DefaultLayout() {
       path: "/dashboard/funnel",
       icon: <BarChartIcon />,
     },
-    {
-      title: "Retention",
-      path: "/dashboard/retention",
-      icon: <SupervisedUserCircleIcon />,
-    },
+    // {
+    //   title: "Retention",
+    //   path: "/dashboard/retention",
+    //   icon: <SupervisedUserCircleIcon />,
+    // },
     // {
     //   title: "Manage Users",
     //   path: "/dashboard/manage-users",
@@ -438,6 +444,7 @@ export default function DefaultLayout() {
           <Route path="domestic-revenue" element={<DomesticRevenue />} />
           <Route path="cash-free-trial-started" element={<CashFree />} />
           <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
+          <Route path="subscription" element={<Subscription />} />
           {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
@@ -446,7 +453,6 @@ export default function DefaultLayout() {
           {/* <Route path="age-group" element={<AgeGroup />} /> */}
           {/* <Route path="content" element={<Content />} /> */}
           {/* <Route path="add-content" element={<AddContent />} /> */}
-          {/* <Route path="subscription" element={<Subscription />} /> */}
           {/* <Route path="admin-manager" element={<AdminManager />} /> */}
           {/* <Route path="logs" element={<Logs />} /> */}
           {/* <Route path="notification" element={<Notification />} /> */}

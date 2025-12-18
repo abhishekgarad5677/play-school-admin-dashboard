@@ -104,7 +104,11 @@ const RazorpayFreeTrial = () => {
       renderCell: (params) => (
         <Chip
           size="small"
-          label={params?.row?.subscriptionStatus === "authenticated" ? 'Free Trial Started' : params?.row?.subscriptionStatus}
+          label={
+            params?.row?.subscriptionStatus === "authenticated"
+              ? "Free Trial Started"
+              : params?.row?.subscriptionStatus
+          }
           sx={{
             fontWeight: "medium",
             padding: "5px",
@@ -288,7 +292,6 @@ const RazorpayFreeTrial = () => {
         </Box>
       </Box>
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
-        {/* students table data */}
         {isLoading ? (
           <TableSkeleton rows={10} columns={6} />
         ) : (

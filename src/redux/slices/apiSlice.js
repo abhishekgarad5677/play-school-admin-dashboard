@@ -268,7 +268,14 @@ export const apiSlice = createApi({
       query: (params) => ({
         url: `Data/admin/active-user-metrics`,
         method: "GET",
-        params, 
+        params,
+      }),
+    }),
+    getSubscriptionStatus: builder.mutation({
+      query: (data) => ({
+        url: "Data/subscription-status",
+        method: "POST",
+        body: data,
       }),
     }),
   }),
@@ -308,5 +315,6 @@ export const {
   useGetCashFreeTrialDataMutation,
   useGetRazorPayFreeTrialDataMutation,
   useGetAnalyticsEventsQuery,
-  useGetActiveUserMetricsQuery
+  useGetActiveUserMetricsQuery,
+  useGetSubscriptionStatusMutation,
 } = apiSlice;

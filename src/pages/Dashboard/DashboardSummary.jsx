@@ -331,6 +331,15 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           const freeTrialEnded = card.title === "Cash Free Trial Started";
           const domesticRevenue = card.title === "Total Revenue";
           const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
+          const freeTrialStartedCount =
+            card.title === "Free Trial Started Count";
+          const subscriptionDueCount = card.title === "Subscription Due Count";
+          const subscriptionStartedCount =
+            card.title === "Subscription Started Count";
+          const subscriptionCancelledCount =
+            card.title === "Subscription Cancelled Count";
+          const subscriptionRenewedCount =
+            card.title === "Subscription Renewed Count";
 
           const isClickable =
             isSubscribedCard ||
@@ -338,7 +347,12 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             freeTrial ||
             freeTrialEnded ||
             domesticRevenue ||
-            razorpayFreeTiral;
+            razorpayFreeTiral ||
+            freeTrialStartedCount ||
+            subscriptionDueCount ||
+            subscriptionStartedCount ||
+            subscriptionCancelledCount ||
+            subscriptionRenewedCount;
 
           const handleClick = () => {
             if (isSubscribedCard) navigate("/dashboard/students");
@@ -349,6 +363,16 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
             else if (razorpayFreeTiral)
               navigate("/dashboard/razor-pay-free-trial");
+            else if (freeTrialStartedCount)
+              navigate("/dashboard/subscription");
+            else if (subscriptionDueCount)
+              navigate("/dashboard/subscription");
+            else if (subscriptionStartedCount)
+              navigate("/dashboard/subscription");
+            else if (subscriptionCancelledCount)
+              navigate("/dashboard/subscription");
+            else if (subscriptionRenewedCount)
+              navigate("/dashboard/subscription");
           };
 
           const content = (
