@@ -113,8 +113,8 @@ const Subscription = () => {
   useEffect(() => {
     if (studentsData) {
       setData(studentsData?.data);
-      // setRowCount(studentsData?.totalUser);
-      setRowCount(studentsData?.pageSize);
+      setRowCount(studentsData?.totalUser);
+      // setRowCount(studentsData?.pageSize);
     }
   }, [studentsData]);
 
