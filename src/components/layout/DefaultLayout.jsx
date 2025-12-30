@@ -333,8 +333,8 @@ export default function DefaultLayout() {
                 //   "https://www.tmkocplayschool.com/assets/playSchool-logo-B4HeImJS.png"
                 // }
                 alt=""
-                width={"100%"}
-                height={"65"}
+                width={"40%"}
+                height={"85"}
               />
             )}
           </Box>

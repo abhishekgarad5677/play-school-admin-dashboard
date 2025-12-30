@@ -153,7 +153,7 @@ const Login = () => {
             src={logo}
             alt="PlaySchool Logo"
             sx={{
-              width: { xs: "70%", sm: "80%" },
+              width: { xs: "70%", sm: "24%" },
               mb: { xs: 0.5, md: 2.5 },
             }}
           />

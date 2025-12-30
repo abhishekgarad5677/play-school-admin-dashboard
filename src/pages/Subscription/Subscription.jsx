@@ -337,6 +337,7 @@ const Subscription = () => {
               <Tab label="Subscription Started" {...a11yProps(2)} />
               <Tab label="Subscription Cancelled" {...a11yProps(3)} />
               <Tab label="Subscription Renewed" {...a11yProps(4)} />
+              <Tab label="Free Trial Cancelled Same Day" {...a11yProps(5)} />
             </Tabs>
           </Box>
           {/* <CustomTabPanel value={value} index={0}>

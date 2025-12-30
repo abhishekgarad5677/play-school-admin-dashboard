@@ -136,7 +136,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         // },
         {
           title: "Free Trial Started Count",
-          size: 2.4,
+          size: 2,
           value: DashboardData?.data?.freeTrialStartedCount,
           icon: (
             <PlayCircleOutlineIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
@@ -146,7 +146,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscription Due Count",
-          size: 2.4,
+          size: 2,
           value: DashboardData?.data?.subscriptionDueCount,
           icon: (
             <ProductionQuantityLimitsIcon
@@ -158,7 +158,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscription Started Count",
-          size: 2.4,
+          size: 2,
           value: DashboardData?.data?.subscriptionStartedCount,
           icon: <ShoppingBasketIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
           color: "#fff0ed",
@@ -166,7 +166,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         },
         {
           title: "Subscription Cancelled Count",
-          size: 2.4,
+          size: 2,
           value: DashboardData?.data?.subscriptionCancelledCount,
           icon: (
             <CancelPresentationIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
@@ -175,8 +175,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#ff4d4d",
         },
         {
+          title: "Free Trial Cancelled Count Same Day",
+          size: 2,
+          value: DashboardData?.data?.freeTrialCancelledSameDayCount,
+          icon: (
+            <CancelPresentationIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
           title: "Subscription Renewed Count",
-          size: 2.4,
+          size: 2,
           value: DashboardData?.data?.subscriptionRenewedCount,
           icon: <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
           color: "#fff0ed",
@@ -340,6 +350,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             card.title === "Subscription Cancelled Count";
           const subscriptionRenewedCount =
             card.title === "Subscription Renewed Count";
+          const subscriptionCancelledCountSameDay =
+            card.title === "Free Trial Cancelled Count Same Day";
 
           const isClickable =
             isSubscribedCard ||
@@ -352,7 +364,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             subscriptionDueCount ||
             subscriptionStartedCount ||
             subscriptionCancelledCount ||
-            subscriptionRenewedCount;
+            subscriptionRenewedCount ||
+            subscriptionCancelledCountSameDay;
 
           const handleClick = () => {
             if (isSubscribedCard) navigate("/dashboard/students");
@@ -363,15 +376,15 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
             else if (razorpayFreeTiral)
               navigate("/dashboard/razor-pay-free-trial");
-            else if (freeTrialStartedCount)
-              navigate("/dashboard/subscription");
-            else if (subscriptionDueCount)
-              navigate("/dashboard/subscription");
+            else if (freeTrialStartedCount) navigate("/dashboard/subscription");
+            else if (subscriptionDueCount) navigate("/dashboard/subscription");
             else if (subscriptionStartedCount)
               navigate("/dashboard/subscription");
             else if (subscriptionCancelledCount)
               navigate("/dashboard/subscription");
             else if (subscriptionRenewedCount)
+              navigate("/dashboard/subscription");
+            else if (subscriptionCancelledCountSameDay)
               navigate("/dashboard/subscription");
           };
 
