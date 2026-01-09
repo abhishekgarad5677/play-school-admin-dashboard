@@ -28,7 +28,7 @@ export const ProfileAvatarMenu = () => {
     return (
         <>
             <Typography variant="h6" noWrap component="div">
-                Hi, Abhishek
+                Hi, Admin
             </Typography>
             <Tooltip title="Account settings" arrow placement="bottom">
                 <IconButton
@@ -38,7 +38,7 @@ export const ProfileAvatarMenu = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-                    <Avatar sx={{ bgcolor: 'white', color: '#1976d2', fontWeight: 500 }}>AG</Avatar>
+                    <Avatar sx={{ bgcolor: 'white', color: '#1976d2', fontWeight: 500 }}>A</Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
