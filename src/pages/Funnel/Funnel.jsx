@@ -6,6 +6,7 @@ import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import { dateFilterOptions } from "../../utils/constant";
 import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid2";
 import {
   useGetABTestingFunnelMutation,
   useGetAllFunnelDataMutation,
@@ -25,6 +26,8 @@ import Funnel506Bbuild from "./Funnel506Bbuild";
 import SevenDayTrialFunnel from "./SevenDayTrialFunnel";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AnalyticsEventsChart from "./AnalyticsEventsChart";
+import UserJourneyFunnel from "./UserJourneyFunnel";
+import SubscriptionDueFunnel from "./SubscriptionDueFunnel";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -301,11 +304,27 @@ const Funnel = () => {
               <SmsOtpFunnel funnelData={smsOtpData?.data} />
             )}
           </CustomTabPanel> */}
-          <AnalyticsEventsChart
+          {/* <AnalyticsEventsChart
             filterDate={date}
             startDate={startDate}
             endDate={endDate}
-          />
+          /> */}
+          <Grid container spacing={2}>
+            <Grid size={6}>
+              <UserJourneyFunnel
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </Grid>
+            {/* <Grid size={6}>
+              <SubscriptionDueFunnel
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </Grid> */}
+          </Grid>
         </Box>
       </Paper>
     </>

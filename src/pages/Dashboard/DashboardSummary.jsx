@@ -225,18 +225,28 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         //   color: "#e6f6ff",
         //   valueColor: "#1fb6ff",
         // },
+        // {
+        //   title: "Total Children Added",
+        //   size: 6,
+        //   value: DashboardData?.data?.totalChildrenCount,
+        //   icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
+        //   color: "#feedf6",
+        //   valueColor: "#ec007d",
+        // },
         {
-          title: "Total Children Added",
+          title: "Total Revenue Domestic",
           size: 6,
-          value: DashboardData?.data?.totalChildrenCount,
-          icon: <ChildCareIcon sx={{ fontSize: 40, color: "#ec007d" }} />,
-          color: "#feedf6",
-          valueColor: "#ec007d",
+          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic`,
+          icon: (
+            <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
+          ),
+          color: "#e6fff9",
+          valueColor: "#00c292",
         },
         {
-          title: "Total Revenue",
+          title: "Total Revenue International",
           size: 6,
-          value: `₹ ${DashboardData?.data?.totalDomesticRevenueSum} Domestic | $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
+          value: ` $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
           ),
@@ -339,7 +349,9 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           const isDropOffCard = card.title === "Drop Offs After Sign In";
           const freeTrial = card.title === "Play Services Started";
           const freeTrialEnded = card.title === "Cash Free Trial Started";
-          const domesticRevenue = card.title === "Total Revenue";
+          const domesticRevenue = card.title === "Total Revenue Domestic";
+          const domesticInternational =
+            card.title === "Total Revenue International";
           const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
           const freeTrialStartedCount =
             card.title === "Free Trial Started Count";
@@ -359,6 +371,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             freeTrial ||
             freeTrialEnded ||
             domesticRevenue ||
+            domesticInternational ||
             razorpayFreeTiral ||
             freeTrialStartedCount ||
             subscriptionDueCount ||
@@ -374,6 +387,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             else if (freeTrialEnded)
               navigate("/dashboard/cash-free-trial-started");
             else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
+            else if (domesticInternational)
+              navigate("/dashboard/international-revenue");
             else if (razorpayFreeTiral)
               navigate("/dashboard/razor-pay-free-trial");
             else if (freeTrialStartedCount) navigate("/dashboard/subscription");

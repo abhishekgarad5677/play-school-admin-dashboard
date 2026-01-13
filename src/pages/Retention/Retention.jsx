@@ -17,6 +17,8 @@ import MuiAccordion from "@mui/material/Accordion";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import WeakAttendance from "./RetentionModules/WeakAttendance/WeakAttendance";
 import NotSubscribed from "./RetentionModules/NotSubscribed/NotSubscribed";
+import GoogleSignup from "./RetentionModules/GoogleSignup/GoogleSignup";
+import FreeTrialNotSubscribed from "./RetentionModules/FreeTrialNotSubscribed/FreeTrialNotSubscribed";
 
 const Retention = () => {
   const Accordion = styled((props) => (
@@ -77,7 +79,7 @@ const Retention = () => {
         sx={{ height: "90vh", width: "100%", padding: 3, overflowY: "scroll" }}
       > */}
       <div>
-        <Accordion
+        {/* <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChange("panel1")}
         >
@@ -104,6 +106,36 @@ const Retention = () => {
           <AccordionDetails>
             <>
               <NotSubscribed />
+            </>
+          </AccordionDetails>
+        </Accordion> */}
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography component="span" fontWeight={500}>
+              Google signup completed but free trial not started
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <>
+              <GoogleSignup />
+            </>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel4"}
+          onChange={handleChange("panel4")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography component="span" fontWeight={500}>
+              Free trial expired and not subscribed
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <>
+              <FreeTrialNotSubscribed />
             </>
           </AccordionDetails>
         </Accordion>

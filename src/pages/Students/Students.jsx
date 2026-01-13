@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Paper, TextField } from "@mui/material";
+import { Box, Button, Chip, Paper, TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
@@ -13,6 +13,8 @@ import { TableWithExport } from "../../components/table/TableWithExport";
 import { dateFilterOptions } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import StudentDetailsModal from "../../components/common/StudentDetailsModal";
 
 const Students = () => {
   const [data, setData] = useState();
@@ -20,6 +22,19 @@ const Students = () => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
   const [rowCount, setRowCount] = useState(0);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
+
+  const handleOpenModal = (id) => {
+    setSelectedStudentId(id);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedStudentId(null);
+  };
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -115,7 +130,12 @@ const Students = () => {
     },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     { field: "planName", headerName: "Plan Name", width: 200 },
-    { field: "amount", headerName: "Amount (₹)", width: 150 },
+    {
+      field: "amount",
+      headerName: "Amount",
+      width: 150,
+      renderCell: (params) => params.row.amount + " " + params.row.currencyCode,
+    },
     // {
     //   field: "lastActiveDate",
     //   headerName: "Last Active Date",
@@ -167,6 +187,19 @@ const Students = () => {
             padding: "5px",
           }}
         />
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      renderCell: (params) => (
+        <Tooltip title="View Details">
+          <RemoveRedEyeIcon
+            onClick={() => handleOpenModal(params.row.id)}
+            sx={{ color: "#5d87ff", cursor: "pointer" }}
+          />
+        </Tooltip>
       ),
     },
   ];
@@ -235,7 +268,6 @@ const Students = () => {
     }
     setIsExporting(false);
   };
-
 
   return (
     <>
@@ -321,6 +353,11 @@ const Students = () => {
           />
         )}
       </Paper>
+      <StudentDetailsModal
+        open={openModal}
+        onClose={handleCloseModal}
+        studentId={selectedStudentId}
+      />
     </>
   );
 };

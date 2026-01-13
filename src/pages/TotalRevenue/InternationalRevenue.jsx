@@ -1,40 +1,30 @@
-import { Box, Button, Chip, Paper, TextField, Tooltip } from "@mui/material";
+import { Box, Button, Chip, Paper, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
-import PeopleIcon from "@mui/icons-material/People";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {
   formatDateToReadableString,
   useFormattedDate,
 } from "../../utils/Hooks";
-import { useGetRazorPayFreeTrialDataMutation } from "../../redux/slices/apiSlice";
+import {
+  useGetallstudentsinfoMutation,
+  useGetDomesticRevenueMutation,
+  useGetInternationalRevenueMutation,
+} from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
 import { dateFilterOptions } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import StudentDetailsModal from "../../components/common/StudentDetailsModal";
 
-const RazorpayFreeTrial = () => {
+const InternationalRevenue = () => {
   const [data, setData] = useState();
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
   const [rowCount, setRowCount] = useState(0);
-
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedStudentId, setSelectedStudentId] = useState(null);
-
-  const handleOpenModal = (id) => {
-    setSelectedStudentId(id);
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedStudentId(null);
-  };
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -72,7 +62,7 @@ const RazorpayFreeTrial = () => {
   }, []);
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
-    useGetRazorPayFreeTrialDataMutation();
+    useGetInternationalRevenueMutation();
 
   useEffect(() => {
     const formData = new FormData();
@@ -87,100 +77,43 @@ const RazorpayFreeTrial = () => {
 
     formData.append("PageSize", paginationModel.pageSize);
     formData.append("PageNumber", paginationModel.page + 1); // API is 1-indexed
-    formData.append("isFreeActive", false);
 
     postDataStudent(formData);
   }, [date, startDate, endDate, paginationModel]);
 
   useEffect(() => {
     if (studentsData) {
-      setData(studentsData?.data);
-      setRowCount(studentsData?.totalUser);
+      setData(studentsData?.data?.internationalRevenue);
+      setRowCount(studentsData?.data?.totalUser);
     }
   }, [studentsData]);
 
   const columns = [
     {
-      field: "parentName",
+      field: "name",
       headerName: "Parent Name",
       width: 180,
-      renderCell: (params) => (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span>{params?.row?.parentName}</span>
-        </div>
-      ),
     },
-    { field: "childsName", headerName: "Child's Name", width: 170 },
     { field: "email", headerName: "Email", width: 300 },
     {
-      field: "subscriptionStatus",
-      headerName: "Subscription Status",
-      width: 250,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={
-            params?.row?.subscriptionStatus === "authenticated"
-              ? "Free Trial Started"
-              : params?.row?.subscriptionStatus
-          }
-          sx={{
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
+      field: "amount",
+      headerName: "Amount",
+      width: 150,
+      renderCell: (params) => params.row.amount + " " + params.row.currency,
     },
+
+    { field: "planName", headerName: "Plan Name", width: 300 },
     {
-      field: "registeredDate",
-      headerName: "Registered Date",
-      width: 180,
-      renderCell: (params) => useFormattedDate(params?.row?.registeredDate),
-    },
-    {
-      field: "subscriptionStartDate",
-      headerName: "Subscription Start Date",
+      field: "createdAt",
+      headerName: "Created On",
       width: 200,
-      renderCell: (params) =>
-        useFormattedDate(params?.row?.subscriptionStartDate),
+      renderCell: (params) => useFormattedDate(params?.row?.createdAt),
     },
     {
       field: "planExpiryDate",
       headerName: "Plan Expiry Date",
       width: 200,
       renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
-    },
-    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      width: 100,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.gender}
-          sx={{
-            backgroundColor:
-              params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 100,
-      renderCell: (params) => (
-        <Tooltip title="View Details">
-          <RemoveRedEyeIcon
-            onClick={() => handleOpenModal(params.row.id)}
-            sx={{ color: "#5d87ff", cursor: "pointer" }}
-          />
-        </Tooltip>
-      ),
     },
   ];
 
@@ -216,11 +149,10 @@ const RazorpayFreeTrial = () => {
 
       formData.append("PageSize", batchSize);
       formData.append("PageNumber", page);
-      formData.append("isFreeActive", false);
 
       try {
         const res = await postDataStudent(formData).unwrap();
-        const currentBatch = res?.data || [];
+        const currentBatch = res?.data?.internationalRevenue || [];
 
         allData.push(...currentBatch);
 
@@ -243,7 +175,7 @@ const RazorpayFreeTrial = () => {
       const BOM = "\uFEFF";
       const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
 
-      saveAs(blob, "students_data.csv");
+      saveAs(blob, "Revenue_data.csv");
     } else {
       alert("No data available to export.");
     }
@@ -262,9 +194,9 @@ const RazorpayFreeTrial = () => {
         <CustomBreadcrumbs
           items={[
             {
-              label: "Razorpay Free Trial Users",
-              href: "/dashboard/razor-pay-free-trial",
-              icon: <PeopleIcon fontSize="small" />,
+              label: "International Revenue",
+              href: "/dashboard/domestic-revenue",
+              icon: <AccountBalanceWalletIcon fontSize="small" />,
             },
           ]}
         />
@@ -308,7 +240,7 @@ const RazorpayFreeTrial = () => {
               }
             />
           )}
-          {data?.length > 1 && (
+          {data?.length >= 1 && (
             <Button
               variant="contained"
               onClick={handleBatchedExport}
@@ -320,6 +252,7 @@ const RazorpayFreeTrial = () => {
         </Box>
       </Box>
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
+        {/* students table data */}
         {isLoading ? (
           <TableSkeleton rows={10} columns={6} />
         ) : (
@@ -333,13 +266,8 @@ const RazorpayFreeTrial = () => {
           />
         )}
       </Paper>
-      <StudentDetailsModal
-        open={openModal}
-        onClose={handleCloseModal}
-        studentId={selectedStudentId}
-      />
     </>
   );
 };
 
-export default RazorpayFreeTrial;
+export default InternationalRevenue;

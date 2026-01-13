@@ -147,7 +147,7 @@ const AnalyticsEventsChart = ({ filterDate, startDate, endDate }) => {
           options={options}
           series={series}
           type="line"
-          height={380}
+          height={400}
         />
       )}
 

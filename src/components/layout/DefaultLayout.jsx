@@ -66,10 +66,11 @@ import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import FreeTrialEnded from "../../pages/FreeTrialEnded/FreeTrialEnded";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
+import InternationalRevenue from "../../pages/TotalRevenue/InternationalRevenue";
 import CashFree from "../../pages/CashFree/CashFree";
 import PeopleIcon from "@mui/icons-material/People";
 import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 
 const drawerWidth = 270;
 
@@ -178,9 +179,9 @@ export default function DefaultLayout() {
   const navSectionOne = [
     { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
     {
-      title: "Games",
-      path: "/dashboard/games",
-      icon: <SportsEsportsIcon />,
+      title: "Funnel Metrics",
+      path: "/dashboard/funnel",
+      icon: <BarChartIcon />,
     },
     {
       title: "Subscribed Users",
@@ -207,14 +208,19 @@ export default function DefaultLayout() {
     //   path: "/dashboard/free-trial-ended",
     //   icon: <HourglassDisabledIcon />,
     // },
-    {
-      title: "Cash Free Trial Started",
-      path: "/dashboard/cash-free-trial-started",
-      icon: <HourglassDisabledIcon />,
-    },
+    // {
+    //   title: "Cash Free Trial Started",
+    //   path: "/dashboard/cash-free-trial-started",
+    //   icon: <HourglassDisabledIcon />,
+    // },
     {
       title: "Domestic Revenue",
       path: "/dashboard/domestic-revenue",
+      icon: <AccountBalanceWalletIcon />,
+    },
+    {
+      title: "International Revenue",
+      path: "/dashboard/international-revenue",
       icon: <AccountBalanceWalletIcon />,
     },
     {
@@ -233,11 +239,7 @@ export default function DefaultLayout() {
     //   path: "/dashboard/content",
     //   icon: <EditNoteIcon />,
     // },
-    {
-      title: "Funnel Metrics",
-      path: "/dashboard/funnel",
-      icon: <BarChartIcon />,
-    },
+
     // {
     //   title: "Retention",
     //   path: "/dashboard/retention",
@@ -253,6 +255,11 @@ export default function DefaultLayout() {
     //   path: "/dashboard/help-desk",
     //   icon: <HelpIcon />,
     // },
+    {
+      title: "Games",
+      path: "/dashboard/games",
+      icon: <SportsEsportsIcon />,
+    },
     {
       title: "Add Games",
       path: "/dashboard/games-list",
@@ -442,6 +449,10 @@ export default function DefaultLayout() {
           <Route path="view-game/:id" element={<ViewGame />} />
           <Route path="free-trial-started" element={<FreeTrialStarted />} />
           <Route path="domestic-revenue" element={<DomesticRevenue />} />
+          <Route
+            path="international-revenue"
+            element={<InternationalRevenue />}
+          />
           <Route path="cash-free-trial-started" element={<CashFree />} />
           <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
           <Route path="subscription" element={<Subscription />} />

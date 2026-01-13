@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-    // baseUrl: "http://10.1.1.175:7177/api/",
+    // baseUrl: "http://10.1.1.186:7177/api/",
     // baseUrl: "http://3.111.148.23/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token; // Getting the token directly from getState
@@ -219,6 +219,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getInternationalRevenue: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/revenueinternational",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getCashFreeTrialData: builder.mutation({
       query: (data) => ({
         url: "Data/admin/cashfree-trial-data",
@@ -278,6 +285,62 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getStudentDetails: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/student-summary",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getFreeTrialStartedFunnel: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-metrics",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getFreeTrialStartedAnalyticsCountFunnel: builder.mutation({
+      query: (data) => ({
+        url: "Analytics/analyticscount",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getFreeTrialStartedFunnelData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-metrics-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getChildDetailsData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/CDAdded-FTNotStarted",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getSubscriptionDueFunnel: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-metrics-2",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getSubscriptionDueFunnelData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-metrics-2-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getSubscriptionDueFunnelData: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-metrics-2-data",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -317,4 +380,12 @@ export const {
   useGetAnalyticsEventsQuery,
   useGetActiveUserMetricsQuery,
   useGetSubscriptionStatusMutation,
+  useGetStudentDetailsMutation,
+  useGetInternationalRevenueMutation,
+  useGetFreeTrialStartedFunnelMutation,
+  useGetSubscriptionDueFunnelMutation,
+  useGetFreeTrialStartedFunnelDataMutation,
+  useGetSubscriptionDueFunnelDataMutation,
+  useGetFreeTrialStartedAnalyticsCountFunnelMutation,
+  useGetChildDetailsDataMutation
 } = apiSlice;
