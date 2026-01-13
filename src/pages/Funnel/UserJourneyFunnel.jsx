@@ -43,7 +43,7 @@ const LABEL_MAP = {
   Click_free_trail: "Free Trial Clicked",
   freeTrialSuccess: "Free Trial Started",
   subscriptionCancelled: "Subscription Cancelled",
-  due: "Subscription Due",
+  due: "Sub Due After 7 Days",
   subscriptionSuccess: "Subscription Success",
   pending: "Subscription Pending",
   halted: "Subscription Halted",
