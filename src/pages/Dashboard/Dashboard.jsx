@@ -26,6 +26,7 @@ import {
 } from "../../utils/constant";
 import AttendanceSummary from "./AttendanceSummary";
 import ActiveUserSummary from "./ActiveUserSummary";
+import ActiveUserMetricsSummary from "./ActiveUserMetricsSummary";
 
 const Dashboard = () => {
   const [date, setDate] = useState("today");
@@ -166,6 +167,7 @@ const Dashboard = () => {
           plan={plan}
           platform={platform}
         />
+        <ActiveUserMetricsSummary />
         <ActiveUserSummary
           date={date}
           startDate={startDate}

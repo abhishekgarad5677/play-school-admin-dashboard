@@ -59,7 +59,7 @@ const GamesList = () => {
           </Tooltip> */}
           <Tooltip title="View">
             <RemoveRedEyeIcon
-              // onClick={() =>DateFilter  navigate(`/dashboard/view-game/${params.row.id}`)}
+              onClick={() => navigate(`/dashboard/view-game/${params.row.id}`)}
               sx={{ color: "#5d87ff", cursor: "pointer" }}
             />
           </Tooltip>

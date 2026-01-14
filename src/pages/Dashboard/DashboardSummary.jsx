@@ -39,41 +39,41 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
     useGetDashboardSummaryMutation();
 
-  const { data: userActiveData, isLoading: userActiveDataLoading } =
-    useGetActiveUserMetricsQuery();
+  // const { data: userActiveData, isLoading: userActiveDataLoading } =
+  //   useGetActiveUserMetricsQuery();
 
-  console.log(userActiveData);
+  // console.log(userActiveData);
 
-  useEffect(() => {
-    if (userActiveData && userActiveData?.status === true) {
-      setUserData([
-        {
-          title: "Daily Active Users",
-          size: 4,
-          value: userActiveData?.data?.dau,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-          color: "#FFE4EC",
-          valueColor: "#E91E63",
-        },
-        {
-          title: "Weekly Active Users",
-          size: 4,
-          value: userActiveData?.data?.wau,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-          color: "#FFE4EC",
-          valueColor: "#E91E63",
-        },
-        {
-          title: "Monthly Active Users",
-          size: 4,
-          value: userActiveData?.data?.mau,
-          icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-          color: "#FFE4EC",
-          valueColor: "#E91E63",
-        },
-      ]);
-    }
-  }, [userActiveData]);
+  // useEffect(() => {
+  //   if (userActiveData && userActiveData?.status === true) {
+  //     setUserData([
+  //       {
+  //         title: "Daily Active Users",
+  //         size: 4,
+  //         value: userActiveData?.data?.dau,
+  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+  //         color: "#FFE4EC",
+  //         valueColor: "#E91E63",
+  //       },
+  //       {
+  //         title: "Weekly Active Users",
+  //         size: 4,
+  //         value: userActiveData?.data?.wau,
+  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+  //         color: "#FFE4EC",
+  //         valueColor: "#E91E63",
+  //       },
+  //       {
+  //         title: "Monthly Active Users",
+  //         size: 4,
+  //         value: userActiveData?.data?.mau,
+  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
+  //         color: "#FFE4EC",
+  //         valueColor: "#E91E63",
+  //       },
+  //     ]);
+  //   }
+  // }, [userActiveData]);
 
   useEffect(() => {
     if (date !== "custom") {
@@ -97,6 +97,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     }
   }, [date, startDate, endDate, plan, platform]);
 
+  const formatInternationalRevenue = (revenueObj) => {
+    // null / undefined / not an object
+    if (!revenueObj || typeof revenueObj !== "object") return "0";
+
+    // empty object {}
+    if (Object.keys(revenueObj).length === 0) return "0";
+
+    return Object.entries(revenueObj)
+      .map(([currency, data]) => `${currency} ${data?.sum ?? 0}`)
+      .join(", ");
+  };
+
   useEffect(() => {
     if (DashboardData && DashboardData?.status === true) {
       setData([
@@ -105,8 +117,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           size: 4,
           value: DashboardData?.data?.googleSignInCount,
           icon: <SendToMobileIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-          color: "#FFE4EC", // light pink background
-          valueColor: "#E91E63", // main pink
+          color: "#FFE4EC",
+          valueColor: "#E91E63",
         },
         {
           title: "Razorpay Free Trial Users",
@@ -157,6 +169,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#ff4d4d",
         },
         {
+          title: "Subscription Due Count Today",
+          size: 2,
+          value: DashboardData?.data?.subscriptionDueToday,
+          icon: (
+            <ProductionQuantityLimitsIcon
+              sx={{ fontSize: 40, color: "#ff4d4d" }}
+            />
+          ), // vibrant pink
+          color: "#fff0ed",
+          valueColor: "#ff4d4d",
+        },
+        {
           title: "Subscription Started Count",
           size: 2,
           value: DashboardData?.data?.subscriptionStartedCount,
@@ -177,21 +201,21 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         {
           title: "Free Trial Cancelled Count Same Day",
           size: 2,
-          value: DashboardData?.data?.freeTrialCancelledSameDayCount,
+          value: DashboardData?.data?.subscriptionCancelledSameDayCount,
           icon: (
             <CancelPresentationIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />
           ), // vibrant pink
           color: "#fff0ed",
           valueColor: "#ff4d4d",
         },
-        {
-          title: "Subscription Renewed Count",
-          size: 2,
-          value: DashboardData?.data?.subscriptionRenewedCount,
-          icon: <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
-          color: "#fff0ed",
-          valueColor: "#ff4d4d",
-        },
+        // {
+        //   title: "Subscription Renewed Count",
+        //   size: 2,
+        //   value: DashboardData?.data?.subscriptionRenewedCount,
+        //   icon: <PaymentIcon sx={{ fontSize: 40, color: "#ff4d4d" }} />, // vibrant pink
+        //   color: "#fff0ed",
+        //   valueColor: "#ff4d4d",
+        // },
 
         // {
         //   title: "Google Sign-In Conversion (from 26th June)",
@@ -246,7 +270,9 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         {
           title: "Total Revenue International",
           size: 6,
-          value: ` $ ${DashboardData?.data?.totalInternationalRevenueSum} International`,
+          value: formatInternationalRevenue(
+            DashboardData?.data?.internationalRevenueByCurrency
+          ),
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
           ),
@@ -465,7 +491,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
         })}
       </Grid>
       {/* Active User Metrics Section */}
-      {userData.length > 0 && (
+      {/* {userData.length > 0 && (
         <Grid container spacing={2} mb={2}>
           {userData.map((card, index) => {
             const content = (
@@ -501,7 +527,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             );
           })}
         </Grid>
-      )}
+      )} */}
     </>
   );
 };
