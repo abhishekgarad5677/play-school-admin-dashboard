@@ -169,7 +169,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#ff4d4d",
         },
         {
-          title: "Subscription Due Count Today",
+          title: "Subscription Due Today Count",
           size: 2,
           value: DashboardData?.data?.subscriptionDueToday,
           icon: (

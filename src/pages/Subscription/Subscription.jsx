@@ -332,12 +332,37 @@ const Subscription = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Free Trial Started" {...a11yProps(0)} />
-              <Tab label="Subscription Due" {...a11yProps(1)} />
-              <Tab label="Subscription Started" {...a11yProps(2)} />
-              <Tab label="Subscription Cancelled" {...a11yProps(3)} />
-              <Tab label="Free Trial Cancelled Same Day" {...a11yProps(4)} />
-              <Tab label="Subscription Renewed" {...a11yProps(5)} />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Free Trial Started"
+                {...a11yProps(0)}
+              />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Subscription Due"
+                {...a11yProps(1)}
+              />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Subscription Due Today"
+                {...a11yProps(2)}
+              />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Subscription Started"
+                {...a11yProps(3)}
+              />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Subscription Cancelled"
+                {...a11yProps(4)}
+              />
+              <Tab
+                sx={{ fontSize: 12 }}
+                label="Free Trial Cancelled Same Day"
+                {...a11yProps(5)}
+              />
+              {/* <Tab label="Subscription Renewed" {...a11yProps(5)} /> */}
             </Tabs>
           </Box>
           {/* <CustomTabPanel value={value} index={0}>

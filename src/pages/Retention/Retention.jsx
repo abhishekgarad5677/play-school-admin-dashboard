@@ -109,7 +109,7 @@ const Retention = () => {
             </>
           </AccordionDetails>
         </Accordion> */}
-        <Accordion
+        {/* <Accordion
           expanded={expanded === "panel3"}
           onChange={handleChange("panel3")}
         >
@@ -123,7 +123,7 @@ const Retention = () => {
               <GoogleSignup />
             </>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
         <Accordion
           expanded={expanded === "panel4"}
           onChange={handleChange("panel4")}
