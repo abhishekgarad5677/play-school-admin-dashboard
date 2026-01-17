@@ -382,6 +382,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           const freeTrialStartedCount =
             card.title === "Free Trial Started Count";
           const subscriptionDueCount = card.title === "Subscription Due Count";
+          const subscriptionDueCountToday = card.title === "Subscription Due Today Count";
           const subscriptionStartedCount =
             card.title === "Subscription Started Count";
           const subscriptionCancelledCount =
@@ -401,6 +402,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             razorpayFreeTiral ||
             freeTrialStartedCount ||
             subscriptionDueCount ||
+            subscriptionDueCountToday ||
             subscriptionStartedCount ||
             subscriptionCancelledCount ||
             subscriptionRenewedCount ||
@@ -419,6 +421,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               navigate("/dashboard/razor-pay-free-trial");
             else if (freeTrialStartedCount) navigate("/dashboard/subscription");
             else if (subscriptionDueCount) navigate("/dashboard/subscription");
+            else if (subscriptionDueCountToday) navigate("/dashboard/subscription");
             else if (subscriptionStartedCount)
               navigate("/dashboard/subscription");
             else if (subscriptionCancelledCount)
