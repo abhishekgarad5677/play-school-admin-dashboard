@@ -241,7 +241,7 @@ export default function DefaultLayout() {
     // },
 
     // {
-    //   title: "Retention",
+    //   title: "Push Notification",
     //   path: "/dashboard/retention",
     //   icon: <SupervisedUserCircleIcon />,
     // },

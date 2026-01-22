@@ -1,7 +1,7 @@
 import { Box, Typography, Button, Stack, Paper } from "@mui/material";
 import {
   useGetFreeTrialExpiredNOTSubscribedDataMutation,
-  useGetSendNotificationFreeTrialExpiredNOTSubscribedMutation,
+  useGetSendNotificationFreeTrialCancelledMutation,
 } from "../../../../redux/slices/apiSlice";
 import RetentionModal from "../../../../components/modal/RetentionModal";
 import { useEffect, useState } from "react";
@@ -10,11 +10,11 @@ import TableSkeleton from "../../../../components/skeleton/TableSkeleton";
 import { TableWithExport } from "../../../../components/table/TableWithExport";
 import { useFormattedDate } from "../../../../utils/Hooks";
 
-const FreeTrialNotSubscribed = ({ expanded }) => {
+const FreeTrialCancelled = ({ expanded }) => {
   const [
     postNotSubscribed,
     { isLoading: loadingData, error, data: notSubscribedData },
-  ] = useGetSendNotificationFreeTrialExpiredNOTSubscribedMutation();
+  ] = useGetSendNotificationFreeTrialCancelledMutation();
 
   const [
     postGetData,
@@ -29,9 +29,11 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
   });
 
   useEffect(() => {
-    if (expanded === "panel4") {
+    if (expanded === "panel5") {
+      console.log('hsdvhsdvhb');
+      
       const formData = new FormData();
-      formData.append("name", "freetrialpending");
+      formData.append("name", "freetrialcancelled");
       postGetData(formData);
     }
   }, [expanded]);
@@ -48,19 +50,18 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
       id: 1,
       title: "TMKOC Playschool",
       description:
-        "Your Free Trial Has Expired! Subscribe Now to Continue Your Child's Learning Journey!",
+        "Free access to TMKOC Playschool ends in 2 days. Subscribe to continue",
     },
     {
       id: 2,
       title: "TMKOC Playschool",
-      description:
-        "Oh no! Free Trial Expired? No Worries, Subscribe Now & Resume Your Kid's Fun Learning Journey!",
+      description: "Last day of free access today Continue with subscription",
     },
     {
       id: 3,
       title: "TMKOC Playschool",
       description:
-        "Resume Your Child's Fun Learning Journey by Subscribing to TMKOC Playschool App Now!",
+        "free trial ended. Continue your child's learning journey. Subscribe now!",
     },
   ];
 
@@ -87,13 +88,13 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
     if (data && row) {
       if (data.type === "custom") {
         const formData = new FormData();
-        formData.append("Name", "freetrialpending");
+        formData.append("Name", "freetrialcancelled");
         formData.append("Title", data.title);
         formData.append("Body", data.para);
         // postNotSubscribed(formData);
       } else {
         const formData = new FormData();
-        formData.append("Name", "freetrialpending");
+        formData.append("Name", "freetrialcancelled");
         formData.append("Title", data.title);
         formData.append("Body", data.description);
         // postNotSubscribed(formData);
@@ -103,7 +104,7 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
 
   const selectedRow = {
     id: "1",
-    title: "Free trial due and pending",
+    title: "Free trial cancelled",
   };
 
   const columns = [
@@ -163,4 +164,4 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
   );
 };
 
-export default FreeTrialNotSubscribed;
+export default FreeTrialCancelled;

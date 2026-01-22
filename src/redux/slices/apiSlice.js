@@ -341,6 +341,27 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getSendNotificationFreeTrialExpiredNOTSubscribed: builder.mutation({
+      query: (data) => ({
+        url: "Notifications/freetrialpendingandhalt",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getSendNotificationFreeTrialCancelled: builder.mutation({
+      query: (data) => ({
+        url: "Notifications/freetrialcancelled",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getFreeTrialExpiredNOTSubscribedData: builder.mutation({
+      query: (data) => ({
+        url: "Notifications/getnotification",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -387,5 +408,8 @@ export const {
   useGetFreeTrialStartedFunnelDataMutation,
   useGetSubscriptionDueFunnelDataMutation,
   useGetFreeTrialStartedAnalyticsCountFunnelMutation,
-  useGetChildDetailsDataMutation
+  useGetChildDetailsDataMutation,
+  useGetSendNotificationFreeTrialExpiredNOTSubscribedMutation,
+  useGetSendNotificationFreeTrialCancelledMutation,
+  useGetFreeTrialExpiredNOTSubscribedDataMutation
 } = apiSlice;

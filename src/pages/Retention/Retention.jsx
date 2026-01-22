@@ -19,6 +19,7 @@ import WeakAttendance from "./RetentionModules/WeakAttendance/WeakAttendance";
 import NotSubscribed from "./RetentionModules/NotSubscribed/NotSubscribed";
 import GoogleSignup from "./RetentionModules/GoogleSignup/GoogleSignup";
 import FreeTrialNotSubscribed from "./RetentionModules/FreeTrialNotSubscribed/FreeTrialNotSubscribed";
+import FreeTrialCancelled from "./RetentionModules/FreeTrialCancelled/FreeTrialCancelled";
 
 const Retention = () => {
   const Accordion = styled((props) => (
@@ -69,7 +70,7 @@ const Retention = () => {
       <CustomBreadcrumbs
         items={[
           {
-            label: "Retention",
+            label: "Push Notification",
             href: "/dashboard/retention",
             icon: <SupervisedUserCircleIcon fontSize="small" />,
           },
@@ -130,12 +131,27 @@ const Retention = () => {
         >
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <Typography component="span" fontWeight={500}>
-              Free trial expired and not subscribed
+              Free trial due and pending
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <>
-              <FreeTrialNotSubscribed />
+              <FreeTrialNotSubscribed expanded={expanded} />
+            </>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel5"}
+          onChange={handleChange("panel5")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography component="span" fontWeight={500}>
+              Free trial cancelled
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <>
+              <FreeTrialCancelled expanded={expanded} />
             </>
           </AccordionDetails>
         </Accordion>
