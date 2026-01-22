@@ -77,22 +77,73 @@ export const formatPlayTime = (playTimeInMinutes) => {
   }
 };
 
-export const formatTimeFromDecimalMinutes = (minutes) => {
-  if (!minutes || minutes <= 0) return "0 sec";
+// export const getAgeByValue = (dobString) => {
+//   const dob = new Date(dobString);
+//   const today = new Date();
+//   let age = today.getFullYear() - dob.getFullYear();
+//   const m = today.getMonth() - dob.getMonth();
+//   if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+//     age--;
+//   }
+//   return age;
+// }
 
-  const totalSeconds = Math.round(minutes * 60);
+export const formatTimeFromDecimalMinutes = (value) => {
+  if (!Number.isFinite(value) || value <= 0) {
+    return "0 sec";
+  }
+
+  // Split decimal minutes
+  const minutesPart = Math.floor(value);
+  const secondsPart = Math.round((value - minutesPart) * 100); // base-100 seconds
+
+  // Convert everything to total seconds
+  const totalSeconds = minutesPart * 60 + secondsPart;
+
+  // Convert to hr / min / sec
   const hours = Math.floor(totalSeconds / 3600);
-  const remainingSeconds = totalSeconds % 3600;
-  const mins = Math.floor(remainingSeconds / 60);
-  const secs = remainingSeconds % 60;
+  const remainingAfterHours = totalSeconds % 3600;
+  const minutes = Math.floor(remainingAfterHours / 60);
+  const seconds = remainingAfterHours % 60;
 
-  let result = "";
-  if (hours > 0) result += `${hours} hr `;
-  if (mins > 0) result += `${mins} min `;
-  if (secs > 0 || result === "") result += `${secs} sec`;
+  let result = [];
 
-  return result.trim();
+  if (hours > 0) result.push(`${hours} hr`);
+  if (minutes > 0) result.push(`${minutes} min`);
+  if (seconds > 0 || result.length === 0) result.push(`${seconds} sec`);
+
+  return result.join(" ");
 };
+
+export const formatTimeFromSeconds = (totalSeconds) => {
+  if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) {
+    return "0 sec";
+  }
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const remainingAfterHours = totalSeconds % 3600;
+  const minutes = Math.floor(remainingAfterHours / 60);
+  const seconds = remainingAfterHours % 60;
+
+  let result = [];
+
+  if (hours > 0) result.push(`${hours} hr`);
+  if (minutes > 0) result.push(`${minutes} min`);
+  if (seconds > 0 || result.length === 0) result.push(`${seconds} sec`);
+
+  return result.join(" ");
+};
+
+export const getAgeForStudent = (dobString) => {
+  const dob = new Date(dobString);
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const m = today.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+    age--;
+  }
+  return age;
+}
 
 // functions for processing data for charts and graphs (Most Played Games and Least Played Games)
 

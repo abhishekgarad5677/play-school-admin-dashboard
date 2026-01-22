@@ -23,6 +23,8 @@ import {
 import {
   formatDateToReadableString,
   formatTimeFromDecimalMinutes,
+  formatTimeFromSeconds,
+  getAgeForStudent,
 } from "../../utils/Hooks";
 import { useGetStudentDetailsMutation } from "../../redux/slices/apiSlice";
 
@@ -69,6 +71,10 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                 <Typography>
                   <strong>Email:</strong> {data?.data?.email}
                 </Typography>
+                <Typography>
+                  <strong>Report Generated Count:</strong>{" "}
+                  {data?.data?.reportCardGeneatedCount}
+                </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography>
@@ -78,6 +84,9 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                 <Typography>
                   <strong>Attendance:</strong>{" "}
                   {data?.data?.attendancePercentage}%
+                </Typography>
+                <Typography>
+                  <strong>Age:</strong> {getAgeForStudent(data?.data?.dob)}
                 </Typography>
               </Grid>
             </Grid>
@@ -114,7 +123,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                     </Typography>
                     <Typography variant="h5">
                       {formatTimeFromDecimalMinutes(
-                        data?.data?.totalScreenTime?.toFixed(2)
+                        data?.data?.totalScreenTime,
                       )}
                     </Typography>
                   </CardContent>
@@ -129,7 +138,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                     </Typography>
                     <Typography variant="h5">
                       {formatTimeFromDecimalMinutes(
-                        data?.data?.avgTimeSpentPerDay?.toFixed(2)
+                        data?.data?.avgTimeSpentPerDay,
                       )}
                     </Typography>
                   </CardContent>
@@ -198,7 +207,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                       <TableRow key={index}>
                         <TableCell>{game.gameName}</TableCell>
                         <TableCell align="right">
-                          {formatTimeFromDecimalMinutes(game.timeSpentInSeconds)}
+                          {formatTimeFromSeconds(game.timeSpentInSeconds)}
                         </TableCell>
                         <TableCell align="right">{game.stars}</TableCell>
                       </TableRow>
