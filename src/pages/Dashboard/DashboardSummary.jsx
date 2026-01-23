@@ -169,7 +169,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           valueColor: "#ff4d4d",
         },
         {
-          title: "Subscription Due Today Count",
+          title: "Subscription Due Today Count (includes pending)",
           size: 2,
           value: DashboardData?.data?.subscriptionDueToday,
           icon: (
@@ -271,7 +271,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           title: "Total Revenue International",
           size: 6,
           value: formatInternationalRevenue(
-            DashboardData?.data?.internationalRevenueByCurrency
+            DashboardData?.data?.internationalRevenueByCurrency,
           ),
           icon: (
             <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "#00c292" }} />
@@ -382,7 +382,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           const freeTrialStartedCount =
             card.title === "Free Trial Started Count";
           const subscriptionDueCount = card.title === "Subscription Due Count";
-          const subscriptionDueCountToday = card.title === "Subscription Due Today Count";
+          const subscriptionDueCountToday =
+            card.title === "Subscription Due Today Count";
           const subscriptionStartedCount =
             card.title === "Subscription Started Count";
           const subscriptionCancelledCount =
@@ -421,7 +422,8 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               navigate("/dashboard/razor-pay-free-trial");
             else if (freeTrialStartedCount) navigate("/dashboard/subscription");
             else if (subscriptionDueCount) navigate("/dashboard/subscription");
-            else if (subscriptionDueCountToday) navigate("/dashboard/subscription");
+            else if (subscriptionDueCountToday)
+              navigate("/dashboard/subscription");
             else if (subscriptionStartedCount)
               navigate("/dashboard/subscription");
             else if (subscriptionCancelledCount)
