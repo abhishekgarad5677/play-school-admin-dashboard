@@ -1,79 +1,27 @@
 import { useEffect, useState } from "react";
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import MailIcon from "@mui/icons-material/Mail";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import ShareIcon from "@mui/icons-material/Share";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import UpgradeIcon from "@mui/icons-material/Upgrade";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import {
-  useGetActiveUserMetricsQuery,
   useGetDashboardSummaryMutation,
 } from "../../redux/slices/apiSlice";
-import MobileFriendlyIcon from "@mui/icons-material/MobileFriendly";
 import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 import {
   formatDateToReadableString,
-  useFormattedDate,
 } from "../../utils/Hooks";
-import ChildCareIcon from "@mui/icons-material/ChildCare";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
 import { useNavigate } from "react-router-dom";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import PaymentIcon from "@mui/icons-material/Payment";
 
 const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
   const [data, setData] = useState([]);
-  const [userData, setUserData] = useState([]);
 
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
     useGetDashboardSummaryMutation();
-
-  // const { data: userActiveData, isLoading: userActiveDataLoading } =
-  //   useGetActiveUserMetricsQuery();
-
-  // console.log(userActiveData);
-
-  // useEffect(() => {
-  //   if (userActiveData && userActiveData?.status === true) {
-  //     setUserData([
-  //       {
-  //         title: "Daily Active Users",
-  //         size: 4,
-  //         value: userActiveData?.data?.dau,
-  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-  //         color: "#FFE4EC",
-  //         valueColor: "#E91E63",
-  //       },
-  //       {
-  //         title: "Weekly Active Users",
-  //         size: 4,
-  //         value: userActiveData?.data?.wau,
-  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-  //         color: "#FFE4EC",
-  //         valueColor: "#E91E63",
-  //       },
-  //       {
-  //         title: "Monthly Active Users",
-  //         size: 4,
-  //         value: userActiveData?.data?.mau,
-  //         icon: <PeopleIcon sx={{ fontSize: 40, color: "#E91E63" }} />, // vibrant pink
-  //         color: "#FFE4EC",
-  //         valueColor: "#E91E63",
-  //       },
-  //     ]);
-  //   }
-  // }, [userActiveData]);
 
   useEffect(() => {
     if (date !== "custom") {
@@ -495,44 +443,6 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
           );
         })}
       </Grid>
-      {/* Active User Metrics Section */}
-      {/* {userData.length > 0 && (
-        <Grid container spacing={2} mb={2}>
-          {userData.map((card, index) => {
-            const content = (
-              <Paper
-                elevation={0}
-                sx={{
-                  backgroundColor: card.color,
-                  p: 2,
-                  textAlign: "center",
-                  borderRadius: 2,
-                  transition: "transform 0.2s ease-in-out",
-                }}
-              >
-                <Box mb={1}>{card.icon}</Box>
-
-                <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-                  {card.title}
-                </Typography>
-
-                <Typography
-                  variant="h5"
-                  sx={{ color: card.valueColor, fontWeight: "bold" }}
-                >
-                  {card.value}
-                </Typography>
-              </Paper>
-            );
-
-            return (
-              <Grid size={card.size} key={index}>
-                {content}
-              </Grid>
-            );
-          })}
-        </Grid>
-      )} */}
     </>
   );
 };

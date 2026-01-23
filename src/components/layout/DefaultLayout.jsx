@@ -240,11 +240,11 @@ export default function DefaultLayout() {
     //   icon: <EditNoteIcon />,
     // },
 
-    // {
-    //   title: "Push Notification",
-    //   path: "/dashboard/retention",
-    //   icon: <SupervisedUserCircleIcon />,
-    // },
+    {
+      title: "Push Notification",
+      path: "/dashboard/retention",
+      icon: <SupervisedUserCircleIcon />,
+    },
     // {
     //   title: "Manage Users",
     //   path: "/dashboard/manage-users",

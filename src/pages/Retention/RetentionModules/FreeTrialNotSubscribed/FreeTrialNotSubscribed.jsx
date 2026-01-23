@@ -90,13 +90,13 @@ const FreeTrialNotSubscribed = ({ expanded }) => {
         formData.append("Name", "freetrialpending");
         formData.append("Title", data.title);
         formData.append("Body", data.para);
-        // postNotSubscribed(formData);
+        postNotSubscribed(formData);
       } else {
         const formData = new FormData();
         formData.append("Name", "freetrialpending");
         formData.append("Title", data.title);
         formData.append("Body", data.description);
-        // postNotSubscribed(formData);
+        postNotSubscribed(formData);
       }
     }
   };
