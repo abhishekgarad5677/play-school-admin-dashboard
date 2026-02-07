@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api-playschool.tmkocplayschool.com/api/",
-    // baseUrl: "http://10.1.1.109:7177/api/",
+    // baseUrl: "http://10.1.1.214:7177/api/",
     // baseUrl: "http://3.111.148.23/api",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token; // Getting the token directly from getState
@@ -362,6 +362,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getPhoneNumberDetails: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/PhoneNumberAdded",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -411,5 +418,6 @@ export const {
   useGetChildDetailsDataMutation,
   useGetSendNotificationFreeTrialExpiredNOTSubscribedMutation,
   useGetSendNotificationFreeTrialCancelledMutation,
-  useGetFreeTrialExpiredNOTSubscribedDataMutation
+  useGetFreeTrialExpiredNOTSubscribedDataMutation,
+  useGetPhoneNumberDetailsMutation,
 } = apiSlice;

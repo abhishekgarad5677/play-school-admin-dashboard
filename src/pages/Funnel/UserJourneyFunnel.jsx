@@ -7,6 +7,7 @@ import {
 } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 import ExportChildDetailsData from "../../components/funnel/ExportChildDetailsData";
+import ExportPhoneNumberDetails from "../../components/funnel/ExportPhoneNumberDetails";
 
 const toTitle = (camel) =>
   String(camel)
@@ -26,6 +27,7 @@ const FUNNEL_ORDER = [
   "first_open",
   "signup",
   "childDetails",
+  "phoneNumberAdded",
   "Click_free_trail",
   "freeTrialSuccess",
   "subscriptionCancelled",
@@ -40,6 +42,7 @@ const LABEL_MAP = {
   first_open: "Installs",
   signup: "Google Signup",
   childDetails: "Child Details Added",
+  phoneNumberAdded: "Phone Number Added",
   Click_free_trail: "Free Trial Clicked",
   freeTrialSuccess: "Free Trial Started",
   subscriptionCancelled: "Subscription Cancelled",
@@ -64,6 +67,7 @@ const UserJourneyForcedFunnel = ({ filterDate, startDate, endDate }) => {
 
   // ✅ modal state
   const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [exportPhoneModalOpen, setExportPhoneModalOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState(null);
   const [selectedLabel, setSelectedLabel] = useState("");
 
@@ -114,8 +118,8 @@ const UserJourneyForcedFunnel = ({ filterDate, startDate, endDate }) => {
     const text = Array.isArray(val)
       ? val.join(" ")
       : typeof val === "string"
-      ? val
-      : String(val);
+        ? val
+        : String(val);
 
     const words = text.split(" ");
     const lines = [];
@@ -162,7 +166,7 @@ const UserJourneyForcedFunnel = ({ filterDate, startDate, endDate }) => {
     const keys = FUNNEL_ORDER;
     const categories = keys.map((k) => LABEL_MAP[k] ?? toTitle(k));
     const actualValues = keys.map((k) =>
-      typeof mergedMap[k] === "number" ? mergedMap[k] : 0
+      typeof mergedMap[k] === "number" ? mergedMap[k] : 0,
     );
     return { keys, categories, actualValues };
   }, [mergedMap]);
@@ -189,6 +193,10 @@ const UserJourneyForcedFunnel = ({ filterDate, startDate, endDate }) => {
               setSelectedKey(clickedKey);
               setSelectedLabel(clickedLabel);
               setExportModalOpen(true);
+            } else if (clickedKey === "phoneNumberAdded") {
+              setSelectedKey(clickedKey);
+              setSelectedLabel(clickedLabel);
+              setExportPhoneModalOpen(true);
             }
           },
         },
@@ -311,6 +319,15 @@ const UserJourneyForcedFunnel = ({ filterDate, startDate, endDate }) => {
       <ExportChildDetailsData
         exportModalOpen={exportModalOpen}
         onClose={() => setExportModalOpen(false)}
+        selectedLabel={selectedLabel}
+        filterDate={filterDate}
+        startDate={startDate}
+        endDate={endDate}
+      />
+
+      <ExportPhoneNumberDetails
+        exportModalOpen={exportPhoneModalOpen}
+        onClose={() => setExportPhoneModalOpen(false)}
         selectedLabel={selectedLabel}
         filterDate={filterDate}
         startDate={startDate}
