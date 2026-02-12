@@ -71,6 +71,8 @@ import CashFree from "../../pages/CashFree/CashFree";
 import PeopleIcon from "@mui/icons-material/People";
 import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
 import InfoIcon from "@mui/icons-material/Info";
+import UserBuckets from "../../pages/bucket/UserBuckets";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 const drawerWidth = 270;
 
@@ -202,6 +204,11 @@ export default function DefaultLayout() {
       title: "Play Services Started",
       path: "/dashboard/free-trial-started",
       icon: <CardGiftcardIcon />,
+    },
+    {
+      title: "User Buckets",
+      path: "/dashboard/user-buckets",
+      icon: <ListAltIcon />,
     },
     // {
     //   title: "Free Trial Ended",
@@ -456,6 +463,7 @@ export default function DefaultLayout() {
           <Route path="cash-free-trial-started" element={<CashFree />} />
           <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
           <Route path="subscription" element={<Subscription />} />
+          <Route path="user-buckets" element={<UserBuckets />} />
           {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
