@@ -20,4 +20,4 @@ export const roleBaseSlice = createApi({
   }),
 });
 
-export const { useGetUserQuery } = roleBaseSlice;
+export const {} = roleBaseSlice;
