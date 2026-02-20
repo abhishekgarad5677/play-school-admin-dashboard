@@ -37,8 +37,6 @@ const FUNNEL_ORDER = [
   "halted",
 ];
 
-console.log(FUNNEL_ORDER);
-
 // ✅ DISPLAY LABELS (keep keys same, only change UI text)
 const LABEL_MAP = {
   first_open: "Installs",

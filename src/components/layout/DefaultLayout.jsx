@@ -72,7 +72,8 @@ import PeopleIcon from "@mui/icons-material/People";
 import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
 import InfoIcon from "@mui/icons-material/Info";
 import UserBuckets from "../../pages/bucket/UserBuckets";
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 
 const drawerWidth = 270;
 
@@ -210,6 +211,11 @@ export default function DefaultLayout() {
       path: "/dashboard/user-buckets",
       icon: <ListAltIcon />,
     },
+    // {
+    //   title: "Manage Admin",
+    //   path: "/dashboard/manage-admin",
+    //   icon: <GroupAddIcon />,
+    // },
     // {
     //   title: "Free Trial Ended",
     //   path: "/dashboard/free-trial-ended",
@@ -464,6 +470,7 @@ export default function DefaultLayout() {
           <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="user-buckets" element={<UserBuckets />} />
+          <Route path="manage-admin" element={<AdminManager />} />
           {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}
