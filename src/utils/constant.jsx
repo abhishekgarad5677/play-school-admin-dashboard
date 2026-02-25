@@ -113,8 +113,70 @@ export const subPlans = [
   { label: "Pro Plan", value: 3 },
 ];
 
-
 export const userTypeOptions = [
   { label: "Subscribed Users", value: 1 },
   { label: "All Users", value: 0 },
+];
+
+// export const feedbackReasons = {
+//   phoneNumberAddedButFreeTrialNotClicked: [
+//     "Forgot to click the free trial",
+//     "Confused by the trial process",
+//     "No interest in the trial",
+//     "Didn't understand the benefits of the trial",
+//     "Other (please specify)",
+//   ],
+//   freeTrialClickedButNotStarted: [
+//     "Forgot to start the trial",
+//     "Wasn't ready to use the app yet",
+//     "Confused by how to start the trial",
+//     "No interest in the trial",
+//     "Other (please specify)",
+//   ],
+//   subscriptionCancelled: [
+//     "Did not find the app useful",
+//     "Had technical issues",
+//     "Was too expensive",
+//     "Found a better alternative",
+//     "Other (please specify)",
+//   ],
+// };
+
+export const phoneNumberAddedButFreeTrialNotClicked = [
+  "Concerned about auto debit",
+  "App crashed",
+  "Could not find trial button",
+  "Didn’t understand trial terms",
+  "Will try later",
+  "Just exploring",
+  "Stuck on loading screen",
+  "Planning to start later",
+  "User did not receive the call",
+  "Invalid number",
+  // "Other (please specify)",
+];
+
+export const freeTrialClickedButNotStarted = [
+  "Too expensive",
+  "Not worth price",
+  "Card declined",
+  "Payment failed",
+  "Didn’t want to add payment method",
+  "Unsure what happens after trial",
+  "Worried about auto renewal",
+  "Stuck on loading screen",
+  "App crashed during payment",
+  "User did not receive the call",
+  "Invalid number",
+  // "Other (please specify)",
+];
+export const subscriptionCancelled = [
+  "Too expensive",
+  "Not worth price",
+  "App performance issues",
+  "No reminder/engagement",
+  "Child not interested",
+  "User did not receive the call",
+  "Invalid number",
+  // "Other (please specify)"
 ];

@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "../store/store";
 
 const API = axios.create({
-  baseURL: "https://api-playschool.tmkocplayschool.com/api/", // Replace with your API URL
+  baseURL: import.meta.env.VITE_BASE_URL, // Replace with your API URL
   headers: {
     "Content-Type": "multipart/form-data",
   },

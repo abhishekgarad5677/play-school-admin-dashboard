@@ -53,16 +53,23 @@ const Login = () => {
     formData.append("password", password);
 
     try {
-      const response = await API.post("Auth/admin/login", formData);
+      const response = await API.post("Admin/login", formData);
 
       if (response.status === 200) {
+        const user = response?.data?.data;
         dispatch(
           login({
-            user: response?.data?.data,
-            token: response?.data.data?.token,
-          })
+            user: user,
+            token: user?.token,
+          }),
         );
-        navigate("/dashboard");
+
+        if (user.isSuper) {
+          navigate("/dashboard"); // Redirect to dashboard if user is super admin
+        } else {
+          // Redirect to the first route from the permissions array if user is not super admin
+          navigate(user?.permissions[0]);
+        }
         toast.success("Login successful");
       }
     } catch (error) {
@@ -198,7 +205,6 @@ const Login = () => {
             width="100%"
             alignItems="center"
           >
-          
             <Box
               component="img"
               src={loginIcon}
@@ -206,7 +212,7 @@ const Login = () => {
               sx={{
                 width: { xs: "70%", sm: "40%" },
                 mb: { xs: 0.5, md: 2.5 },
-                display: { xs: "none", md: "block" }
+                display: { xs: "none", md: "block" },
               }}
             />
             <Typography

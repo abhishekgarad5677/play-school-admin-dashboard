@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const roleBaseSlice = createApi({
-  reducerPath: "api",
+  reducerPath: "roleBaseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
@@ -14,10 +14,46 @@ export const roleBaseSlice = createApi({
   }),
 
   endpoints: (builder) => ({
-    getUser: builder.query({
-      query: () => "/user",
+    getPermissions: builder.query({
+      query: () => ({
+        url: "Permission",
+        method: "GET",
+      }),
+    }),
+    createPermission: builder.mutation({
+      query: (data) => ({
+        url: "Permission",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createAdmin: builder.mutation({
+      query: (data) => ({
+        url: "Admin/create-admin",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAdminList: builder.query({
+      query: () => ({
+        url: "Admin/get-admins",
+        method: "GET",
+      }),
+    }),
+    updateAdminPermission: builder.mutation({
+      query: (data) => ({
+        url: "Admin/update-admin-permission",
+        method: "POST",
+        body: data,
+      }),
     }),
   }),
 });
 
-export const {} = roleBaseSlice;
+export const {
+  useGetPermissionsQuery,
+  useCreatePermissionMutation,
+  useCreateAdminMutation,
+  useGetAdminListQuery,
+  useUpdateAdminPermissionMutation
+} = roleBaseSlice;

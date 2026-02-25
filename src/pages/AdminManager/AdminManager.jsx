@@ -1,123 +1,226 @@
-import React, { useMemo, useState } from "react";
-import {
-  Box,
-  Button,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  Divider,
-} from "@mui/material";
+// import React, { useEffect, useState } from "react";
+// import { Box, Button, Paper, Tooltip } from "@mui/material";
+// import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+// import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
+// import AddAdminModal from "../../components/modal/AddAdminModal";
+// import EditIcon from '@mui/icons-material/Edit';
+
+// // ✅ assume you have this mutation in RTK Query
+// import {
+//   useCreateAdminMutation,
+//   useGetAdminListQuery,
+// } from "../../redux/slices/roleBaseSlice";
+// import { CommonTable } from "../../components/table/Table";
+// import TableSkeleton from "../../components/skeleton/TableSkeleton";
+
+// const AdminManager = () => {
+//   const [open, setOpen] = useState(false);
+//   const [tableData, setTableData] = useState([]);
+
+//   const [createAdmin, { isLoading: submitting }] = useCreateAdminMutation();
+//   const {
+//     data: adminUsersData,
+//     isLoading,
+//     error,
+//     refetch,
+//   } = useGetAdminListQuery();
+
+//   const columns = [
+//     { field: "userName", headerName: "User Name", width: 300 },
+//     { field: "email", headerName: "Email", width: 300 },
+//     {
+//       field: "actions",
+//       headerName: "Actions",
+//       width: 100,
+//       renderCell: (params) => (
+//         <Tooltip title="Edit User">
+//           <EditIcon
+//             // onClick={() => handleOpenModal(params.row.id)}
+//             sx={{ color: "#5d87ff", cursor: "pointer" }}
+//           />
+//         </Tooltip>
+//       ),
+//     },
+//   ];
+
+//   useEffect(() => {
+//     if (adminUsersData?.status === true) {
+//       setTableData(adminUsersData?.data || []);
+//     }
+//   }, [adminUsersData]);
+
+//   console.log(tableData);
+
+//   const handleOpen = () => setOpen(true);
+//   const handleClose = () => setOpen(false);
+
+//   const handleSubmit = async (payload) => {
+//     // payload = { UserName, Email, Password, PermissionIds }
+//     try {
+//       console.log("Submitting:", payload);
+
+//       const formData = new FormData();
+//       formData.append("UserName", payload.UserName);
+//       formData.append("Email", payload.Email);
+//       formData.append("Password", payload.Password);
+
+//       // ✅ append each id separately
+//       payload.PermissionIds.forEach((id) => {
+//         formData.append("PermissionIds", id); // or String(id)
+//       });
+
+//       await createAdmin(formData).unwrap();
+//       await refetch();
+//       setOpen(false);
+//     } catch (err) {
+//       console.error("Create admin failed:", err);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <Box
+//         sx={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//           marginBottom: 1,
+//         }}
+//       >
+//         <CustomBreadcrumbs
+//           items={[
+//             {
+//               label: "Manage Admin",
+//               href: "/dashboard/manage-admin",
+//               icon: <ManageAccountsIcon fontSize="small" />,
+//             },
+//           ]}
+//         />
+
+//         <Button variant="contained" onClick={handleOpen}>
+//           Add Admin
+//         </Button>
+//       </Box>
+
+//       <Paper sx={{ height: "85vh", width: "100%", padding: 3 }}>
+//         {isLoading ? (
+//           <TableSkeleton />
+//         ) : (
+//           <CommonTable
+//             userTableData={tableData?.map((d) => ({ ...d, id: d.userId }))}
+//             columns={columns}
+//             pageSizeOptions={[10, 15, 20, 50, 100]}
+//           />
+//         )}
+//       </Paper>
+
+//       <AddAdminModal
+//         open={open}
+//         onClose={handleClose}
+//         onSubmit={handleSubmit}
+//         submitting={submitting}
+//       />
+//     </>
+//   );
+// };
+
+// export default AdminManager;
+
+import React, { useState, useEffect } from "react";
+import { Box, Button, Paper, Tooltip } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
+import AddAdminModal from "../../components/modal/AddAdminModal";
+import EditAdminModal from "../../components/modal/EditAdminPermissionModal"; // Import the Edit Admin Modal
+import EditIcon from "@mui/icons-material/Edit";
 
-// ✅ your nav json (keep icons if you want; we only use title+path here)
-const navSectionOne = [
-  { title: "Dashboard", path: "/dashboard" },
-  { title: "Funnel Metrics", path: "/dashboard/funnel" },
-  { title: "Subscribed Users", path: "/dashboard/students" },
-  { title: "Subscription Status", path: "/dashboard/subscription" },
-  {
-    title: "Razorpay Free Trial Users",
-    path: "/dashboard/razor-pay-free-trial",
-  },
-  { title: "Play Services Started", path: "/dashboard/free-trial-started" },
-  { title: "User Buckets", path: "/dashboard/user-buckets" },
-  { title: "Manage Admin", path: "/dashboard/manage-admin" },
-  { title: "Domestic Revenue", path: "/dashboard/domestic-revenue" },
-  { title: "International Revenue", path: "/dashboard/international-revenue" },
-  { title: "Non Subscribed Users", path: "/dashboard/UnsubscribedUsers" },
-  { title: "Location Analytics", path: "/dashboard/top-cities" },
-  { title: "Push Notification", path: "/dashboard/retention" },
-  { title: "Games", path: "/dashboard/games" },
-  { title: "Add Games", path: "/dashboard/games-list" },
-];
+// ✅ Assume you have this mutation in RTK Query
+import {
+  useCreateAdminMutation,
+  useGetAdminListQuery,
+  useUpdateAdminPermissionMutation,
+} from "../../redux/slices/roleBaseSlice";
+import { CommonTable } from "../../components/table/Table";
+import TableSkeleton from "../../components/skeleton/TableSkeleton";
 
 const AdminManager = () => {
-  const [open, setOpen] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null); // To store user data for editing
+  const [tableData, setTableData] = useState([]);
 
-  const [email, setEmail] = useState("");
-  // store selected routes as a Set for easy toggle
-  const [selectedRoutes, setSelectedRoutes] = useState(() => new Set());
-  const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState({ email: "", routes: "" });
+  const [createAdmin, { isLoading: submitting }] = useCreateAdminMutation();
+  const [updateAdminPermission, { isLoading: updating }] =
+    useUpdateAdminPermissionMutation();
 
-  const routeOptions = useMemo(() => {
-    // Ensure unique by path (in case duplicates ever happen)
-    const seen = new Set();
-    return navSectionOne.filter(
-      (i) => i?.path && !seen.has(i.path) && seen.add(i.path),
-    );
-  }, []);
+  const {
+    data: adminUsersData,
+    isLoading,
+    error,
+    refetch,
+  } = useGetAdminListQuery();
 
-  const handleOpen = () => {
-    setOpen(true);
-    // reset errors only (keep values if you want)
-    setErrors({ email: "", routes: "" });
+  const columns = [
+    { field: "userName", headerName: "User Name", width: 300 },
+    { field: "email", headerName: "Email", width: 300 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      renderCell: (params) => (
+        <Tooltip title="Edit User Permissions">
+          <EditIcon
+            sx={{ color: "#5d87ff", cursor: "pointer" }}
+            onClick={() => handleOpenEditModal(params.row)} // Open edit modal on click
+          />
+        </Tooltip>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    if (adminUsersData?.status === true) {
+      setTableData(adminUsersData?.data || []);
+    }
+  }, [adminUsersData]);
+
+  const handleOpenAddModal = () => setOpenAddModal(true);
+  const handleCloseAddModal = () => setOpenAddModal(false);
+
+  const handleOpenEditModal = (user) => {
+    setSelectedUser(user);
+    setOpenEditModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleCloseEditModal = () => setOpenEditModal(false);
 
-  const toggleRoute = (path) => {
-    setSelectedRoutes((prev) => {
-      const next = new Set(prev);
-      if (next.has(path)) next.delete(path);
-      else next.add(path);
-      return next;
-    });
-  };
-
-  const validate = () => {
-    const nextErrors = { email: "", routes: "" };
-
-    const trimmed = email.trim();
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-    if (!trimmed) nextErrors.email = "Email is required.";
-    else if (!emailOk) nextErrors.email = "Enter a valid email.";
-
-    if (selectedRoutes.size === 0)
-      nextErrors.routes = "Select at least one route permission.";
-
-    setErrors(nextErrors);
-    return !nextErrors.email && !nextErrors.routes;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    const routesArray = Array.from(selectedRoutes);
-
-    const formData = new FormData();
-    formData.append("email", email.trim());
-    formData.append("routes", JSON.stringify(routesArray)); // backend receives array via JSON
-
+  const handleSubmit = async (payload) => {
+    // Handle admin creation
     try {
-      setSubmitting(true);
+      const formData = new FormData();
+      formData.append("UserName", payload.UserName);
+      formData.append("Email", payload.Email);
+      formData.append("Password", payload.Password);
 
-      // ✅ Replace with your real API call:
-      // await fetch("/api/admins", { method: "POST", body: formData });
-      console.log("Submitting FormData:");
-      console.log("email:", email.trim());
-      console.log("routes:", routesArray);
+      payload.PermissionIds.forEach((id) => {
+        formData.append("PermissionIds", id); // Send array elements separately
+      });
 
-      // success UX: reset + close
-      setEmail("");
-      setSelectedRoutes(new Set());
-      setOpen(false);
+      await createAdmin(formData).unwrap();
+      await refetch();
+      setOpenAddModal(false);
     } catch (err) {
-      console.error(err);
-      // optionally show toast/snackbar
-    } finally {
-      setSubmitting(false);
+      console.error("Create admin failed:", err);
+    }
+  };
+
+  const handleEditSubmit = async (payload) => {
+    try {
+      await updateAdminPermission(payload).unwrap();
+      setOpenEditModal(false);
+      refetch(); // Refresh the table after updating permissions
+    } catch (err) {
+      console.error("Update permissions failed:", err);
     }
   };
 
@@ -141,98 +244,41 @@ const AdminManager = () => {
           ]}
         />
 
-        <Button variant="contained" onClick={handleOpen}>
+        <Button variant="contained" onClick={handleOpenAddModal}>
           Add Admin
         </Button>
       </Box>
 
       <Paper sx={{ height: "85vh", width: "100%", padding: 3 }}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
-          mb={2}
-          sx={{ gap: 1, flexDirection: { xs: "column", sm: "row" } }}
-        >
-          <>AdminManager</>
-        </Box>
+        {isLoading ? (
+          <TableSkeleton />
+        ) : (
+          <CommonTable
+            userTableData={tableData.map((d) => ({ ...d, id: d.userId })) || []}
+            columns={columns}
+            pageSizeOptions={[10, 15, 20, 50, 100]}
+          />
+        )}
       </Paper>
 
-      {/* ✅ Modal */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <DialogTitle>Add Admin</DialogTitle>
+      {/* Add Admin Modal */}
+      <AddAdminModal
+        open={openAddModal}
+        onClose={handleCloseAddModal}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+      />
 
-        <DialogContent dividers>
-          <Box component="form" id="add-admin-form" onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              margin="normal"
-              error={Boolean(errors.email)}
-              helperText={errors.email || " "}
-              autoFocus
-            />
-
-            <Divider sx={{ my: 1.5 }} />
-
-            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-              Route permissions
-            </Typography>
-
-            {errors.routes ? (
-              <Typography variant="body2" sx={{ mb: 1 }} color="error">
-                {errors.routes}
-              </Typography>
-            ) : (
-              <Typography variant="body2" sx={{ mb: 1, opacity: 0.75 }}>
-                Select what this admin can access.
-              </Typography>
-            )}
-
-            <FormGroup sx={{ maxHeight: 320, overflow: "auto", pr: 1 }}>
-              {routeOptions.map((item) => (
-                <FormControlLabel
-                  key={item.path}
-                  control={
-                    <Checkbox
-                      checked={selectedRoutes.has(item.path)}
-                      onChange={() => toggleRoute(item.path)}
-                    />
-                  }
-                  label={
-                    <Box>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                        {item.path}
-                      </Typography>
-                    </Box>
-                  }
-                />
-              ))}
-            </FormGroup>
-          </Box>
-        </DialogContent>
-
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={handleClose} disabled={submitting}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            form="add-admin-form"
-            variant="contained"
-            disabled={submitting}
-          >
-            {submitting ? "Saving..." : "Submit"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Edit Admin Permission Modal */}
+      {selectedUser && (
+        <EditAdminModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          onSubmit={handleEditSubmit}
+          userData={selectedUser} // Pass selected user data to the modal
+          submitting={updating}
+        />
+      )}
     </>
   );
 };

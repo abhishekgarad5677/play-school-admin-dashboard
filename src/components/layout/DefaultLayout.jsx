@@ -16,64 +16,32 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import logo from "../../../public/play-school-logo.png";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import GroupIcon from "@mui/icons-material/Group";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import CategoryIcon from "@mui/icons-material/Category";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import GroupsIcon from "@mui/icons-material/Groups";
-import HelpIcon from "@mui/icons-material/Help";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Tooltip } from "@mui/material";
 import { ProfileAvatarMenu } from "../Avatar/ProfileAvatarMenu";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
-import Reports from "../../pages/Reports/Reports";
 import Dashboard from "../../pages/Dashboard/Dashboard";
-import ChildCareIcon from "@mui/icons-material/ChildCare";
 import Students from "../../pages/Students/Students";
-import Achievement from "../../pages/Achievement/Achievement";
-import Category from "../../pages/Category/Category";
-import AgeGroup from "../../pages/AgeGroup/AgeGroup";
-import Content from "../../pages/Content/Content";
 import Subscription from "../../pages/Subscription/Subscription";
 import AdminManager from "../../pages/AdminManager/AdminManager";
-// import Logs from "../../pages/Logs/Logs";
-import Notification from "../../pages/Notification/Notification";
-import AddCategory from "../../pages/Category/AddCategory";
-import AddContent from "../../pages/Content/AddContent";
 import Help from "../../pages/Help/Help";
 import Retention from "../../pages/Retention/Retention";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import Games from "../../pages/Games/Games";
-import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
 import UnsubscribedUsers from "../../pages/UnsubscribedUsers/UnsubscribedUsers";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
 import TopRegion from "../../pages/TopRegion/TopRegion";
 import Funnel from "../../pages/Funnel/Funnel";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import GamesList from "../../pages/GamesList/GamesList";
-import ExtensionIcon from "@mui/icons-material/Extension";
 import ViewGame from "../../pages/GamesList/ViewGame";
 import AddGamesCategory from "../../pages/GamesList/AddGamesCategory";
 import AddGames from "../../pages/GamesList/AddGames";
 import FreeTrialStarted from "../../pages/FreeTrialStarted/FreeTrialStarted";
-import HourglassDisabledIcon from "@mui/icons-material/HourglassDisabled";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import FreeTrialEnded from "../../pages/FreeTrialEnded/FreeTrialEnded";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DomesticRevenue from "../../pages/TotalRevenue/DomesticRevenue";
 import InternationalRevenue from "../../pages/TotalRevenue/InternationalRevenue";
 import CashFree from "../../pages/CashFree/CashFree";
-import PeopleIcon from "@mui/icons-material/People";
 import RazorpayFreeTrial from "../../pages/RazorpayFreeTrial/RazorpayFreeTrial";
-import InfoIcon from "@mui/icons-material/Info";
 import UserBuckets from "../../pages/bucket/UserBuckets";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import ManagePermission from "../../pages/ManagePermission/ManagePermission";
+import { SideBarRoutes } from "../../utils/SideBarRoutes";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 270;
 
@@ -157,7 +125,9 @@ const Drawer = styled(MuiDrawer, {
 
 export default function DefaultLayout() {
   const location = useLocation();
-  // const isActive = location.pathname === ele.path;
+  const user = useSelector((state) => state.auth.user); // Access the current user from Redux
+  const isSuper = user?.isSuper;
+  const permissions = user?.permissions || [];
 
   const acticeTabStyle = {
     backgroundColor: "#5d87ff",
@@ -178,116 +148,6 @@ export default function DefaultLayout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const navSectionOne = [
-    { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
-    {
-      title: "Funnel Metrics",
-      path: "/dashboard/funnel",
-      icon: <BarChartIcon />,
-    },
-    {
-      title: "Subscribed Users",
-      path: "/dashboard/students",
-      icon: <ChildCareIcon />,
-    },
-    {
-      title: "Subscription Status",
-      path: "/dashboard/subscription",
-      icon: <InfoIcon />,
-    },
-    {
-      title: "Razorpay Free Trial Users",
-      path: "/dashboard/razor-pay-free-trial",
-      icon: <PeopleIcon />,
-    },
-    {
-      title: "Play Services Started",
-      path: "/dashboard/free-trial-started",
-      icon: <CardGiftcardIcon />,
-    },
-    {
-      title: "User Buckets",
-      path: "/dashboard/user-buckets",
-      icon: <ListAltIcon />,
-    },
-    // {
-    //   title: "Manage Admin",
-    //   path: "/dashboard/manage-admin",
-    //   icon: <GroupAddIcon />,
-    // },
-    // {
-    //   title: "Free Trial Ended",
-    //   path: "/dashboard/free-trial-ended",
-    //   icon: <HourglassDisabledIcon />,
-    // },
-    // {
-    //   title: "Cash Free Trial Started",
-    //   path: "/dashboard/cash-free-trial-started",
-    //   icon: <HourglassDisabledIcon />,
-    // },
-    {
-      title: "Domestic Revenue",
-      path: "/dashboard/domestic-revenue",
-      icon: <AccountBalanceWalletIcon />,
-    },
-    {
-      title: "International Revenue",
-      path: "/dashboard/international-revenue",
-      icon: <AccountBalanceWalletIcon />,
-    },
-    {
-      title: "Non Subscribed Users",
-      path: "/dashboard/UnsubscribedUsers",
-      icon: <UnsubscribeIcon />,
-    },
-    {
-      title: "Location Analytics",
-      path: "/dashboard/top-cities",
-      icon: <LocationCityIcon />,
-    },
-    // { title: "Category", path: "/dashboard/category", icon: <CategoryIcon /> },
-    // {
-    //   title: "Manage Content",
-    //   path: "/dashboard/content",
-    //   icon: <EditNoteIcon />,
-    // },
-
-    {
-      title: "Push Notification",
-      path: "/dashboard/retention",
-      icon: <SupervisedUserCircleIcon />,
-    },
-    // {
-    //   title: "Manage Users",
-    //   path: "/dashboard/manage-users",
-    //   icon: <GroupIcon />,
-    // },
-    // {
-    //   title: "Help Desk",
-    //   path: "/dashboard/help-desk",
-    //   icon: <HelpIcon />,
-    // },
-    {
-      title: "Games",
-      path: "/dashboard/games",
-      icon: <SportsEsportsIcon />,
-    },
-    {
-      title: "Add Games",
-      path: "/dashboard/games-list",
-      icon: <ExtensionIcon />,
-    },
-
-    // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
-    // { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
-    // { title: 'Achievement', path: '/dashboard/achievement', icon: <EmojiEventsIcon /> },
-    // { title: 'Age Group', path: '/dashboard/age-group', icon: <GroupsIcon /> },
-    // { title: 'Subscription', path: '/dashboard/subscription', icon: <CurrencyExchangeIcon /> },
-    // { title: 'Admin Manager', path: '/dashboard/admin-manager', icon: <ManageAccountsIcon /> },
-    // { title: 'Logs', path: '/dashboard/logs', icon: <FileCopyIcon /> },
-    // { title: 'Notification', path: '/dashboard/notification', icon: <NotificationsActiveIcon /> },
-  ];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -319,8 +179,8 @@ export default function DefaultLayout() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              {/* Admin Dashboard */}
+            <Typography fontSize={16} fontWeight={500} noWrap component="div">
+              Playschool Admin Dashboard
             </Typography>
           </Box>
           <Box
@@ -335,7 +195,20 @@ export default function DefaultLayout() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer
+        sx={{
+          "& .MuiDrawer-paper": {
+            overflow: "auto", // Enables scrolling
+            "&::-webkit-scrollbar": {
+              display: "none", // Hides scrollbar in Webkit browsers (Chrome, Safari)
+            },
+            msOverflowStyle: "none", // Hides scrollbar in Internet Explorer
+            "scrollbar-width": "none", // Hides scrollbar in Firefox
+          },
+        }}
+        variant="permanent"
+        open={open}
+      >
         <DrawerHeader>
           <Box
             sx={{
@@ -349,10 +222,7 @@ export default function DefaultLayout() {
               <img
                 style={{ transition: "ease" }}
                 src={logo}
-                // src={
-                //   "https://www.tmkocplayschool.com/assets/playSchool-logo-B4HeImJS.png"
-                // }
-                alt=""
+                alt="play-school-logo"
                 width={"40%"}
                 height={"85"}
               />
@@ -366,21 +236,21 @@ export default function DefaultLayout() {
             )}
           </IconButton>
         </DrawerHeader>
-        {/* <Divider /> */}
-        <List>
-          {navSectionOne.map((ele, index) => (
+        {/* <List>
+          {SideBarRoutes.map((ele, index) => (
             <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 component={Link}
                 to={ele.path}
                 sx={[
                   {
-                    minHeight: 48,
+                    // minHeight: 10,
+                    padding: "6px 0",
                     margin: "0 10px",
                     borderRadius: "7px",
                     backgroundColor:
                       ele.path === location.pathname ? "#5d87ff" : "",
-                    px: 2.5,
+                    px: 1.5,
                   },
                   ele.path === location.pathname ? acticeTabStyle : null,
                   open
@@ -401,7 +271,7 @@ export default function DefaultLayout() {
                     ele.path === location.pathname ? acticeIconStyle : null,
                     open
                       ? {
-                          mr: 2,
+                          mr: 1.5,
                         }
                       : {
                           mr: "auto",
@@ -417,7 +287,83 @@ export default function DefaultLayout() {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={ele.title}
+                  primary={
+                    <Typography sx={{ fontSize: "14px" }}>
+                      {ele.title}
+                    </Typography>
+                  }
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List> */}
+        <List>
+          {(isSuper
+            ? SideBarRoutes
+            : SideBarRoutes.filter((route) => permissions.includes(route.path))
+          ).map((ele, index) => (
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                component={Link}
+                to={ele.path}
+                sx={[
+                  {
+                    padding: "6px 0",
+                    margin: "0 10px",
+                    borderRadius: "7px",
+                    backgroundColor:
+                      ele.path === location.pathname ? "#5d87ff" : "",
+                    px: 1.5,
+                  },
+                  ele.path === location.pathname ? acticeTabStyle : null,
+                  open
+                    ? {
+                        justifyContent: "initial",
+                      }
+                    : {
+                        justifyContent: "center",
+                      },
+                ]}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    ele.path === location.pathname ? acticeIconStyle : null,
+                    open
+                      ? {
+                          mr: 1.5,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  {open ? (
+                    ele.icon
+                  ) : (
+                    <Tooltip title={ele.title} arrow placement="right">
+                      {ele.icon}
+                    </Tooltip>
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontSize: "14px" }}>
+                      {ele.title}
+                    </Typography>
+                  }
                   sx={[
                     open
                       ? {
@@ -448,29 +394,34 @@ export default function DefaultLayout() {
       >
         <DrawerHeader />
         <Routes>
-          <Route index path="/" element={<Dashboard />} />
-          <Route path="students" element={<Students />} />
-          <Route path="UnsubscribedUsers" element={<UnsubscribedUsers />} />
-          <Route path="retention" element={<Retention />} />
+          <Route index path="/dashboard" element={<Dashboard />} />
+          <Route path="subscribed-users" element={<Students />} />
+          <Route path="non-subscribed-users" element={<UnsubscribedUsers />} />
+          <Route path="push-notification" element={<Retention />} />
           <Route path="help-desk" element={<Help />} />
           <Route path="games" element={<Games />} />
-          <Route path="top-cities" element={<TopRegion />} />
-          <Route path="funnel" element={<Funnel />} />
-          <Route path="games-list" element={<GamesList />} />
+          <Route path="location-analytics" element={<TopRegion />} />
+          <Route path="funnel-metrics" element={<Funnel />} />
+          <Route path="manage-games" element={<GamesList />} />
           <Route path="add-games-category" element={<AddGamesCategory />} />
           <Route path="add-games/:id" element={<AddGames />} />
           <Route path="view-game/:id" element={<ViewGame />} />
-          <Route path="free-trial-started" element={<FreeTrialStarted />} />
           <Route path="domestic-revenue" element={<DomesticRevenue />} />
           <Route
             path="international-revenue"
             element={<InternationalRevenue />}
           />
           <Route path="cash-free-trial-started" element={<CashFree />} />
-          <Route path="razor-pay-free-trial" element={<RazorpayFreeTrial />} />
-          <Route path="subscription" element={<Subscription />} />
+          <Route
+            path="razor-pay-free-trial-users"
+            element={<RazorpayFreeTrial />}
+          />
+          <Route path="subscription-status" element={<Subscription />} />
           <Route path="user-buckets" element={<UserBuckets />} />
           <Route path="manage-admin" element={<AdminManager />} />
+          <Route path="manage-permission" element={<ManagePermission />} />
+          <Route path="*" element={<h2>❌ Page Not Found</h2>} />
+          {/* <Route path="play-services-started" element={<FreeTrialStarted />} /> */}
           {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
           {/* <Route path="reports" element={<Reports />} /> */}
           {/* <Route path="achievement" element={<Achievement />} /> */}

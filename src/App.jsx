@@ -21,7 +21,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
-          path="/dashboard/*"
+          path="/*"
           element={
             <ProtectedRoute>
               <DefaultLayout />

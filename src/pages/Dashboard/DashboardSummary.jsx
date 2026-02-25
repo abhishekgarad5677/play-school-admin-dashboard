@@ -331,7 +331,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             card.title === "Free Trial Started Count";
           const subscriptionDueCount = card.title === "Subscription Due Count";
           const subscriptionDueCountToday =
-            card.title === "Subscription Due Today Count";
+            card.title === "Subscription Due Today Count (includes pending)";
           const subscriptionStartedCount =
             card.title === "Subscription Started Count";
           const subscriptionCancelledCount =
@@ -358,28 +358,28 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             subscriptionCancelledCountSameDay;
 
           const handleClick = () => {
-            if (isSubscribedCard) navigate("/dashboard/students");
-            else if (isDropOffCard) navigate("/dashboard/UnsubscribedUsers");
-            else if (freeTrial) navigate("/dashboard/free-trial-started");
+            if (isSubscribedCard) navigate("/subscribed-users");
+            else if (isDropOffCard) navigate("/UnsubscribedUsers");
+            else if (freeTrial) navigate("/free-trial-started");
             else if (freeTrialEnded)
-              navigate("/dashboard/cash-free-trial-started");
-            else if (domesticRevenue) navigate("/dashboard/domestic-revenue");
+              navigate("/cash-free-trial-started");
+            else if (domesticRevenue) navigate("/domestic-revenue");
             else if (domesticInternational)
-              navigate("/dashboard/international-revenue");
+              navigate("/international-revenue");
             else if (razorpayFreeTiral)
-              navigate("/dashboard/razor-pay-free-trial");
-            else if (freeTrialStartedCount) navigate("/dashboard/subscription");
-            else if (subscriptionDueCount) navigate("/dashboard/subscription");
+              navigate("/razor-pay-free-trial-users");
+            else if (freeTrialStartedCount) navigate("/subscription-status");
+            else if (subscriptionDueCount) navigate("/subscription-status");
             else if (subscriptionDueCountToday)
-              navigate("/dashboard/subscription");
+              navigate("/subscription-status");
             else if (subscriptionStartedCount)
-              navigate("/dashboard/subscription");
+              navigate("/subscription-status");
             else if (subscriptionCancelledCount)
-              navigate("/dashboard/subscription");
+              navigate("/subscription-status");
             else if (subscriptionRenewedCount)
-              navigate("/dashboard/subscription");
+              navigate("/subscription-status");
             else if (subscriptionCancelledCountSameDay)
-              navigate("/dashboard/subscription");
+              navigate("/subscription-status");
           };
 
           const content = (

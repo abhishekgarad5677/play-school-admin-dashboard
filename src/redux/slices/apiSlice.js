@@ -369,21 +369,28 @@ export const apiSlice = createApi({
     }),
     phoneNumberAddedFreeTrialNotClicked: builder.mutation({
       query: (data) => ({
-        url: "Data/admin/dashbaord/phone-added-free-trial-not-clicked",
+        url: "UserBuckets/admin/dashbaord/phone-added-free-trial-not-clicked",
         method: "POST",
         body: data,
       }),
     }),
     freeTrialClickedButNotStarted: builder.mutation({
       query: (data) => ({
-        url: "Data/admin/dashbaord/free-trial-clicked-but-not-started",
+        url: "UserBuckets/admin/free-trial-clicked-but-not-started",
         method: "POST",
         body: data,
       }),
     }),
     subscriptionCancelled: builder.mutation({
       query: (data) => ({
-        url: "Data/admin/dashbaord/subscription-cancelled",
+        url: "UserBuckets/admin/subscription-cancelled",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addFeedback: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/add-feedback",
         method: "POST",
         body: data,
       }),
@@ -442,4 +449,5 @@ export const {
   usePhoneNumberAddedFreeTrialNotClickedMutation,
   useFreeTrialClickedButNotStartedMutation,
   useSubscriptionCancelledMutation,
+  useAddFeedbackMutation,
 } = apiSlice;

@@ -8,11 +8,11 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
-    // [roleBaseSlice.reducerPath]: roleBaseSlice.reducer,
+    [roleBaseSlice.reducerPath]: roleBaseSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       apiSlice.middleware,
-      // roleBaseSlice.middleware,
+      roleBaseSlice.middleware,
     ),
 });
