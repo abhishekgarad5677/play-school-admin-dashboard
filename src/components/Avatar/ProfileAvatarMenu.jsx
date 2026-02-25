@@ -98,17 +98,11 @@ export const ProfileAvatarMenu = () => {
             Profile
           </Typography>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon onClick={handleClose}>
             <Logout fontSize="small" />
           </ListItemIcon>
-          <Typography
-            variant="p"
-            fontSize={14}
-            noWrap
-            color="gray"
-            onClick={handleLogout}
-          >
+          <Typography variant="p" fontSize={14} noWrap color="gray">
             Logout
           </Typography>
         </MenuItem>
