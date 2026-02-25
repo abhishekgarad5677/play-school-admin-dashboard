@@ -12,7 +12,6 @@ import { Logout } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/slices/authSlice";
-import Cookies from "js-cookie";
 
 export const ProfileAvatarMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
