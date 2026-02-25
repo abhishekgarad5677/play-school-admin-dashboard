@@ -30,10 +30,6 @@ export const ProfileAvatarMenu = () => {
     : null;
 
   const handleLogout = () => {
-    // Clear user and token cookies
-    Cookies.remove("user");
-    Cookies.remove("token");
-
     // Dispatch logout action to clear state
     dispatch(logout());
 
@@ -55,7 +51,7 @@ export const ProfileAvatarMenu = () => {
           aria-expanded={open ? "true" : undefined}
         >
           <Avatar sx={{ bgcolor: "white", color: "#1976d2", fontWeight: 500 }}>
-            {userSession?.name.toUpperCase().split('')[0]}
+            {userSession?.name.toUpperCase().split("")[0]}
           </Avatar>
         </IconButton>
       </Tooltip>
