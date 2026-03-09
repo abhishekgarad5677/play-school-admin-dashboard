@@ -398,7 +398,7 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
               <Box mb={1}>{card.icon}</Box>
               <Typography
                 variant="subtitle2"
-                sx={{ fontWeight: 500 }}
+                sx={{ fontWeight: 500, fontSize: 12 }}
                 dangerouslySetInnerHTML={{
                   __html: (() => {
                     const titlesToBreak = [

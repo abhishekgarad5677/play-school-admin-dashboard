@@ -282,7 +282,7 @@ const Students = () => {
           items={[
             {
               label: "Students",
-              href: "/dashboard/students",
+              href: "/subscribed-users",
               icon: <ChildCareIcon fontSize="small" />,
             },
           ]}
@@ -327,7 +327,7 @@ const Students = () => {
               }
             />
           )}
-          {data?.length > 1 && (
+          {data?.length >= 1 && (
             <Button
               variant="contained"
               onClick={handleBatchedExport}

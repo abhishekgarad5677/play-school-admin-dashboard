@@ -143,7 +143,7 @@ export const getAgeForStudent = (dobString) => {
     age--;
   }
   return age;
-}
+};
 
 // functions for processing data for charts and graphs (Most Played Games and Least Played Games)
 
@@ -243,3 +243,4 @@ export const getMappedId = (dateFilter, rowId) => {
   const baseId = dateMap[dateFilter] || 0; // fallback to 0 if unmatched
   return parseInt(`${baseId}${rowId}`);
 };
+

@@ -395,6 +395,20 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    sendPaymentLink: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/send-subscription-url",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    checkPaymentStatus: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/check-payment",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -450,4 +464,6 @@ export const {
   useFreeTrialClickedButNotStartedMutation,
   useSubscriptionCancelledMutation,
   useAddFeedbackMutation,
+  useSendPaymentLinkMutation,
+  useCheckPaymentStatusMutation
 } = apiSlice;

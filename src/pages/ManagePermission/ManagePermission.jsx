@@ -32,11 +32,7 @@ const ManagePermission = () => {
     }
   }, [permissionsData]);
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 150 },
-    { field: "name", headerName: "Name", width: 250 },
-    // { field: "frontendRoute", headerName: "Route", width: 300 },
-  ];
+  const columns = [{ field: "name", headerName: "Permissions", width: 250 }];
 
   const existingPermissionRoutes = useMemo(() => {
     const s = new Set();

@@ -161,7 +161,7 @@ const AdminManager = () => {
   } = useGetAdminListQuery();
 
   const columns = [
-    { field: "userName", headerName: "User Name", width: 300 },
+    { field: "userName", headerName: "User Name", width: 200 },
     { field: "email", headerName: "Email", width: 300 },
     {
       field: "actions",

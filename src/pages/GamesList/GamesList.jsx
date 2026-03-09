@@ -97,7 +97,7 @@ const GamesList = () => {
           sx={{
             width: { xs: "100%", sm: "auto", backgroundColor: "#5D87FF" },
           }}
-          onClick={() => navigate("/dashboard/add-games-category")}
+          onClick={() => navigate("/add-games-category")}
         >
           Add Category
         </Button>

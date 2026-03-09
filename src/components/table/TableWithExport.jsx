@@ -34,20 +34,30 @@ export const TableWithExport = (props) => {
       onPaginationModelChange={onPaginationModelChange}
       pageSizeOptions={pageSizeOptions}
       rowCount={rowCount}
+      disableColumnSorting
+      disableColumnMenu
       disableRowSelectionOnClick
       // slots={{ toolbar: CustomToolbar }}
       sx={{
         border: 0,
         width: "100%",
+
         "& .MuiDataGrid-cell:focus": {
           outline: "none",
         },
-        '& .MuiDataGrid-cell[data-field="actions"]': {
+
+        "& .MuiDataGrid-cell:focus-within": {
           outline: "none",
         },
-        '& .MuiDataGrid-cell[data-field="actions"]:focus-within': {
+
+        "& .MuiDataGrid-columnHeader:focus": {
           outline: "none",
         },
+
+        "& .MuiDataGrid-columnHeader:focus-within": {
+          outline: "none",
+        },
+
         "& .MuiDataGrid-columnHeaderTitle": {
           fontWeight: 600,
         },

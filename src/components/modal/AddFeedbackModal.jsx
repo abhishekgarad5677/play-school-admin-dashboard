@@ -93,10 +93,13 @@ const AddFeedbackModal = ({
 
   useEffect(() => {
     if (activeTab == 0) {
+      setSeclectVal([]);
       setSeclectVal(phoneNumberAddedButFreeTrialNotClicked);
     } else if (activeTab == 1) {
+      setSeclectVal([]);
       setSeclectVal(freeTrialClickedButNotStarted);
     } else if (activeTab == 2) {
+      setSeclectVal([]);
       setSeclectVal(subscriptionCancelled);
     }
   }, [activeTab]);

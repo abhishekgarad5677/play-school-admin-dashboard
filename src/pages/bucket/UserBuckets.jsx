@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Paper, Tab, Tabs, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import {
   useAddFeedbackMutation,
   useFreeTrialClickedButNotStartedMutation,
@@ -11,7 +20,10 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import DatePicker from "react-datepicker";
 import { dateFilterOptions } from "../../utils/constant";
-import { formatDateToReadableString, useFormattedDate } from "../../utils/Hooks";
+import {
+  formatDateToReadableString,
+  useFormattedDate,
+} from "../../utils/Hooks";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -21,6 +33,7 @@ import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import ViewFeedbackModal from "../../components/modal/ViewFeedbackModal";
 import AddFeedbackModal from "../../components/modal/AddFeedbackModal";
 import EditFeedbackModal from "../../components/modal/EditFeedbackModal";
+import { toast } from "react-toastify";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -193,7 +206,7 @@ const UserBuckets = () => {
     {
       field: "action",
       headerName: "Call Center Feedback",
-      width: 200,
+      width: 400,
       renderCell: (params) => (
         <Box
           sx={{ display: "flex", gap: 2, alignItems: "center", marginTop: 2 }}
@@ -222,10 +235,44 @@ const UserBuckets = () => {
               </Tooltip>
             </>
           )}
+          <Tooltip title="Send Link">
+            <Button
+              size="small"
+              variant="contained"
+              color="success"
+              startIcon={<WhatsAppIcon />} // Adding WhatsApp icon to the button
+              onClick={() => handleSendRazorpayLink(params)}
+            >
+              Send Link
+            </Button>
+          </Tooltip>
         </Box>
       ),
     },
   ];
+
+  const handleSendRazorpayLink = async (params) => {
+    try {
+      const formData = new FormData();
+      formData.append("parentName", params.row.name);
+      formData.append("phoneNumber", params.row.phoneNumber);
+      formData.append("emailId", params.row.email);
+
+      const response = await fetch("/api/generate-razorpay-link", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (data.status) {
+        toast.success(data.message || "Link send successfully");
+      } else {
+        toast.error("Failed to send Razorpay link.");
+      }
+    } catch (error) {
+      toast.error("Error sending Razorpay link.");
+    }
+  };
 
   const handleAddFeedback = (params) => {
     setSelectedUser(params.row);
@@ -376,7 +423,7 @@ const UserBuckets = () => {
               }
             />
           )}
-          {data?.length > 1 && (
+          {data?.length >= 1 && (
             <Button
               variant="contained"
               onClick={handleBatchedExport}
@@ -412,7 +459,7 @@ const UserBuckets = () => {
               />
             </Tabs>
           </Box>
-          {isLoading || freeTrialClikedLoading ? (
+          {isLoading || freeTrialClikedLoading || subCancelledLoading ? (
             <TableSkeleton rows={10} columns={6} />
           ) : (
             <TableWithExport

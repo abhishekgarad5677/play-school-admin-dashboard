@@ -142,41 +142,144 @@ export const userTypeOptions = [
 //   ],
 // };
 
+// export const phoneNumberAddedButFreeTrialNotClicked = [
+//   "Converted - Paid",
+//   "Concerned about auto debit",
+//   "No answer",
+//   "App crashed",
+//   "Could not find trial button",
+//   "Didn’t understand trial terms",
+//   "Will try later",
+//   "Just exploring",
+//   "Stuck on loading screen",
+//   "Planning to start later",
+//   "App crashed during payment",
+//   "User did not receive the call",
+//   "Invalid/Wrong number",
+//   "Callback Scheduled",
+//   "Other (please specify)",
+// ];
+
+// export const freeTrialClickedButNotStarted = [
+//   "Converted - Paid",
+//   "Not worth price",
+//   "No answer",
+//   "Too expensive",
+//   "Card declined",
+//   "Didn’t want to add payment method",
+//   "Unsure what happens after trial",
+//   "Worried about auto renewal",
+//   "Stuck on loading screen",
+//   "App crashed during payment",
+//   "User did not receive the call",
+//   "Invalid/Wrong number",
+//   "Callback Scheduled",
+//   "Other (please specify)",
+// ];
+
+// export const subscriptionCancelled = [
+//   "Converted - Paid",
+//   "Not worth price",
+//   "No answer",
+//   "Too expensive",
+//   "App performance issues",
+//   "No reminder/engagement",
+//   "Child not interested",
+//   "App crashed during payment",
+//   "User did not receive the call",
+//   "Invalid/Wrong number",
+//   "Callback Scheduled",
+//   "Other (please specify)",
+// ];
+
 export const phoneNumberAddedButFreeTrialNotClicked = [
-  "Concerned about auto debit",
-  "App crashed",
-  "Could not find trial button",
-  "Didn’t understand trial terms",
-  "Will try later",
-  "Just exploring",
-  "Stuck on loading screen",
-  "Planning to start later",
-  "User did not receive the call",
-  "Invalid number",
-  // "Other (please specify)",
+  { label: "Converted - Paid", value: 1 },
+  { label: "Payment link sent", value: 16 },
+  { label: "Concerned about auto debit", value: 30 },
+  { label: "No answer", value: 2 },
+  { label: "App crashed", value: 37 },
+  { label: "Could not find trial button", value: 31 },
+  { label: "Didn’t understand trial terms", value: 32 },
+  { label: "Will try later", value: 33 },
+  { label: "Just exploring", value: 34 },
+  { label: "Stuck on loading screen", value: 35 },
+  { label: "Planning to start later", value: 36 },
+  { label: "App crashed during payment", value: 15 },
+  { label: "Invalid/Wrong number", value: 3 },
+  { label: "Callback Scheduled", value: 4 },
+  { label: "Other (please specify)", value: 5 },
 ];
 
 export const freeTrialClickedButNotStarted = [
-  "Too expensive",
-  "Not worth price",
-  "Card declined",
-  "Payment failed",
-  "Didn’t want to add payment method",
-  "Unsure what happens after trial",
-  "Worried about auto renewal",
-  "Stuck on loading screen",
-  "App crashed during payment",
-  "User did not receive the call",
-  "Invalid number",
-  // "Other (please specify)",
+  { label: "Converted - Paid", value: 1 },
+  { label: "Payment link sent", value: 16 },
+  { label: "Not worth price", value: 10 },
+  { label: "No answer", value: 2 },
+  { label: "Too expensive", value: 11 },
+  { label: "Card declined", value: 50 },
+  { label: "Didn’t want to add payment method", value: 51 },
+  { label: "Unsure what happens after trial", value: 52 },
+  { label: "Worried about auto renewal", value: 53 },
+  { label: "Stuck on loading screen", value: 35 },
+  { label: "App crashed during payment", value: 15 },
+  { label: "Invalid/Wrong number", value: 3 },
+  { label: "Callback Scheduled", value: 4 },
+  { label: "Other (please specify)", value: 5 },
 ];
+
 export const subscriptionCancelled = [
-  "Too expensive",
-  "Not worth price",
-  "App performance issues",
-  "No reminder/engagement",
-  "Child not interested",
-  "User did not receive the call",
-  "Invalid number",
-  // "Other (please specify)"
+  { label: "Converted - Paid", value: 1 },
+  { label: "Payment link sent", value: 16 },
+  { label: "Not worth price", value: 10 },
+  { label: "No answer", value: 2 },
+  { label: "Too expensive", value: 11 },
+  { label: "App performance issues", value: 12 },
+  { label: "No reminder/engagement", value: 13 },
+  { label: "Child not interested", value: 14 },
+  { label: "App crashed during payment", value: 15 },
+  { label: "Invalid/Wrong number", value: 3 },
+  { label: "Callback Scheduled", value: 4 },
+  { label: "Other (please specify)", value: 5 },
 ];
+
+export const getLeadReasonValue = (label, options) => {
+  const found = options?.find((o) => o.label === label);
+  return found ? found.value : null;
+};
+
+export const getLeadReasonLabel = (value, options) => {
+  if (!value || value === 0) return "Select Status"; // 0 => Select Status
+  const found = options?.find((o) => Number(o.value) === Number(value));
+  return found?.label ?? "Select Status";
+};
+
+export const bucketCategory = [
+  { label: "Subscription Cancelled", value: "Subscription Cancelled" },
+  {
+    label: "Trial Clicked – Not Started",
+    value: "Trial Clicked – Not Started",
+  },
+  {
+    label: "Phone Added – Trial Not Clicked",
+    value: "Phone Added – Trial Not Clicked",
+  },
+];
+
+export const getLeadOutcomeValue = (status) => {
+  if (status === "All") return 0;
+  else if (status === "Pending") return 1;
+  else if (status === "Called") return 2;
+  else if (status === "Scheduled") return 3;
+  else if (status === "Converted") return 4;
+  else if (status === "Link Sent") return 5;
+
+  return 0; // fallback
+};
+
+export const getLeadTypeValue = (bucket) => {
+  if (bucket === "Phone Added – Trial Not Clicked") return 2;
+  else if (bucket === "Trial Clicked – Not Started") return 1;
+  else if (bucket === "Subscription Cancelled") return 0;
+
+  return 0; // fallback
+};

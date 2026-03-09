@@ -287,7 +287,7 @@ const FreeTrialStarted = () => {
               }
             />
           )}
-          {data?.length > 1 && (
+          {data?.length >= 1 && (
             <Button
               variant="contained"
               onClick={handleBatchedExport}

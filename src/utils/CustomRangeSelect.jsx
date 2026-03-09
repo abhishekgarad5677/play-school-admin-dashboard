@@ -5,12 +5,15 @@ const CustomRangeSelect = ({
   value,
   onChange,
   label,
-  size = "small",
+  size,
   minWidth = 200,
   options,
 }) => {
   return (
-    <FormControl sx={{ minWidth }} size={size}>
+    <FormControl
+      sx={{ minWidth: minWidth || 200 }}
+      size={size ? size : "small"}
+    >
       <InputLabel id="date-range-select-label">{label}</InputLabel>
       <Select
         labelId="date-range-select-label"

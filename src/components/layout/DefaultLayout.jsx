@@ -16,7 +16,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import logo from "../../../public/play-school-logo.png";
-import { Tooltip } from "@mui/material";
+import { Tooltip, createTheme, ThemeProvider, Switch } from "@mui/material";
 import { ProfileAvatarMenu } from "../Avatar/ProfileAvatarMenu";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "../../pages/Dashboard/Dashboard";
@@ -42,8 +42,10 @@ import UserBuckets from "../../pages/bucket/UserBuckets";
 import ManagePermission from "../../pages/ManagePermission/ManagePermission";
 import { SideBarRoutes } from "../../utils/SideBarRoutes";
 import { useSelector } from "react-redux";
+import SalesCommandCenter from "../../pages/bucket/UserBucketsNew";
+import { useEffect } from "react";
 
-const drawerWidth = 270;
+const drawerWidth = 244;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -128,6 +130,7 @@ export default function DefaultLayout() {
   const user = useSelector((state) => state.auth.user); // Access the current user from Redux
   const isSuper = user?.isSuper;
   const permissions = user?.permissions || [];
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
 
   const acticeTabStyle = {
     backgroundColor: "#5d87ff",
@@ -149,304 +152,261 @@ export default function DefaultLayout() {
     setOpen(false);
   };
 
+  // Toggle Dark Mode
+  const handleDarkModeToggle = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  // Create light and dark theme
+  const lightTheme = createTheme({
+    palette: {
+      mode: "light",
+    },
+  });
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        open={open}
-        sx={{ boxShadow: "none", background: "#5d87ff" }}
-      >
-        <Toolbar
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          open={open}
+          sx={{ boxShadow: "none", background: "#5d87ff" }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={[
-                {
-                  marginRight: 5,
-                },
-                open && { display: "none" },
-              ]}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography fontSize={16} fontWeight={500} noWrap component="div">
-              Playschool Admin Dashboard
-            </Typography>
-          </Box>
-          <Box
+          <Toolbar
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 2,
             }}
           >
-            <ProfileAvatarMenu />
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          "& .MuiDrawer-paper": {
-            overflow: "auto", // Enables scrolling
-            "&::-webkit-scrollbar": {
-              display: "none", // Hides scrollbar in Webkit browsers (Chrome, Safari)
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={[
+                  {
+                    marginRight: 5,
+                  },
+                  open && { display: "none" },
+                ]}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography fontSize={16} fontWeight={500} noWrap component="div">
+                Playschool Admin Dashboard
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 2,
+              }}
+            >
+              <ProfileAvatarMenu />
+              {/* <Switch checked={isDarkMode} onChange={handleDarkModeToggle} /> */}
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          sx={{
+            "& .MuiDrawer-paper": {
+              overflow: "auto", // Enables scrolling
+              "&::-webkit-scrollbar": {
+                display: "none", // Hides scrollbar in Webkit browsers (Chrome, Safari)
+              },
+              msOverflowStyle: "none", // Hides scrollbar in Internet Explorer
+              "scrollbar-width": "none", // Hides scrollbar in Firefox
             },
-            msOverflowStyle: "none", // Hides scrollbar in Internet Explorer
-            "scrollbar-width": "none", // Hides scrollbar in Firefox
-          },
-        }}
-        variant="permanent"
-        open={open}
-      >
-        <DrawerHeader>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
-              paddingLeft: 1,
-            }}
-          >
-            {open && (
-              <img
-                style={{ transition: "ease" }}
-                src={logo}
-                alt="play-school-logo"
-                width={"40%"}
-                height={"85"}
-              />
-            )}
-          </Box>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        {/* <List>
-          {SideBarRoutes.map((ele, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={Link}
-                to={ele.path}
-                sx={[
-                  {
-                    // minHeight: 10,
-                    padding: "6px 0",
-                    margin: "0 10px",
-                    borderRadius: "7px",
-                    backgroundColor:
-                      ele.path === location.pathname ? "#5d87ff" : "",
-                    px: 1.5,
-                  },
-                  ele.path === location.pathname ? acticeTabStyle : null,
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    ele.path === location.pathname ? acticeIconStyle : null,
-                    open
-                      ? {
-                          mr: 1.5,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {open ? (
-                    ele.icon
-                  ) : (
-                    <Tooltip title={ele.title} arrow placement="right">
-                      {ele.icon}
-                    </Tooltip>
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography sx={{ fontSize: "14px" }}>
-                      {ele.title}
-                    </Typography>
-                  }
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
-        <List>
-          {(isSuper
-            ? SideBarRoutes
-            : SideBarRoutes.filter((route) => permissions.includes(route.path))
-          ).map((ele, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                component={Link}
-                to={ele.path}
-                sx={[
-                  {
-                    padding: "6px 0",
-                    margin: "0 10px",
-                    borderRadius: "7px",
-                    backgroundColor:
-                      ele.path === location.pathname ? "#5d87ff" : "",
-                    px: 1.5,
-                  },
-                  ele.path === location.pathname ? acticeTabStyle : null,
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    ele.path === location.pathname ? acticeIconStyle : null,
-                    open
-                      ? {
-                          mr: 1.5,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {open ? (
-                    ele.icon
-                  ) : (
-                    <Tooltip title={ele.title} arrow placement="right">
-                      {ele.icon}
-                    </Tooltip>
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <Typography sx={{ fontSize: "14px" }}>
-                      {ele.title}
-                    </Typography>
-                  }
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          overflow: "auto",
-          height: "100vh",
-          scrollbarWidth: "none", // For Firefox
-          "&::-webkit-scrollbar": {
-            display: "none", // For Chrome, Safari
-          },
-        }}
-      >
-        <DrawerHeader />
-        <Routes>
-          <Route index path="/dashboard" element={<Dashboard />} />
-          <Route path="subscribed-users" element={<Students />} />
-          <Route path="non-subscribed-users" element={<UnsubscribedUsers />} />
-          <Route path="push-notification" element={<Retention />} />
-          <Route path="help-desk" element={<Help />} />
-          <Route path="games" element={<Games />} />
-          <Route path="location-analytics" element={<TopRegion />} />
-          <Route path="funnel-metrics" element={<Funnel />} />
-          <Route path="manage-games" element={<GamesList />} />
-          <Route path="add-games-category" element={<AddGamesCategory />} />
-          <Route path="add-games/:id" element={<AddGames />} />
-          <Route path="view-game/:id" element={<ViewGame />} />
-          <Route path="domestic-revenue" element={<DomesticRevenue />} />
-          <Route
-            path="international-revenue"
-            element={<InternationalRevenue />}
-          />
-          <Route path="cash-free-trial-started" element={<CashFree />} />
-          <Route
-            path="razor-pay-free-trial-users"
-            element={<RazorpayFreeTrial />}
-          />
-          <Route path="subscription-status" element={<Subscription />} />
-          <Route path="user-buckets" element={<UserBuckets />} />
-          <Route path="manage-admin" element={<AdminManager />} />
-          <Route path="manage-permission" element={<ManagePermission />} />
-          <Route path="*" element={<h2>❌ Page Not Found</h2>} />
-          {/* <Route path="play-services-started" element={<FreeTrialStarted />} /> */}
-          {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
-          {/* <Route path="reports" element={<Reports />} /> */}
-          {/* <Route path="achievement" element={<Achievement />} /> */}
-          {/* <Route path="category" element={<Category />} /> */}
-          {/* <Route path="add-category" element={<AddCategory />} /> */}
-          {/* <Route path="age-group" element={<AgeGroup />} /> */}
-          {/* <Route path="content" element={<Content />} /> */}
-          {/* <Route path="add-content" element={<AddContent />} /> */}
-          {/* <Route path="admin-manager" element={<AdminManager />} /> */}
-          {/* <Route path="logs" element={<Logs />} /> */}
-          {/* <Route path="notification" element={<Notification />} /> */}
-        </Routes>
-        <Typography
-          variant="p"
-          fontSize={12}
-          mt={4}
-          textAlign={"center"}
-          color="#ccc"
-          noWrap
-          component="div"
+          }}
+          variant="permanent"
+          open={open}
         >
-          Copyright © 2025 TMKOC Playschool. All Rights Reserved. <br />
-          Powered by Neela Mediatech Private Limited
-        </Typography>
+          <DrawerHeader>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                paddingLeft: 1,
+              }}
+            >
+              {open && (
+                <img
+                  style={{ transition: "ease" }}
+                  src={logo}
+                  alt="play-school-logo"
+                  width={"40%"}
+                  height={"85"}
+                />
+              )}
+            </Box>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <List>
+            {(isSuper
+              ? SideBarRoutes
+              : SideBarRoutes.filter((route) =>
+                  permissions.includes(route.path),
+                )
+            ).map((ele, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  component={Link}
+                  to={ele.path}
+                  sx={[
+                    {
+                      padding: "6px 0",
+                      margin: "0 10px",
+                      borderRadius: "7px",
+                      backgroundColor:
+                        ele.path === location.pathname ? "#5d87ff" : "",
+                      px: 1.5,
+                    },
+                    ele.path === location.pathname ? acticeTabStyle : null,
+                    open
+                      ? {
+                          justifyContent: "initial",
+                        }
+                      : {
+                          justifyContent: "center",
+                        },
+                  ]}
+                >
+                  <ListItemIcon
+                    sx={[
+                      {
+                        minWidth: 0,
+                        justifyContent: "center",
+                      },
+                      ele.path === location.pathname ? acticeIconStyle : null,
+                      open
+                        ? {
+                            mr: 1.5,
+                          }
+                        : {
+                            mr: "auto",
+                          },
+                    ]}
+                  >
+                    {open ? (
+                      ele.icon
+                    ) : (
+                      <Tooltip title={ele.title} arrow placement="right">
+                        {ele.icon}
+                      </Tooltip>
+                    )}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Typography sx={{ fontSize: "14px" }}>
+                        {ele.title}
+                      </Typography>
+                    }
+                    sx={[
+                      open
+                        ? {
+                            opacity: 1,
+                          }
+                        : {
+                            opacity: 0,
+                          },
+                    ]}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            overflow: "auto",
+            height: "100vh",
+            scrollbarWidth: "none", // For Firefox
+            "&::-webkit-scrollbar": {
+              display: "none", // For Chrome, Safari
+            },
+          }}
+        >
+          <DrawerHeader />
+          <Routes>
+            <Route index path="/dashboard" element={<Dashboard />} />
+            <Route path="subscribed-users" element={<Students />} />
+            <Route
+              path="non-subscribed-users"
+              element={<UnsubscribedUsers />}
+            />
+            <Route path="push-notification" element={<Retention />} />
+            <Route path="help-desk" element={<Help />} />
+            <Route path="games" element={<Games />} />
+            <Route path="location-analytics" element={<TopRegion />} />
+            <Route path="funnel-metrics" element={<Funnel />} />
+            <Route path="manage-games" element={<GamesList />} />
+            <Route path="add-games-category" element={<AddGamesCategory />} />
+            <Route path="add-games/:id" element={<AddGames />} />
+            <Route path="view-game/:id" element={<ViewGame />} />
+            <Route path="domestic-revenue" element={<DomesticRevenue />} />
+            <Route
+              path="international-revenue"
+              element={<InternationalRevenue />}
+            />
+            <Route path="cash-free-trial-started" element={<CashFree />} />
+            <Route
+              path="razor-pay-free-trial-users"
+              element={<RazorpayFreeTrial />}
+            />
+            <Route path="subscription-status" element={<Subscription />} />
+            {/* <Route path="user-buckets" e  lement={<UserBuckets />} /> */}
+            <Route path="user-buckets" element={<SalesCommandCenter />} />
+            <Route path="manage-admin" element={<AdminManager />} />
+            <Route path="manage-permission" element={<ManagePermission />} />
+            <Route path="*" element={<h2>❌ Page Not Found</h2>} />
+            {/* <Route path="play-services-started" element={<FreeTrialStarted />} /> */}
+            {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
+            {/* <Route path="reports" element={<Reports />} /> */}
+            {/* <Route path="achievement" element={<Achievement />} /> */}
+            {/* <Route path="category" element={<Category />} /> */}
+            {/* <Route path="add-category" element={<AddCategory />} /> */}
+            {/* <Route path="age-group" element={<AgeGroup />} /> */}
+            {/* <Route path="content" element={<Content />} /> */}
+            {/* <Route path="add-content" element={<AddContent />} /> */}
+            {/* <Route path="admin-manager" element={<AdminManager />} /> */}
+            {/* <Route path="logs" element={<Logs />} /> */}
+            {/* <Route path="notification" element={<Notification />} /> */}
+          </Routes>
+          <Typography
+            variant="p"
+            fontSize={12}
+            mt={4}
+            textAlign={"center"}
+            color="#ccc"
+            noWrap
+            component="div"
+          >
+            Copyright © 2025 TMKOC Playschool. All Rights Reserved. <br />
+            Powered by Neela Mediatech Private Limited
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
