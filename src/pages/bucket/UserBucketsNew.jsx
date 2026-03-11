@@ -50,7 +50,8 @@ import dayjs from "dayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import LoopIcon from "@mui/icons-material/Loop";
+import ClearIcon from "@mui/icons-material/Clear";
+import { IconButton, InputAdornment } from "@mui/material";
 
 const SalesCommandCenter = () => {
   const [date, setDate] = useState("today");
@@ -74,31 +75,36 @@ const SalesCommandCenter = () => {
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [feedbackDateTime, setFeedbackDateTime] = useState(null);
 
+  // Derived validation flags — set directly when reason changes
+  const [scheduleDateRequired, setScheduleDateRequired] = useState(false);
+  const [commentRequired, setCommentRequired] = useState(false);
+
+  const [errors, setErrors] = useState({
+    feedbackReasonError: "",
+    feedbackMessageError: "",
+    dateError: "",
+  });
+
+  // ─── Reset page to 0 whenever filter changes ───────────────────────────────
   useEffect(() => {
-    setPaginationModel((prev) => ({
-      ...prev,
-      page: 0,
-    }));
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   }, [statusFilter]);
 
+  // ─── Restore persisted filter state from sessionStorage ────────────────────
   useEffect(() => {
     const storedDate = sessionStorage.getItem("selectedDate");
     const storedStartDate = sessionStorage.getItem("startDate");
     const storedEndDate = sessionStorage.getItem("endDate");
     const storedBucket = sessionStorage.getItem("selectedBucket");
 
-    if (storedBucket) {
-      setbucket(storedBucket);
-    }
-
-    if (storedDate) {
-      setDate(storedDate);
-    }
+    if (storedBucket) setbucket(storedBucket);
+    if (storedDate) setDate(storedDate);
     if (storedStartDate && storedEndDate) {
       setDateRange([new Date(storedStartDate), new Date(storedEndDate)]);
     }
   }, []);
 
+  // ─── API mutations ──────────────────────────────────────────────────────────
   const [postDataStudent, { isLoading, data: studentsData }] =
     usePhoneNumberAddedFreeTrialNotClickedMutation();
   const [
@@ -110,13 +116,13 @@ const SalesCommandCenter = () => {
     { isLoading: subCancelledLoading, data: subCancelledData },
   ] = useSubscriptionCancelledMutation();
   const [postSendPaymentLink] = useSendPaymentLinkMutation();
-
   const [postCheckPaymentStatus] = useCheckPaymentStatusMutation();
-
   const [addFeedback] = useAddFeedbackMutation();
 
+  // ─── Fetch table data whenever filters / pagination change ─────────────────
   useEffect(() => {
     const formData = new FormData();
+
     if (date !== "custom") {
       formData.append("FilterType", date);
     } else if (date === "custom" && startDate && endDate) {
@@ -138,24 +144,18 @@ const SalesCommandCenter = () => {
     }
   }, [date, startDate, endDate, paginationModel, bucket, statusFilter]);
 
+  // ─── Helper: get row count for current status tab ──────────────────────────
   const getRowCountByStatus = (data, status) => {
-    if (status === "All") {
-      return data?.allUsers;
-    } else if (status === "Pending") {
-      return data?.pendingUsers;
-    } else if (status === "Called") {
-      return data?.calledUsers;
-    } else if (status === "Scheduled") {
-      return data?.followUpUsers;
-    } else if (status === "Converted") {
-      return data?.convertedUsers;
-    } else if (status === "Link Sent") {
-      return data?.paymentLinkSentUsers;
-    }
-
+    if (status === "All") return data?.allUsers;
+    if (status === "Pending") return data?.pendingUsers;
+    if (status === "Called") return data?.calledUsers;
+    if (status === "Scheduled") return data?.followUpUsers;
+    if (status === "Converted") return data?.convertedUsers;
+    if (status === "Link Sent") return data?.paymentLinkSentUsers;
     return data?.allUsers;
   };
 
+  // ─── Sync API response into local state ────────────────────────────────────
   useEffect(() => {
     if (studentsData && bucket === "Phone Added – Trial Not Clicked") {
       setData(studentsData?.data?.users);
@@ -178,6 +178,7 @@ const SalesCommandCenter = () => {
     }
   }, [studentsData, freeTrialClikedData, subCancelledData, statusFilter]);
 
+  // ─── Date filter handlers ───────────────────────────────────────────────────
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
     setDate(selectedDate);
@@ -199,100 +200,158 @@ const SalesCommandCenter = () => {
     sessionStorage.setItem("selectedBucket", selectedBucket);
   };
 
+  // ─── Re-fetch helper (used after mutations) ────────────────────────────────
   const handleGetUpdateData = async () => {
-    const formDataForFetch = new FormData();
+    const formData = new FormData();
 
     if (date !== "custom") {
-      formDataForFetch.append("FilterType", date);
+      formData.append("FilterType", date);
     } else {
-      formDataForFetch.append("FilterType", date);
-      formDataForFetch.append(
-        "FromDate",
-        formatDateToReadableString(startDate),
-      );
-      formDataForFetch.append("ToDate", formatDateToReadableString(endDate));
+      formData.append("FilterType", date);
+      formData.append("FromDate", formatDateToReadableString(startDate));
+      formData.append("ToDate", formatDateToReadableString(endDate));
     }
 
-    formDataForFetch.append("PageSize", paginationModel.pageSize);
-    formDataForFetch.append("PageNumber", paginationModel.page + 1);
-    formDataForFetch.append("leadOutcome", getLeadOutcomeValue(statusFilter));
+    formData.append("PageSize", paginationModel.pageSize);
+    formData.append("PageNumber", paginationModel.page + 1);
+    formData.append("leadOutcome", getLeadOutcomeValue(statusFilter));
 
     try {
       if (bucket === "Phone Added – Trial Not Clicked") {
-        await postDataStudent(formDataForFetch).unwrap();
+        await postDataStudent(formData).unwrap();
       } else if (bucket === "Trial Clicked – Not Started") {
-        await postFreeTrialCliked(formDataForFetch).unwrap();
+        await postFreeTrialCliked(formData).unwrap();
       } else {
-        await postSubCancelled(formDataForFetch).unwrap();
+        await postSubCancelled(formData).unwrap();
       }
     } catch (error) {
       console.error("Error fetching updated data:", error);
-      throw error;
     }
   };
 
-  const handleSubmit = async (
-    row,
-    selectedValue,
-    messageOverride,
-    followUpOverride,
-  ) => {
+  // ─── Feedback reason change: update label + derive validation flags ─────────
+  // FIX: previously selectedStatus was never set, so scheduleDateRequired /
+  //      commentRequired were always false → validation never triggered.
+  //      Now we derive the flags directly from selectOption using the label.
+  const handleFeedbackReasonChange = (e) => {
+    const selectedLabel = e.target.value;
+    setFeedbackReason(selectedLabel);
+
+    // Reset previous errors on reason change
+    setErrors((prev) => ({ ...prev, feedbackReasonError: "" }));
+
+    // FIX: match by label (feedbackReason stores the label string)
+    const matched = selectOption.find((opt) => opt.label === selectedLabel);
+    if (matched) {
+      setScheduleDateRequired(matched.scheduleDateRequired);
+      setCommentRequired(matched.commentRequired);
+    } else {
+      setScheduleDateRequired(false);
+      setCommentRequired(false);
+    }
+  };
+
+  // ─── Submit feedback to API ─────────────────────────────────────────────────
+  const handleSubmitData = async () => {
     const formData = new FormData();
 
-    formData.append("UserId", row?.userId);
+    formData.append("UserId", feedbackRow?.userId);
 
-    const reasonValue = getLeadReasonValue(selectedValue, selectOption);
-
+    // getLeadReasonValue expects the label and looks up the numeric value
+    const reasonValue = getLeadReasonValue(feedbackReason, selectOption);
     if (reasonValue !== null) {
       formData.append("LeadReason", reasonValue);
     }
 
-    if (messageOverride?.trim()) {
-      formData.append("message", messageOverride.trim());
+    if (feedbackMessage.trim()) {
+      formData.append("message", feedbackMessage.trim());
     }
 
     formData.append("LeadType", getLeadTypeValue(bucket));
 
-    if (followUpOverride) {
-      formData.append("FollowUp", followUpOverride);
-    }
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
+    if (feedbackDateTime) {
+      formData.append(
+        "FollowUp",
+        feedbackDateTime.format("YYYY-MM-DD HH:mm:ss"),
+      );
     }
 
-    // try {
-    //   const res = await addFeedback(formData).unwrap();
+    try {
+      const response = await addFeedback(formData).unwrap();
 
-    //   if (res?.status === true) {
-    //     toast.success(res?.message || "Feedback saved");
-    //     await handleGetUpdateData();
-    //   } else {
-    //     toast.error(res?.message || "Something went wrong");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("Error submitting feedback");
-    // }
+      if (response?.status) {
+        toast.success("Feedback submitted successfully!");
+        closeFeedbackModal(); // FIX: modal was never closed on success before
+        await handleGetUpdateData(); // FIX: data was not refreshed on success
+      } else {
+        toast.error(response?.message || "Error submitting feedback");
+      }
+    } catch (error) {
+      toast.error("Error submitting feedback");
+    }
   };
 
+  // ─── Validate then submit ───────────────────────────────────────────────────
+  // FIX: previously this called handleSubmit(row, ...) with args that were
+  //      ignored. Now it validates and calls handleSubmitData() directly.
+  const handleSubmit = async () => {
+    // Reset all errors
+    setErrors({
+      feedbackReasonError: "",
+      feedbackMessageError: "",
+      dateError: "",
+    });
+
+    let isValid = true;
+
+    if (!feedbackReason) {
+      isValid = false;
+      setErrors((prev) => ({
+        ...prev,
+        feedbackReasonError: "Please select a feedback reason.",
+      }));
+    }
+
+    // FIX: commentRequired flag is now correctly set so this check actually works
+    if (commentRequired && !feedbackMessage.trim()) {
+      isValid = false;
+      setErrors((prev) => ({
+        ...prev,
+        feedbackMessageError: "Please enter a comment.",
+      }));
+    }
+
+    // FIX: scheduleDateRequired flag is now correctly set so this check works
+    if (scheduleDateRequired && !feedbackDateTime) {
+      isValid = false;
+      setErrors((prev) => ({
+        ...prev,
+        dateError: "Please select a date & time.",
+      }));
+    }
+
+    if (!isValid) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    await handleSubmitData();
+  };
+
+  // ─── Send payment link ──────────────────────────────────────────────────────
   const handleSendLinkUI = async (row) => {
     const formData = new FormData();
-
     formData.append("UserId", row?.userId);
-    formData.append("PlanId", 110); // test plan id
-    // formData.append("PlanId", 124);
+    // formData.append("PlanId", 110);
+    formData.append("PlanId", 124);
     formData.append("LeadType", getLeadTypeValue(bucket));
 
     try {
-      setSendingLinkRow((prev) => ({
-        ...prev,
-        [row?.userId]: true,
-      }));
-
+      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: true }));
       const res = await postSendPaymentLink(formData).unwrap();
 
       if (res?.status === true) {
-        toast.success("payment link sent");
+        toast.success("Payment link sent");
         await handleGetUpdateData();
       } else {
         toast.error("Error sending payment link");
@@ -300,13 +359,11 @@ const SalesCommandCenter = () => {
     } catch (error) {
       toast.error("Error sending payment link");
     } finally {
-      setSendingLinkRow((prev) => ({
-        ...prev,
-        [row?.userId]: false,
-      }));
+      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: false }));
     }
   };
 
+  // ─── Check payment status ───────────────────────────────────────────────────
   const handlePaymentStatus = async (row) => {
     const formData = new FormData();
     formData.append("UserId", row?.userId);
@@ -315,102 +372,80 @@ const SalesCommandCenter = () => {
       const res = await postCheckPaymentStatus(formData).unwrap();
 
       if (res?.status === true) {
-        toast.success("payment verfified");
+        toast.success("Payment verified");
         await handleGetUpdateData();
       } else {
-        console.log("==== 1st");
-
         toast.info(res?.message);
       }
     } catch (error) {
-      console.log("==== 1st");
       toast.error("Error while checking payment status");
     }
   };
 
-  // code for the schedule callback
-
-  const isSameDay = (a, b) => a && b && a.isSame(b, "day");
-
-  // Disable hours that are already passed (only if selected date is today)
-  const shouldDisableTime = (value, view) => {
-    if (!feedbackDateTime) return false;
-
-    const selected = feedbackDateTime;
-    const current = dayjs();
-
-    if (!isSameDay(selected, current)) return false;
-
-    if (view === "hours") {
-      return value < current.hour();
-    }
-
-    if (view === "minutes") {
-      if (selected.hour() !== current.hour()) return false;
-      return value < current.minute();
-    }
-
-    return false;
-  };
-
+  // ─── Modal open / close ─────────────────────────────────────────────────────
   const openFeedbackModal = (row) => {
     const reasonValue = Number(row?.reason ?? 0);
-    const selectedValue = getLeadReasonLabel(reasonValue, selectOption);
+    const selectedLabel = getLeadReasonLabel(reasonValue, selectOption);
+
+    // Derive validation flags for the pre-filled reason
+    const matched = selectOption.find((opt) => opt.label === selectedLabel);
+    setScheduleDateRequired(matched?.scheduleDateRequired ?? false);
+    setCommentRequired(matched?.commentRequired ?? false);
 
     setFeedbackRow(row);
     setFeedbackReason(
-      selectedValue && selectedValue !== "Select Status" ? selectedValue : "",
+      selectedLabel && selectedLabel !== "Select Status" ? selectedLabel : "",
     );
-    setFeedbackMessage(row?.message || "");
+    setFeedbackMessage(row?.notes || "");
     setFeedbackDateTime(row?.followUpAt ? dayjs(row.followUpAt) : null);
+    setErrors({
+      feedbackReasonError: "",
+      feedbackMessageError: "",
+      dateError: "",
+    });
     setFeedbackModalOpen(true);
   };
 
+  // FIX: also reset validation flags and errors on close
   const closeFeedbackModal = () => {
     setFeedbackModalOpen(false);
     setFeedbackRow(null);
     setFeedbackReason("");
     setFeedbackMessage("");
     setFeedbackDateTime(null);
+    setScheduleDateRequired(false);
+    setCommentRequired(false);
+    setErrors({
+      feedbackReasonError: "",
+      feedbackMessageError: "",
+      dateError: "",
+    });
   };
 
-  const handleFeedbackModalSubmit = async () => {
-    if (!feedbackReason) {
-      toast.error("Please select a reason");
-      return;
+  // ─── DateTime picker: disable past times on today ──────────────────────────
+  const isSameDay = (a, b) => a && b && a.isSame(b, "day");
+
+  const shouldDisableTime = (value, view) => {
+    if (!feedbackDateTime) return false;
+    const current = dayjs();
+    if (!isSameDay(feedbackDateTime, current)) return false;
+
+    if (view === "hours") return value < current.hour();
+    if (view === "minutes") {
+      if (feedbackDateTime.hour() !== current.hour()) return false;
+      return value < current.minute();
     }
-
-    let followUpValue;
-
-    if (feedbackReason === "Callback Scheduled") {
-      if (!feedbackDateTime) {
-        toast.error("Please select date & time");
-        return;
-      }
-
-      followUpValue = feedbackDateTime.format("YYYY-MM-DDTHH:mm:ss+05:30");
-    }
-
-    await handleSubmit(
-      feedbackRow,
-      feedbackReason,
-      feedbackMessage,
-      followUpValue,
-    );
-
-    closeFeedbackModal();
+    return false;
   };
 
+  // ─── Column definitions ─────────────────────────────────────────────────────
   const scheduledDateColumn = {
     field: "followUpAt",
     headerName: "Scheduled Date",
     width: 200,
     renderCell: (params) => {
       const v = params?.row?.followUpAt;
-
-      if (!v) return "-";
-
-      return dayjs(v).format("DD MMM YYYY, hh:mm A");
+      return v ? dayjs(v).format("DD MMM YYYY, hh:mm A") : "-";
     },
   };
 
@@ -420,10 +455,7 @@ const SalesCommandCenter = () => {
     width: 200,
     renderCell: (params) => {
       const v = params?.row?.lastCalledAt;
-
-      if (!v) return "-";
-
-      return dayjs(v).format("DD MMM YYYY, hh:mm A");
+      return v ? dayjs(v).format("DD MMM YYYY, hh:mm A") : "-";
     },
   };
 
@@ -433,10 +465,7 @@ const SalesCommandCenter = () => {
     width: 220,
     renderCell: (params) => {
       const v = params?.row?.convertedAt;
-
-      if (!v) return "-";
-
-      return dayjs(v).format("DD MMM YYYY");
+      return v ? dayjs(v).format("DD MMM YYYY") : "-";
     },
   };
 
@@ -444,6 +473,17 @@ const SalesCommandCenter = () => {
     field: "calledAttempts",
     headerName: "Calls Attempted",
     width: 170,
+  };
+
+  const reasonColumn = {
+    field: "reason",
+    headerName: "Call Center Feedback",
+    width: 220,
+    renderCell: (params) => {
+      const reasonValue = Number(params?.row?.reason ?? 0);
+      const label = getLeadReasonLabel(reasonValue, selectOption);
+      return label && label !== "Select Status" ? label : "-";
+    },
   };
 
   const baseColumns = [
@@ -459,10 +499,10 @@ const SalesCommandCenter = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 700,
+      width: 500,
       renderCell: (params) => {
-        const reasonValue = Number(params?.row?.reason ?? 0); // API number
-        const selectedValue = getLeadReasonLabel(reasonValue, selectOption); // label string
+        const reasonValue = Number(params?.row?.reason ?? 0);
+        const selectedValue = getLeadReasonLabel(reasonValue, selectOption);
         const isConverted = selectedValue === "Converted - Paid";
         const isPaymentsent = selectedValue === "Payment link sent";
 
@@ -486,21 +526,20 @@ const SalesCommandCenter = () => {
             </Button>
 
             {!isConverted && (
-              <>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="success"
-                  startIcon={<WhatsAppIcon />}
-                  disabled={sendingLinkRow?.[params?.row?.userId]}
-                  onClick={() => handleSendLinkUI(params?.row)}
-                >
-                  {sendingLinkRow?.[params?.row?.userId]
-                    ? "Sending..."
-                    : "Send Link"}
-                </Button>
-              </>
+              <Button
+                size="small"
+                variant="contained"
+                color="success"
+                startIcon={<WhatsAppIcon />}
+                disabled={sendingLinkRow?.[params?.row?.userId]}
+                onClick={() => handleSendLinkUI(params?.row)}
+              >
+                {sendingLinkRow?.[params?.row?.userId]
+                  ? "Sending..."
+                  : "Send Link"}
+              </Button>
             )}
+
             {!isConverted && isPaymentsent && (
               <Button
                 size="small"
@@ -528,26 +567,25 @@ const SalesCommandCenter = () => {
       lastCalledDateColumn,
       scheduledDateColumn,
       baseColumns[3],
+      reasonColumn,
       baseColumns[4],
     ];
-  }
-
-  if (statusFilter === "Converted") {
+  } else if (statusFilter === "Converted") {
     columns = [
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
       convertedDateColumn,
       baseColumns[3],
-      baseColumns[4],
+      reasonColumn,
+      // baseColumns[4],
     ];
-  }
-
-  if (statusFilter === "Called") {
+  } else if (statusFilter === "Called" || statusFilter === "Link Sent") {
     columns = [
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
+      reasonColumn,
       callAttemptsColumn,
       lastCalledDateColumn,
       baseColumns[3],
@@ -555,32 +593,124 @@ const SalesCommandCenter = () => {
     ];
   }
 
-  if (statusFilter === "Link Sent") {
-    columns = [
-      baseColumns[0],
-      baseColumns[1],
-      baseColumns[2],
-      callAttemptsColumn,
-      lastCalledDateColumn,
-      baseColumns[3],
-      baseColumns[4],
-    ];
-  }
-
-  const convertToCSV = (
-    array,
-    keys = ["name", "phoneNumber", "childName", "callCenterFeedback"],
-  ) => {
-    const header = keys.join(",");
-    const rows = array.map((row) =>
-      keys
-        .map((key) => `"${String(row?.[key] ?? "").replace(/"/g, '""')}"`)
-        .join(","),
-    );
-    return [header, ...rows].join("\n");
-  };
+  // ─── CSV export ─────────────────────────────────────────────────────────────
 
   const [isExporting, setIsExporting] = useState(false);
+
+  // const convertToCSV = (array) => {
+  //   const keys = ["name", "phoneNumber", "childName"];
+  //   const header = [...keys, "Feedback Reason"].join(",");
+
+  //   const rows = array.map((row) => {
+  //     const reasonValue = Number(row?.reason ?? 0);
+  //     const reasonLabel = getLeadReasonLabel(reasonValue, selectOption) || "-";
+
+  //     return [
+  //       ...keys.map(
+  //         (key) => `"${String(row?.[key] ?? "").replace(/"/g, '""')}"`,
+  //       ),
+  //       `"${reasonLabel}"`,
+  //     ].join(",");
+  //   });
+
+  //   return [header, ...rows].join("\n");
+  // };
+
+  const convertToCSV = (array) => {
+    // ─── Define columns per status tab ───────────────────────────────────────
+    const getColumnsForStatus = () => {
+      const base = ["name", "phoneNumber", "childName"];
+
+      if (statusFilter === "Scheduled") {
+        return {
+          keys: [
+            ...base,
+            "calledAttempts",
+            "lastCalledAt",
+            "followUpAt",
+            "createdAt",
+          ],
+          headers: [
+            "Parent's Name",
+            "Phone Number",
+            "Child Name",
+            "Calls Attempted",
+            "Last Called Date",
+            "Scheduled Date",
+            "Date",
+            "Call Center Feedback",
+          ],
+          includeReason: true,
+        };
+      } else if (statusFilter === "Converted") {
+        return {
+          keys: [...base, "convertedAt", "createdAt"],
+          headers: [
+            "Parent's Name",
+            "Phone Number",
+            "Child Name",
+            "Converted On",
+            "Date",
+            "Call Center Feedback",
+          ],
+          includeReason: true,
+        };
+      } else if (statusFilter === "Called" || statusFilter === "Link Sent") {
+        return {
+          keys: [...base, "calledAttempts", "lastCalledAt", "createdAt"],
+          headers: [
+            "Parent's Name",
+            "Phone Number",
+            "Child Name",
+            "Calls Attempted",
+            "Last Called Date",
+            "Date",
+            "Call Center Feedback",
+          ],
+          includeReason: true,
+        };
+      } else {
+        // Pending (default)
+        return {
+          keys: [...base, "createdAt"],
+          headers: ["Parent's Name", "Phone Number", "Child Name", "Date"],
+          includeReason: false,
+        };
+      }
+    };
+
+    const { keys, headers, includeReason } = getColumnsForStatus();
+
+    const header = includeReason ? headers.join(",") : headers.join(",");
+
+    const rows = array.map((row) => {
+      const reasonValue = Number(row?.reason ?? 0);
+      const reasonLabel = getLeadReasonLabel(reasonValue, selectOption) || "-";
+
+      const baseValues = keys.map((key) => {
+        let value = row?.[key] ?? "";
+
+        // Format date fields
+        if (key === "lastCalledAt" || key === "followUpAt") {
+          value = value ? dayjs(value).format("DD MMM YYYY, hh:mm A") : "-";
+        } else if (key === "convertedAt") {
+          value = value ? dayjs(value).format("DD MMM YYYY") : "-";
+        } else if (key === "createdAt") {
+          value = value ? dayjs(value).format("DD MMM YYYY") : "-";
+        }
+
+        return `"${String(value).replace(/"/g, '""')}"`;
+      });
+
+      if (includeReason) {
+        baseValues.push(`"${reasonLabel}"`);
+      }
+
+      return baseValues.join(",");
+    });
+
+    return [header, ...rows].join("\n");
+  };
 
   const handleBatchedExport = async () => {
     setIsExporting(true);
@@ -591,7 +721,6 @@ const SalesCommandCenter = () => {
 
     while (keepFetching) {
       const formData = new FormData();
-
       formData.append("FilterType", date);
 
       if (date === "custom" && startDate && endDate) {
@@ -601,7 +730,8 @@ const SalesCommandCenter = () => {
 
       formData.append("PageSize", batchSize);
       formData.append("PageNumber", page);
-      //   formData.append("statusType", value);
+      // ✅ FIX: pass the active tab's status filter
+      formData.append("leadOutcome", getLeadOutcomeValue(statusFilter));
 
       try {
         let res;
@@ -614,14 +744,13 @@ const SalesCommandCenter = () => {
         }
 
         const currentBatch = res?.data?.users || [];
-
         allData.push(...currentBatch);
 
         if (currentBatch.length < batchSize) {
           keepFetching = false;
         } else {
           page += 1;
-          await new Promise((r) => setTimeout(r, 200)); // avoid API spam
+          await new Promise((r) => setTimeout(r, 200));
         }
       } catch (err) {
         console.error("Error fetching batch:", err);
@@ -630,16 +759,16 @@ const SalesCommandCenter = () => {
     }
 
     if (allData.length) {
+      // ✅ FIX: export label instead of raw reason number
       const csv = convertToCSV(allData);
-
-      // 🔥 BOM prefix ensures correct UTF-8 rendering in Excel
       const BOM = "\uFEFF";
       const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8;" });
-
-      saveAs(blob, "data.csv");
+      // ✅ FIX: filename includes bucket + active tab for clarity
+      saveAs(blob, `${bucket}_${statusFilter}_export.csv`);
     } else {
       alert("No data available to export.");
     }
+
     setIsExporting(false);
   };
 
@@ -685,7 +814,7 @@ const SalesCommandCenter = () => {
           />
           {date === "custom" && (
             <DatePicker
-              maxDate={new Date()}
+              // maxDate={new Date()}
               selectsRange
               startDate={startDate}
               endDate={endDate}
@@ -713,12 +842,13 @@ const SalesCommandCenter = () => {
               onClick={handleBatchedExport}
               disabled={isExporting}
             >
-              {isExporting ? "Exporting..." : "Export All Data"}
+              {isExporting ? "Exporting..." : "Export Data"}
             </Button>
           )}
         </Box>
       </Box>
 
+      {/* Status tabs + summary bar */}
       <Box
         sx={{
           mb: 2,
@@ -732,41 +862,61 @@ const SalesCommandCenter = () => {
           flexWrap: "wrap",
         }}
       >
-        {/* Tabs */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 1,
-            justifyContent: "end",
-          }}
-        >
-          {[
-            // "All",
-            "Pending",
-            "Called",
-            "Link Sent",
-            "Scheduled",
-            "Converted",
-          ].map((t) => (
-            <Button
-              key={t}
-              size="small"
-              variant={statusFilter === t ? "contained" : "outlined"}
-              onClick={() => setStatusFilter(t)}
-            >
-              {t}
-            </Button>
-          ))}
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "end" }}>
+          {["Pending", "Called", "Link Sent", "Scheduled", "Converted"].map(
+            (t) => (
+              <Button
+                key={t}
+                size="small"
+                variant={statusFilter === t ? "contained" : "outlined"}
+                onClick={() => setStatusFilter(t)}
+              >
+                {t}
+              </Button>
+            ),
+          )}
         </Box>
-        {/* Summary */}
+
         {!(isLoading || freeTrialClikedLoading || subCancelledLoading) && (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1.5,
-              justifyContent: "end",
-            }}
-          >
+          <Box sx={{ display: "flex", gap: 1.5, justifyContent: "end" }}>
+            {[
+              {
+                // value: summaryData
+                //   ? (summaryData?.pendingUsers ?? 0) +
+                //     (summaryData?.calledUsers ?? 0) +
+                //     (summaryData?.paymentLinkSentUsers ?? 0) +
+                //     (summaryData?.followUpUsers ?? 0) +
+                //     (summaryData?.convertedUsers ?? 0)
+                //   : 0,
+                value: summaryData?.allUsers ?? 0,
+                label: "Total Leads",
+              },
+              { value: summaryData?.pendingUsers ?? 0, label: "Pending" },
+              { value: summaryData?.calledUsers ?? 0, label: "Called" },
+              {
+                value: summaryData?.paymentLinkSentUsers ?? 0,
+                label: "Link Sent",
+              },
+              { value: summaryData?.followUpUsers ?? 0, label: "Schedule" },
+              { value: summaryData?.convertedUsers ?? 0, label: "Converted" },
+            ].map(({ value, label }) => (
+              <Box
+                key={label}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <p>
+                  <b>{value}</b>
+                </p>
+                <Typography sx={{ color: "#9ca3af" }}>{label}</Typography>
+              </Box>
+            ))}
+
+            {/* Conversion rate */}
             <Box
               sx={{
                 display: "flex",
@@ -777,127 +927,12 @@ const SalesCommandCenter = () => {
             >
               <p>
                 <b>
-                  {summaryData
-                    ? summaryData?.pendingUsers +
-                      summaryData?.calledUsers +
-                      summaryData?.paymentLinkSentUsers +
-                      summaryData?.followUpUsers +
-                      summaryData?.convertedUsers
-                    : 0}
-                </b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>Total Leads</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>
-                  {summaryData?.pendingUsers ? summaryData?.pendingUsers : 0}
-                </b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>Pending</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>{summaryData?.calledUsers ? summaryData?.calledUsers : 0}</b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>Called</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>
-                  {summaryData?.paymentLinkSentUsers
-                    ? summaryData?.paymentLinkSentUsers
-                    : 0}
-                </b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>Link Sent</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>
-                  {summaryData?.followUpUsers ? summaryData?.followUpUsers : 0}
-                </b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>schedule</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>
-                  {summaryData?.convertedUsers
-                    ? summaryData?.convertedUsers
-                    : 0}
-                </b>
-              </p>
-              <Typography sx={{ color: "#9ca3af" }}>Converted</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <p>
-                <b>
-                  {summaryData
-                    ? (() => {
-                        const total =
-                          summaryData?.pendingUsers +
-                          summaryData?.calledUsers +
-                          summaryData?.paymentLinkSentUsers +
-                          summaryData?.followUpUsers +
-                          summaryData?.convertedUsers;
-
-                        return total > 0
-                          ? (
-                              (summaryData?.convertedUsers / total) *
-                              100
-                            ).toFixed(2)
-                          : 0;
-                      })()
-                    : 0}
+                  {(() => {
+                    const total = summaryData?.allUsers ?? 0;
+                    return total > 0
+                      ? ((summaryData?.convertedUsers / total) * 100).toFixed(2)
+                      : 0;
+                  })()}
                   %
                 </b>
               </p>
@@ -907,6 +942,7 @@ const SalesCommandCenter = () => {
         )}
       </Box>
 
+      {/* Data table */}
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
         {isLoading || freeTrialClikedLoading || subCancelledLoading ? (
           <TableSkeleton rows={10} columns={6} />
@@ -921,6 +957,8 @@ const SalesCommandCenter = () => {
           />
         )}
       </Paper>
+
+      {/* Feedback modal */}
       <Dialog
         open={feedbackModalOpen}
         onClose={closeFeedbackModal}
@@ -929,7 +967,7 @@ const SalesCommandCenter = () => {
         sx={{
           "& .MuiDialog-container": {
             alignItems: "flex-start",
-            mt: 10,
+            mt: 4,
           },
         }}
       >
@@ -942,10 +980,63 @@ const SalesCommandCenter = () => {
             <Box
               sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
             >
-              <DateTimePicker
-                label="Select date & time"
+              {/* Reason select */}
+              <FormControl fullWidth size="small">
+                <Select
+                  value={feedbackReason}
+                  // FIX: use dedicated handler that also updates validation flags
+                  onChange={handleFeedbackReasonChange}
+                  displayEmpty
+                >
+                  <MenuItem value="" disabled>
+                    Select Reason
+                  </MenuItem>
+                  {selectOption
+                    .filter(
+                      (option) =>
+                        option.value !== 1 && // Converted - Paid
+                        option.value !== 16, // Payment link sent
+                    )
+                    .map((option) => (
+                      <MenuItem key={option.value} value={option.label}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+              {errors.feedbackReasonError && (
+                <Typography color="error" variant="caption">
+                  {errors.feedbackReasonError}
+                </Typography>
+              )}
+
+              {/* Date/time picker — always visible, required only when scheduleDateRequired */}
+              {/* <DateTimePicker
+                label={`Select date & time${scheduleDateRequired ? " *" : ""}`}
                 value={feedbackDateTime}
-                onChange={(newValue) => setFeedbackDateTime(newValue)}
+                onChange={(newValue) => {
+                  setFeedbackDateTime(newValue);
+                  if (errors.dateError) {
+                    setErrors((prev) => ({ ...prev, dateError: "" }));
+                  }
+                }}
+                minDateTime={dayjs()}
+                disablePast
+                shouldDisableTime={shouldDisableTime}
+                minutesStep={5}
+                slotProps={{
+                  textField: { fullWidth: true, size: "small" },
+                }}
+              /> */}
+              <DateTimePicker
+                label={`Select date & time${scheduleDateRequired ? " *" : ""}`}
+                value={feedbackDateTime}
+                onChange={(newValue) => {
+                  setFeedbackDateTime(newValue);
+                  if (errors.dateError) {
+                    setErrors((prev) => ({ ...prev, dateError: "" }));
+                  }
+                }}
                 minDateTime={dayjs()}
                 disablePast
                 shouldDisableTime={shouldDisableTime}
@@ -954,44 +1045,73 @@ const SalesCommandCenter = () => {
                   textField: {
                     fullWidth: true,
                     size: "small",
+                    InputProps: {
+                      endAdornment: feedbackDateTime ? ( // ✅ only show when value exists
+                        <InputAdornment position="end">
+                          <IconButton
+                            size="small"
+                            onClick={() => {
+                              setFeedbackDateTime(null); // ✅ reset to null
+                              if (errors.dateError) {
+                                setErrors((prev) => ({
+                                  ...prev,
+                                  dateError: "",
+                                }));
+                              }
+                            }}
+                            edge="end"
+                          >
+                            <ClearIcon
+                              fontSize="medium"
+                              sx={{
+                                backgroundColor: "#ff6363",
+                                color: "white",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null,
+                    },
                   },
                 }}
               />
+              {errors.dateError && (
+                <Typography color="error" variant="caption">
+                  {errors.dateError}
+                </Typography>
+              )}
 
-              <FormControl fullWidth size="small">
-                <Select
-                  value={feedbackReason}
-                  displayEmpty
-                  onChange={(e) => setFeedbackReason(e.target.value)}
-                >
-                  <MenuItem value="" disabled>
-                    Select Reason
-                  </MenuItem>
-
-                  {selectOption?.map((ele, index) => (
-                    <MenuItem key={index} value={ele.label}>
-                      {ele.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
+              {/* Comment field — always visible, required only when commentRequired */}
               <TextField
                 fullWidth
                 multiline
                 minRows={4}
                 maxRows={8}
-                label="Enter message"
+                label={`Enter message${commentRequired ? " *" : ""}`}
                 value={feedbackMessage}
-                onChange={(e) => setFeedbackMessage(e.target.value)}
+                onChange={(e) => {
+                  setFeedbackMessage(e.target.value);
+                  if (errors.feedbackMessageError) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      feedbackMessageError: "",
+                    }));
+                  }
+                }}
               />
+              {errors.feedbackMessageError && (
+                <Typography color="error" variant="caption">
+                  {errors.feedbackMessageError}
+                </Typography>
+              )}
             </Box>
           </LocalizationProvider>
         </DialogContent>
 
         <DialogActions>
           <Button onClick={closeFeedbackModal}>Cancel</Button>
-          <Button variant="contained" onClick={handleFeedbackModalSubmit}>
+          <Button variant="contained" onClick={handleSubmit}>
             Save
           </Button>
         </DialogActions>

@@ -100,21 +100,6 @@ const RazorpayFreeTrial = () => {
     }
   }, [studentsData]);
 
-  function calculateAge(dateOfBirth) {
-    const birthDate = new Date(dateOfBirth); // Convert the dateOfBirth string to a Date object
-    const today = new Date(); // Get the current date
-
-    let age = today.getFullYear() - birthDate.getFullYear(); // Calculate the year difference
-    const month = today.getMonth() - birthDate.getMonth(); // Calculate the month difference
-
-    // Adjust the age if the child hasn't had their birthday yet this year
-    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-
-    return age; // Return the calculated age
-  }
-
   const columns = [
     {
       field: "parentName",
