@@ -4,6 +4,7 @@ import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import PeopleIcon from "@mui/icons-material/People";
 import {
   formatDateToReadableString,
+  getAgeForStudent,
   useFormattedDate,
 } from "../../utils/Hooks";
 import { useGetRazorPayFreeTrialDataMutation } from "../../redux/slices/apiSlice";
@@ -99,6 +100,21 @@ const RazorpayFreeTrial = () => {
     }
   }, [studentsData]);
 
+  function calculateAge(dateOfBirth) {
+    const birthDate = new Date(dateOfBirth); // Convert the dateOfBirth string to a Date object
+    const today = new Date(); // Get the current date
+
+    let age = today.getFullYear() - birthDate.getFullYear(); // Calculate the year difference
+    const month = today.getMonth() - birthDate.getMonth(); // Calculate the month difference
+
+    // Adjust the age if the child hasn't had their birthday yet this year
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age; // Return the calculated age
+  }
+
   const columns = [
     {
       field: "parentName",
@@ -110,12 +126,15 @@ const RazorpayFreeTrial = () => {
         </div>
       ),
     },
-    { field: "childsName", headerName: "Child's Name", width: 170 },
-    { field: "email", headerName: "Email", width: 300 },
+    { field: "country", headerName: "Country", width: 160 },
+    { field: "state", headerName: "State", width: 160 },
+    { field: "city", headerName: "City", width: 160 },
+    // { field: "childsName", headerName: "Child's Name", width: 170 },
+    // { field: "email", headerName: "Email", width: 300 },
     {
       field: "subscriptionStatus",
       headerName: "Subscription Status",
-      width: 250,
+      width: 180,
       renderCell: (params) => (
         <Chip
           size="small"
@@ -147,10 +166,10 @@ const RazorpayFreeTrial = () => {
     {
       field: "planExpiryDate",
       headerName: "Plan Expiry Date",
-      width: 200,
+      width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
     },
-    { field: "phoneNumber", headerName: "Phone Number", width: 150 },
+    // { field: "phoneNumber", headerName: "Phone Number", width: 150 },
     {
       field: "gender",
       headerName: "Gender",
@@ -168,6 +187,12 @@ const RazorpayFreeTrial = () => {
           }}
         />
       ),
+    },
+    {
+      field: "dateOfBirth",
+      headerName: "Age",
+      width: 100,
+      renderCell: (params) => getAgeForStudent(params?.row?.dateOfBirth),
     },
     {
       field: "actions",
@@ -190,7 +215,7 @@ const RazorpayFreeTrial = () => {
     const rows = array.map((row) =>
       keys
         .map((key) => `"${String(row[key] ?? "").replace(/"/g, '""')}"`)
-        .join(",")
+        .join(","),
     );
     return [header, ...rows].join("\n");
   };
