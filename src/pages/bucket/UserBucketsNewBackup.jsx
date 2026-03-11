@@ -52,7 +52,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import LoopIcon from "@mui/icons-material/Loop";
 
-const SalesCommandCenter = () => {
+const UserBucketsNewBackup = () => {
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -61,18 +61,19 @@ const SalesCommandCenter = () => {
   const [bucket, setbucket] = useState("Subscription Cancelled");
   const [selectOption, setSelectOption] = useState([]);
   const [rowCount, setRowCount] = useState(0);
+  const [showPaymentStatusBtn, setShowPaymentStatusBtn] = useState({});
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
   });
+  const [otherModalOpen, setOtherModalOpen] = useState(false);
+  const [otherRow, setOtherRow] = useState(null);
+  const [otherText, setOtherText] = useState("");
+  const [callbackModalOpen, setCallbackModalOpen] = useState(false);
+  const [callbackRow, setCallbackRow] = useState(null);
+  const [callbackDateTime, setCallbackDateTime] = useState(null);
   const [statusFilter, setStatusFilter] = useState("Pending");
   const [sendingLinkRow, setSendingLinkRow] = useState({});
-
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
-  const [feedbackRow, setFeedbackRow] = useState(null);
-  const [feedbackReason, setFeedbackReason] = useState("");
-  const [feedbackMessage, setFeedbackMessage] = useState("");
-  const [feedbackDateTime, setFeedbackDateTime] = useState(null);
 
   useEffect(() => {
     setPaginationModel((prev) => ({
@@ -199,6 +200,26 @@ const SalesCommandCenter = () => {
     sessionStorage.setItem("selectedBucket", selectedBucket);
   };
 
+  const openOtherModal = (row, textToPrefill = "") => {
+    setOtherRow(row);
+    setOtherText(textToPrefill || "");
+    setOtherModalOpen(true);
+  };
+
+  const handleOtherSubmit = async () => {
+    const text = otherText.trim();
+    if (!text) {
+      toast.error("Please enter feedback");
+      return;
+    }
+
+    await handleSubmit(otherRow, "Other (please specify)", text);
+
+    setOtherModalOpen(false);
+    setOtherRow(null);
+    setOtherText("");
+  };
+
   const handleGetUpdateData = async () => {
     const formDataForFetch = new FormData();
 
@@ -247,8 +268,8 @@ const SalesCommandCenter = () => {
       formData.append("LeadReason", reasonValue);
     }
 
-    if (messageOverride?.trim()) {
-      formData.append("message", messageOverride.trim());
+    if (selectedValue === "Other (please specify)") {
+      formData.append("message", messageOverride);
     }
 
     formData.append("LeadType", getLeadTypeValue(bucket));
@@ -256,24 +277,23 @@ const SalesCommandCenter = () => {
     if (followUpOverride) {
       formData.append("FollowUp", followUpOverride);
     }
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
+
+    try {
+      const res = await addFeedback(formData).unwrap();
+
+      if (res?.status === true) {
+        toast.success(res?.message || "Feedback saved");
+        await handleGetUpdateData();
+      } else {
+        toast.error(res?.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error submitting feedback");
     }
-
-    // try {
-    //   const res = await addFeedback(formData).unwrap();
-
-    //   if (res?.status === true) {
-    //     toast.success(res?.message || "Feedback saved");
-    //     await handleGetUpdateData();
-    //   } else {
-    //     toast.error(res?.message || "Something went wrong");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("Error submitting feedback");
-    // }
   };
+
+  const isEditMode = otherText?.trim()?.length > 0;
 
   const handleSendLinkUI = async (row) => {
     const formData = new FormData();
@@ -334,11 +354,12 @@ const SalesCommandCenter = () => {
 
   // Disable hours that are already passed (only if selected date is today)
   const shouldDisableTime = (value, view) => {
-    if (!feedbackDateTime) return false;
+    if (!callbackDateTime) return false;
 
-    const selected = feedbackDateTime;
+    const selected = callbackDateTime;
     const current = dayjs();
 
+    // Only restrict time when selecting "today"
     if (!isSameDay(selected, current)) return false;
 
     if (view === "hours") {
@@ -346,6 +367,7 @@ const SalesCommandCenter = () => {
     }
 
     if (view === "minutes") {
+      // block minutes in the current hour that are already passed
       if (selected.hour() !== current.hour()) return false;
       return value < current.minute();
     }
@@ -353,58 +375,42 @@ const SalesCommandCenter = () => {
     return false;
   };
 
-  const openFeedbackModal = (row) => {
-    const reasonValue = Number(row?.reason ?? 0);
-    const selectedValue = getLeadReasonLabel(reasonValue, selectOption);
+  const openCallbackModal = (row, prefill = "") => {
+    setCallbackRow(row);
 
-    setFeedbackRow(row);
-    setFeedbackReason(
-      selectedValue && selectedValue !== "Select Status" ? selectedValue : "",
-    );
-    setFeedbackMessage(row?.message || "");
-    setFeedbackDateTime(row?.followUpAt ? dayjs(row.followUpAt) : null);
-    setFeedbackModalOpen(true);
+    if (prefill) {
+      setCallbackDateTime(dayjs(prefill));
+    } else {
+      setCallbackDateTime(null);
+    }
+
+    setCallbackModalOpen(true);
   };
 
-  const closeFeedbackModal = () => {
-    setFeedbackModalOpen(false);
-    setFeedbackRow(null);
-    setFeedbackReason("");
-    setFeedbackMessage("");
-    setFeedbackDateTime(null);
-  };
-
-  const handleFeedbackModalSubmit = async () => {
-    if (!feedbackReason) {
-      toast.error("Please select a reason");
+  const handleCallbackSubmit = async () => {
+    if (!callbackDateTime) {
+      toast.error("Please select date & time");
       return;
     }
 
-    let followUpValue;
-
-    if (feedbackReason === "Callback Scheduled") {
-      if (!feedbackDateTime) {
-        toast.error("Please select date & time");
-        return;
-      }
-
-      followUpValue = feedbackDateTime.format("YYYY-MM-DDTHH:mm:ss+05:30");
-    }
+    const formattedDate = callbackDateTime.format("YYYY-MM-DDTHH:mm:ss+05:30");
 
     await handleSubmit(
-      feedbackRow,
-      feedbackReason,
-      feedbackMessage,
-      followUpValue,
+      callbackRow,
+      "Callback Scheduled",
+      undefined,
+      formattedDate,
     );
 
-    closeFeedbackModal();
+    setCallbackModalOpen(false);
+    setCallbackRow(null);
+    setCallbackDateTime(null);
   };
 
   const scheduledDateColumn = {
     field: "followUpAt",
     headerName: "Scheduled Date",
-    width: 200,
+    width: 220,
     renderCell: (params) => {
       const v = params?.row?.followUpAt;
 
@@ -417,7 +423,7 @@ const SalesCommandCenter = () => {
   const lastCalledDateColumn = {
     field: "lastCalledAt",
     headerName: "Last Called Date",
-    width: 200,
+    width: 220,
     renderCell: (params) => {
       const v = params?.row?.lastCalledAt;
 
@@ -440,31 +446,28 @@ const SalesCommandCenter = () => {
     },
   };
 
-  const callAttemptsColumn = {
-    field: "calledAttempts",
-    headerName: "Calls Attempted",
-    width: 170,
-  };
-
   const baseColumns = [
     { field: "name", headerName: "Parent's Name", width: 250 },
     { field: "childName", headerName: "Child name", width: 200 },
-    { field: "phoneNumber", headerName: "Phone Number", width: 170 },
+    { field: "phoneNumber", headerName: "Phone Number", width: 200 },
     {
       field: "createdAt",
       headerName: "Date",
-      width: 160,
+      width: 180,
       renderCell: (params) => useFormattedDate(params?.row?.createdAt),
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Call Center Feedback",
       width: 700,
       renderCell: (params) => {
         const reasonValue = Number(params?.row?.reason ?? 0); // API number
         const selectedValue = getLeadReasonLabel(reasonValue, selectOption); // label string
+        const feedback = params?.row?.message ? params?.row?.message : "";
         const isConverted = selectedValue === "Converted - Paid";
         const isPaymentsent = selectedValue === "Payment link sent";
+        const isCallbackScheduled = selectedValue === "Callback Scheduled";
+        const isOtherSelected = selectedValue === "Other (please specify)";
 
         return (
           <Box
@@ -476,14 +479,74 @@ const SalesCommandCenter = () => {
               margin: "5px 0",
             }}
           >
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              onClick={() => openFeedbackModal(params?.row)}
-            >
-              Add Feedback
-            </Button>
+            <FormControl size="small" sx={{ minWidth: 300 }}>
+              <Select
+                value={selectedValue}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  if (val === "Other (please specify)") {
+                    // reason is numeric from API; no prefill text unless backend provides it separately
+                    openOtherModal(params?.row, "");
+                    return;
+                  }
+
+                  if (val === "Callback Scheduled") {
+                    // open scheduler (no prefill unless followUpAt exists)
+                    openCallbackModal(
+                      params?.row,
+                      params?.row?.followUpAt || "",
+                    );
+                    return;
+                  }
+
+                  handleSubmit(params?.row, val);
+                }}
+                displayEmpty
+                disabled={isConverted}
+              >
+                <MenuItem value="Select Status" disabled>
+                  Select Status
+                </MenuItem>
+
+                {selectOption?.map((ele, index) => (
+                  <MenuItem
+                    key={index}
+                    value={ele.label}
+                    disabled={
+                      (!isConverted && ele.label === "Converted - Paid") ||
+                      (!isConverted && ele.label === "Payment link sent")
+                    }
+                  >
+                    {ele.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {isCallbackScheduled && (
+              <Button
+                size="small"
+                variant="contained"
+                color="info"
+                onClick={() =>
+                  openCallbackModal(params?.row, params?.row?.followUpAt || "")
+                }
+              >
+                View/Edit Callback
+              </Button>
+            )}
+
+            {isOtherSelected && (
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                onClick={() => openOtherModal(params?.row, feedback || "")}
+              >
+                View/Edit Feedback
+              </Button>
+            )}
 
             {!isConverted && (
               <>
@@ -524,8 +587,7 @@ const SalesCommandCenter = () => {
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
-      callAttemptsColumn,
-      lastCalledDateColumn,
+      // lastCalledDateColumn,
       scheduledDateColumn,
       baseColumns[3],
       baseColumns[4],
@@ -538,30 +600,6 @@ const SalesCommandCenter = () => {
       baseColumns[1],
       baseColumns[2],
       convertedDateColumn,
-      baseColumns[3],
-      baseColumns[4],
-    ];
-  }
-
-  if (statusFilter === "Called") {
-    columns = [
-      baseColumns[0],
-      baseColumns[1],
-      baseColumns[2],
-      callAttemptsColumn,
-      lastCalledDateColumn,
-      baseColumns[3],
-      baseColumns[4],
-    ];
-  }
-
-  if (statusFilter === "Link Sent") {
-    columns = [
-      baseColumns[0],
-      baseColumns[1],
-      baseColumns[2],
-      callAttemptsColumn,
-      lastCalledDateColumn,
       baseColumns[3],
       baseColumns[4],
     ];
@@ -922,76 +960,79 @@ const SalesCommandCenter = () => {
         )}
       </Paper>
       <Dialog
-        open={feedbackModalOpen}
-        onClose={closeFeedbackModal}
+        open={otherModalOpen}
+        onClose={() => setOtherModalOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          {isEditMode ? "View / Edit Feedback" : "Add Feedback"}
+        </DialogTitle>
+
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            minRows={4}
+            maxRows={8}
+            label="Enter feedback"
+            value={otherText}
+            onChange={(e) => setOtherText(e.target.value)}
+            margin="dense"
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setOtherModalOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleOtherSubmit}>
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={callbackModalOpen}
+        // open={open}
+        onClose={() => setCallbackModalOpen(false)}
         fullWidth
         maxWidth="sm"
         sx={{
           "& .MuiDialog-container": {
             alignItems: "flex-start",
-            mt: 10,
+            mt: 10, // adjust this value (smaller = higher, larger = lower)
           },
         }}
       >
-        <DialogTitle>
-          {feedbackRow?.reason ? "View / Edit Feedback" : "Add Feedback"}
-        </DialogTitle>
+        <DialogTitle>Schedule Callback</DialogTitle>
 
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box
-              sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
-            >
-              <DateTimePicker
-                label="Select date & time"
-                value={feedbackDateTime}
-                onChange={(newValue) => setFeedbackDateTime(newValue)}
-                minDateTime={dayjs()}
-                disablePast
-                shouldDisableTime={shouldDisableTime}
-                minutesStep={5}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    size: "small",
-                  },
-                }}
-              />
-
-              <FormControl fullWidth size="small">
-                <Select
-                  value={feedbackReason}
-                  displayEmpty
-                  onChange={(e) => setFeedbackReason(e.target.value)}
-                >
-                  <MenuItem value="" disabled>
-                    Select Reason
-                  </MenuItem>
-
-                  {selectOption?.map((ele, index) => (
-                    <MenuItem key={index} value={ele.label}>
-                      {ele.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <TextField
-                fullWidth
-                multiline
-                minRows={4}
-                maxRows={8}
-                label="Enter message"
-                value={feedbackMessage}
-                onChange={(e) => setFeedbackMessage(e.target.value)}
-              />
-            </Box>
+            <DateTimePicker
+              label="Select date & time"
+              value={callbackDateTime}
+              onChange={(newValue) => setCallbackDateTime(newValue)}
+              minDateTime={dayjs()} // blocks past date+time
+              disablePast // extra safety
+              shouldDisableTime={shouldDisableTime} // ✅ blocks past hours/minutes for today
+              minutesStep={5} // optional: cleaner UX
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  size: "small",
+                  margin: "dense",
+                },
+              }}
+            />
           </LocalizationProvider>
+
+          <Typography sx={{ color: "#9ca3af", mt: 1, fontSize: 13 }}>
+            Past date/time is not allowed.
+          </Typography>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={closeFeedbackModal}>Cancel</Button>
-          <Button variant="contained" onClick={handleFeedbackModalSubmit}>
+          <Button onClick={() => setCallbackModalOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleCallbackSubmit}>
             Save
           </Button>
         </DialogActions>
@@ -1000,4 +1041,4 @@ const SalesCommandCenter = () => {
   );
 };
 
-export default SalesCommandCenter;
+export default UserBucketsNewBackup;
