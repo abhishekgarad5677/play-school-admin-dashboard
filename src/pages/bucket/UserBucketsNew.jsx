@@ -304,6 +304,15 @@ const SalesCommandCenter = () => {
   // FIX: previously this called handleSubmit(row, ...) with args that were
   //      ignored. Now it validates and calls handleSubmitData() directly.
   const handleSubmit = async () => {
+    const blockedValues = [1, 16]; // Converted - Paid, Payment link sent
+    const matchedOption = selectOption.find(
+      (opt) => opt.label === feedbackReason,
+    );
+    if (matchedOption && blockedValues.includes(matchedOption.value)) {
+      toast.error("This status cannot be submitted manually.");
+      return;
+    }
+
     // Reset all errors
     setErrors({
       feedbackReasonError: "",
@@ -1047,24 +1056,28 @@ const SalesCommandCenter = () => {
               <FormControl fullWidth size="small">
                 <Select
                   value={feedbackReason}
-                  // FIX: use dedicated handler that also updates validation flags
                   onChange={handleFeedbackReasonChange}
                   displayEmpty
                 >
                   <MenuItem value="" disabled>
                     Select Reason
                   </MenuItem>
-                  {selectOption
-                    .filter(
-                      (option) =>
-                        option.value !== 1 && // Converted - Paid
-                        option.value !== 16, // Payment link sent
-                    )
-                    .map((option) => (
-                      <MenuItem key={option.value} value={option.label}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                  {selectOption.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      value={option.label}
+                      disabled={option.value === 1 || option.value === 16} // ✅ disabled but visible
+                      sx={{
+                        // ✅ optional: style them to look clearly disabled
+                        "&.Mui-disabled": {
+                          opacity: 0.5,
+                          fontStyle: "italic",
+                        },
+                      }}
+                    >
+                      {option.label}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               {errors.feedbackReasonError && (
@@ -1073,24 +1086,6 @@ const SalesCommandCenter = () => {
                 </Typography>
               )}
 
-              {/* Date/time picker — always visible, required only when scheduleDateRequired */}
-              {/* <DateTimePicker
-                label={`Select date & time${scheduleDateRequired ? " *" : ""}`}
-                value={feedbackDateTime}
-                onChange={(newValue) => {
-                  setFeedbackDateTime(newValue);
-                  if (errors.dateError) {
-                    setErrors((prev) => ({ ...prev, dateError: "" }));
-                  }
-                }}
-                minDateTime={dayjs()}
-                disablePast
-                shouldDisableTime={shouldDisableTime}
-                minutesStep={5}
-                slotProps={{
-                  textField: { fullWidth: true, size: "small" },
-                }}
-              /> */}
               <DateTimePicker
                 label={`Select date & time${scheduleDateRequired ? " *" : ""}`}
                 value={feedbackDateTime}
