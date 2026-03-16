@@ -8,6 +8,7 @@ import {
   Paper,
   FormControl,
   Typography,
+  Menu,
 } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
@@ -78,6 +79,14 @@ const SalesCommandCenter = () => {
   // Derived validation flags — set directly when reason changes
   const [scheduleDateRequired, setScheduleDateRequired] = useState(false);
   const [commentRequired, setCommentRequired] = useState(false);
+
+  // action dropdown
+  const [sendConfirmOpen, setSendConfirmOpen] = useState(false);
+  const [pendingSend, setPendingSend] = useState({
+    row: null,
+    channel: null,
+    label: "",
+  });
 
   const [errors, setErrors] = useState({
     feedbackReasonError: "",
@@ -339,12 +348,13 @@ const SalesCommandCenter = () => {
   };
 
   // ─── Send payment link ──────────────────────────────────────────────────────
-  const handleSendLinkUI = async (row) => {
+  const handleSendLinkUI = async (row, NotificationChannel) => {
     const formData = new FormData();
     formData.append("UserId", row?.userId);
     // formData.append("PlanId", 110);
-    formData.append("PlanId", 124);
+    formData.append("PlanId", 145);
     formData.append("LeadType", getLeadTypeValue(bucket));
+    formData.append("NotificationChannel", NotificationChannel);
 
     try {
       setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: true }));
@@ -487,9 +497,10 @@ const SalesCommandCenter = () => {
   };
 
   const baseColumns = [
-    { field: "name", headerName: "Parent's Name", width: 250 },
-    { field: "childName", headerName: "Child name", width: 200 },
+    { field: "name", headerName: "Parent's Name", width: 190 },
+    { field: "childName", headerName: "Child name", width: 160 },
     { field: "phoneNumber", headerName: "Phone Number", width: 170 },
+    { field: "email", headerName: "Email", width: 220 },
     {
       field: "createdAt",
       headerName: "Date",
@@ -525,19 +536,85 @@ const SalesCommandCenter = () => {
               Add Feedback
             </Button>
 
+            {/* {!isConverted && (
+              <>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="success"
+                  startIcon={<WhatsAppIcon />}
+                  disabled={sendingLinkRow?.[params?.row?.userId]}
+                  onClick={() => handleSendLinkUI(params?.row, 0)}
+                >
+                  {sendingLinkRow?.[params?.row?.userId]
+                    ? "Sending..."
+                    : "Send Link"}
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="success"
+                  startIcon={<WhatsAppIcon />}
+                  disabled={sendingLinkRow?.[params?.row?.userId]}
+                  onClick={() => handleSendLinkUI(params?.row, 1)}
+                >
+                  {sendingLinkRow?.[params?.row?.userId]
+                    ? "Sending..."
+                    : "Send Email"}
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="success"
+                  startIcon={<WhatsAppIcon />}
+                  disabled={sendingLinkRow?.[params?.row?.userId]}
+                  onClick={() => handleSendLinkUI(params?.row, 2)}
+                >
+                  {sendingLinkRow?.[params?.row?.userId]
+                    ? "Sending..."
+                    : "Send Message"}
+                </Button>
+              </>
+            )} */}
+
             {!isConverted && (
-              <Button
-                size="small"
-                variant="contained"
-                color="success"
-                startIcon={<WhatsAppIcon />}
-                disabled={sendingLinkRow?.[params?.row?.userId]}
-                onClick={() => handleSendLinkUI(params?.row)}
-              >
-                {sendingLinkRow?.[params?.row?.userId]
-                  ? "Sending..."
-                  : "Send Link"}
-              </Button>
+              <FormControl size="small" sx={{ minWidth: 140 }}>
+                <Select
+                  displayEmpty
+                  value=""
+                  disabled={sendingLinkRow?.[params?.row?.userId]}
+                  onChange={(e) => {
+                    const channel = e.target.value;
+                    const labels = {
+                      0: "Send WhatsApp Link",
+                      1: "Send Email",
+                      2: "Send Message",
+                    };
+                    setPendingSend({
+                      row: params?.row,
+                      channel,
+                      label: labels[channel],
+                    });
+                    setSendConfirmOpen(true);
+                  }}
+                  renderValue={() =>
+                    sendingLinkRow?.[params?.row?.userId]
+                      ? "Sending..."
+                      : "Send Link"
+                  }
+                  sx={{ fontSize: "13px" }}
+                >
+                  <MenuItem value={0}>
+                    <WhatsAppIcon
+                      fontSize="small"
+                      sx={{ mr: 1, color: "#25D366" }}
+                    />
+                    Send WhatsApp Link
+                  </MenuItem>
+                  <MenuItem value={1}>📧 Send Email</MenuItem>
+                  <MenuItem value={2}>💬 Send Message</MenuItem>
+                </Select>
+              </FormControl>
             )}
 
             {!isConverted && isPaymentsent && (
@@ -563,20 +640,22 @@ const SalesCommandCenter = () => {
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
+      baseColumns[3],
       callAttemptsColumn,
       lastCalledDateColumn,
       scheduledDateColumn,
-      baseColumns[3],
-      reasonColumn,
       baseColumns[4],
+      reasonColumn,
+      baseColumns[5],
     ];
   } else if (statusFilter === "Converted") {
     columns = [
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
-      convertedDateColumn,
       baseColumns[3],
+      convertedDateColumn,
+      baseColumns[4],
       reasonColumn,
       // baseColumns[4],
     ];
@@ -585,11 +664,12 @@ const SalesCommandCenter = () => {
       baseColumns[0],
       baseColumns[1],
       baseColumns[2],
+      baseColumns[3],
       reasonColumn,
       callAttemptsColumn,
       lastCalledDateColumn,
-      baseColumns[3],
       baseColumns[4],
+      baseColumns[5],
     ];
   }
 
@@ -597,29 +677,10 @@ const SalesCommandCenter = () => {
 
   const [isExporting, setIsExporting] = useState(false);
 
-  // const convertToCSV = (array) => {
-  //   const keys = ["name", "phoneNumber", "childName"];
-  //   const header = [...keys, "Feedback Reason"].join(",");
-
-  //   const rows = array.map((row) => {
-  //     const reasonValue = Number(row?.reason ?? 0);
-  //     const reasonLabel = getLeadReasonLabel(reasonValue, selectOption) || "-";
-
-  //     return [
-  //       ...keys.map(
-  //         (key) => `"${String(row?.[key] ?? "").replace(/"/g, '""')}"`,
-  //       ),
-  //       `"${reasonLabel}"`,
-  //     ].join(",");
-  //   });
-
-  //   return [header, ...rows].join("\n");
-  // };
-
   const convertToCSV = (array) => {
     // ─── Define columns per status tab ───────────────────────────────────────
     const getColumnsForStatus = () => {
-      const base = ["name", "phoneNumber", "childName"];
+      const base = ["name", "phoneNumber", "email", "childName"];
 
       if (statusFilter === "Scheduled") {
         return {
@@ -633,6 +694,7 @@ const SalesCommandCenter = () => {
           headers: [
             "Parent's Name",
             "Phone Number",
+            "Email",
             "Child Name",
             "Calls Attempted",
             "Last Called Date",
@@ -648,6 +710,7 @@ const SalesCommandCenter = () => {
           headers: [
             "Parent's Name",
             "Phone Number",
+            "Email",
             "Child Name",
             "Converted On",
             "Date",
@@ -661,6 +724,7 @@ const SalesCommandCenter = () => {
           headers: [
             "Parent's Name",
             "Phone Number",
+            "Email",
             "Child Name",
             "Calls Attempted",
             "Last Called Date",
@@ -673,7 +737,13 @@ const SalesCommandCenter = () => {
         // Pending (default)
         return {
           keys: [...base, "createdAt"],
-          headers: ["Parent's Name", "Phone Number", "Child Name", "Date"],
+          headers: [
+            "Parent's Name",
+            "Phone Number",
+            "Email",
+            "Child Name",
+            "Date",
+          ],
           includeReason: false,
         };
       }
@@ -881,13 +951,6 @@ const SalesCommandCenter = () => {
           <Box sx={{ display: "flex", gap: 1.5, justifyContent: "end" }}>
             {[
               {
-                // value: summaryData
-                //   ? (summaryData?.pendingUsers ?? 0) +
-                //     (summaryData?.calledUsers ?? 0) +
-                //     (summaryData?.paymentLinkSentUsers ?? 0) +
-                //     (summaryData?.followUpUsers ?? 0) +
-                //     (summaryData?.convertedUsers ?? 0)
-                //   : 0,
                 value: summaryData?.allUsers ?? 0,
                 label: "Total Leads",
               },
@@ -1113,6 +1176,43 @@ const SalesCommandCenter = () => {
           <Button onClick={closeFeedbackModal}>Cancel</Button>
           <Button variant="contained" onClick={handleSubmit}>
             Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* ✅ Send Confirmation Dialog */}
+      <Dialog
+        open={sendConfirmOpen}
+        onClose={() => setSendConfirmOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Confirm</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to <b>{pendingSend.label}</b> to{" "}
+            <b>{pendingSend.row?.name}</b>?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setSendConfirmOpen(false);
+              setPendingSend({ row: null, channel: null, label: "" });
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={async () => {
+              setSendConfirmOpen(false);
+              await handleSendLinkUI(pendingSend.row, pendingSend.channel);
+              setPendingSend({ row: null, channel: null, label: "" });
+            }}
+          >
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

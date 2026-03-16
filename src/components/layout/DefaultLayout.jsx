@@ -375,7 +375,7 @@ export default function DefaultLayout() {
               element={<RazorpayFreeTrial />}
             />
             <Route path="subscription-status" element={<Subscription />} />
-            {/* <Route path="user-buckets" e  lement={<UserBuckets />} /> */}
+            {/* <Route path="user-buckets" element={<UserBuckets />} /> */}
             <Route path="user-buckets" element={<SalesCommandCenter />} />
             <Route path="manage-admin" element={<AdminManager />} />
             <Route path="manage-permission" element={<ManagePermission />} />

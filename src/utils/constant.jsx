@@ -288,7 +288,7 @@ export const subscriptionCancelled = [
   {
     label: "Other (please specify)",
     value: 5,
-    scheduleDateRequired: true,
+    scheduleDateRequired: false,
     commentRequired: true,
   },
 ];
@@ -345,7 +345,7 @@ export const freeTrialClickedButNotStarted = [
   {
     label: "Other (please specify)",
     value: 5,
-    scheduleDateRequired: true,
+    scheduleDateRequired: false,
     commentRequired: true,
   },
   {
@@ -420,7 +420,7 @@ export const phoneNumberAddedButFreeTrialNotClicked = [
   {
     label: "Other (please specify)",
     value: 5,
-    scheduleDateRequired: true,
+    scheduleDateRequired: false,
     commentRequired: true,
   },
   {
