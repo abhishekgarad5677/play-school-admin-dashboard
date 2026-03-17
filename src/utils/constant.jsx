@@ -232,6 +232,18 @@ export const subscriptionCancelled = [
     commentRequired: false,
   },
   {
+    label: "Not Interested",
+    value: 17,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Aware",
+    value: 18,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
     label: "Not worth price",
     value: 10,
     scheduleDateRequired: false,
@@ -303,6 +315,18 @@ export const freeTrialClickedButNotStarted = [
   {
     label: "Payment link sent",
     value: 16,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Interested",
+    value: 17,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Aware",
+    value: 18,
     scheduleDateRequired: false,
     commentRequired: false,
   },
@@ -390,6 +414,18 @@ export const phoneNumberAddedButFreeTrialNotClicked = [
   {
     label: "Payment link sent",
     value: 16,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Interested",
+    value: 17,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Aware",
+    value: 18,
     scheduleDateRequired: false,
     commentRequired: false,
   },
