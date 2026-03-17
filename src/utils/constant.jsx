@@ -369,7 +369,7 @@ export const freeTrialClickedButNotStarted = [
   {
     label: "Worried about auto renewal",
     value: 53,
-    scheduleDateRequired: true,
+    scheduleDateRequired: false,
     commentRequired: true,
   },
   {
