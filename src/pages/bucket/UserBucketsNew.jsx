@@ -304,7 +304,7 @@ const SalesCommandCenter = () => {
   // FIX: previously this called handleSubmit(row, ...) with args that were
   //      ignored. Now it validates and calls handleSubmitData() directly.
   const handleSubmit = async () => {
-    const blockedValues = [1, 16]; // Converted - Paid, Payment link sent
+    const blockedValues = [1, 16, 6]; // Converted - Paid, Payment link sent
     const matchedOption = selectOption.find(
       (opt) => opt.label === feedbackReason,
     );
@@ -497,7 +497,7 @@ const SalesCommandCenter = () => {
   const reasonColumn = {
     field: "reason",
     headerName: "Call Center Feedback",
-    width: 220,
+    width: 260,
     renderCell: (params) => {
       const reasonValue = Number(params?.row?.reason ?? 0);
       const label = getLeadReasonLabel(reasonValue, selectOption);
@@ -668,7 +668,7 @@ const SalesCommandCenter = () => {
       reasonColumn,
       // baseColumns[4],
     ];
-  } else if (statusFilter === "Called" || statusFilter === "Link Sent") {
+  } else if (statusFilter === "Called" || statusFilter === "Link Sent" || statusFilter === "Will Sub. Later") {
     columns = [
       baseColumns[0],
       baseColumns[1],
@@ -942,18 +942,23 @@ const SalesCommandCenter = () => {
         }}
       >
         <Box sx={{ display: "flex", gap: 1, justifyContent: "end" }}>
-          {["Pending", "Called", "Link Sent", "Scheduled", "Converted"].map(
-            (t) => (
-              <Button
-                key={t}
-                size="small"
-                variant={statusFilter === t ? "contained" : "outlined"}
-                onClick={() => setStatusFilter(t)}
-              >
-                {t}
-              </Button>
-            ),
-          )}
+          {[
+            "Pending",
+            "Called",
+            "Link Sent",
+            "Scheduled",
+            "Will Sub. Later",
+            "Converted",
+          ].map((t) => (
+            <Button
+              key={t}
+              size="small"
+              variant={statusFilter === t ? "contained" : "outlined"}
+              onClick={() => setStatusFilter(t)}
+            >
+              {t}
+            </Button>
+          ))}
         </Box>
 
         {!(isLoading || freeTrialClikedLoading || subCancelledLoading) && (
@@ -970,6 +975,10 @@ const SalesCommandCenter = () => {
                 label: "Link Sent",
               },
               { value: summaryData?.followUpUsers ?? 0, label: "Schedule" },
+              {
+                value: summaryData?.willSubscribeLaterUsers ?? 0,
+                label: "Will Sub. Later",
+              },
               { value: summaryData?.convertedUsers ?? 0, label: "Converted" },
             ].map(({ value, label }) => (
               <Box
@@ -1066,7 +1075,11 @@ const SalesCommandCenter = () => {
                     <MenuItem
                       key={option.value}
                       value={option.label}
-                      disabled={option.value === 1 || option.value === 16} // ✅ disabled but visible
+                      disabled={
+                        option.value === 1 ||
+                        option.value === 16 ||
+                        option.value === 6
+                      } // ✅ disabled but visible
                       sx={{
                         // ✅ optional: style them to look clearly disabled
                         "&.Mui-disabled": {

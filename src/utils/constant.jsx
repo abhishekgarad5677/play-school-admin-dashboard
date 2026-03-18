@@ -220,7 +220,7 @@ export const userTypeOptions = [
 
 export const subscriptionCancelled = [
   {
-    label: "Converted - Paid",
+    label: "Converted - Paid (Using Link)",
     value: 1,
     scheduleDateRequired: false,
     commentRequired: false,
@@ -228,6 +228,18 @@ export const subscriptionCancelled = [
   {
     label: "Payment link sent",
     value: 16,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Converted - Paid (Will Sub. Later)",
+    value: 6,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Will Subscribe Later",
+    value: 7,
     scheduleDateRequired: false,
     commentRequired: false,
   },
@@ -522,14 +534,14 @@ export const getLeadReasonLabel = (value, options) => {
 
 export const bucketCategory = [
   { label: "Subscription Cancelled", value: "Subscription Cancelled" },
-  {
-    label: "Trial Clicked – Not Started",
-    value: "Trial Clicked – Not Started",
-  },
-  {
-    label: "Phone Added – Trial Not Clicked",
-    value: "Phone Added – Trial Not Clicked",
-  },
+  // {
+  //   label: "Trial Clicked – Not Started",
+  //   value: "Trial Clicked – Not Started",
+  // },
+  // {
+  //   label: "Phone Added – Trial Not Clicked",
+  //   value: "Phone Added – Trial Not Clicked",
+  // },
 ];
 
 export const getLeadOutcomeValue = (status) => {
@@ -539,6 +551,7 @@ export const getLeadOutcomeValue = (status) => {
   else if (status === "Scheduled") return 3;
   else if (status === "Converted") return 4;
   else if (status === "Link Sent") return 5;
+  else if (status === "Will Sub. Later") return 6;
 
   return 0; // fallback
 };
