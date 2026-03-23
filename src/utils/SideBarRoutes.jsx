@@ -12,6 +12,7 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 export const SideBarRoutes = [
   { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
@@ -45,6 +46,7 @@ export const SideBarRoutes = [
     path: "/user-buckets",
     icon: <ListAltIcon />,
   },
+  { title: "Call Center Report", path: "/reports", icon: <AssignmentIcon /> },
   {
     title: "Manage Admin",
     path: "/manage-admin",
@@ -117,7 +119,6 @@ export const SideBarRoutes = [
   //   icon: <HourglassDisabledIcon />,
   // },
   // { title: 'Users', path: '/dashboard/users', icon: <GroupIcon /> },
-  // { title: 'Reports', path: '/dashboard/reports', icon: <AssignmentIcon /> },
   // { title: 'Achievement', path: '/dashboard/achievement', icon: <EmojiEventsIcon /> },
   // { title: 'Age Group', path: '/dashboard/age-group', icon: <GroupsIcon /> },
   // { title: 'Subscription', path: '/dashboard/subscription', icon: <CurrencyExchangeIcon /> },

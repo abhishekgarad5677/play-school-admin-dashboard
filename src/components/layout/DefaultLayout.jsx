@@ -44,6 +44,7 @@ import { SideBarRoutes } from "../../utils/SideBarRoutes";
 import { useSelector } from "react-redux";
 import SalesCommandCenter from "../../pages/bucket/UserBucketsNew";
 import { useEffect } from "react";
+import Reports from "../../pages/Reports/Reports";
 
 const drawerWidth = 244;
 
@@ -377,12 +378,12 @@ export default function DefaultLayout() {
             <Route path="subscription-status" element={<Subscription />} />
             {/* <Route path="user-buckets" element={<UserBuckets />} /> */}
             <Route path="user-buckets" element={<SalesCommandCenter />} />
+            <Route path="reports" element={<Reports />} />
             <Route path="manage-admin" element={<AdminManager />} />
             <Route path="manage-permission" element={<ManagePermission />} />
             <Route path="*" element={<h2>❌ Page Not Found</h2>} />
             {/* <Route path="play-services-started" element={<FreeTrialStarted />} /> */}
             {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}
-            {/* <Route path="reports" element={<Reports />} /> */}
             {/* <Route path="achievement" element={<Achievement />} /> */}
             {/* <Route path="category" element={<Category />} /> */}
             {/* <Route path="add-category" element={<AddCategory />} /> */}

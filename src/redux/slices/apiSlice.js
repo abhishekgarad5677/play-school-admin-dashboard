@@ -409,6 +409,20 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    callCenterReports: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/user-bucket-reason-summary",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    userShopifyCouponReport: builder.mutation({
+      query: (data) => ({
+        url: "ShopifyCoupons/admin/get-user-coupon-report",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -465,5 +479,7 @@ export const {
   useSubscriptionCancelledMutation,
   useAddFeedbackMutation,
   useSendPaymentLinkMutation,
-  useCheckPaymentStatusMutation
+  useCheckPaymentStatusMutation,
+  useCallCenterReportsMutation,
+  useUserShopifyCouponReportMutation,
 } = apiSlice;
