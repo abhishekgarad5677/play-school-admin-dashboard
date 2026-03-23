@@ -331,6 +331,18 @@ export const freeTrialClickedButNotStarted = [
     commentRequired: false,
   },
   {
+    label: "Converted - Paid (Will Sub. Later)",
+    value: 6,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Will Subscribe Later",
+    value: 7,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
     label: "Not Interested",
     value: 17,
     scheduleDateRequired: false,
@@ -426,6 +438,18 @@ export const phoneNumberAddedButFreeTrialNotClicked = [
   {
     label: "Payment link sent",
     value: 16,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Converted - Paid (Will Sub. Later)",
+    value: 6,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Will Subscribe Later",
+    value: 7,
     scheduleDateRequired: false,
     commentRequired: false,
   },

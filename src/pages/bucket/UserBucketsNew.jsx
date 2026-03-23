@@ -70,6 +70,10 @@ const SalesCommandCenter = () => {
   const [statusFilter, setStatusFilter] = useState("Pending");
   const [sendingLinkRow, setSendingLinkRow] = useState({});
 
+  // search users by number
+  const [searchPhone, setSearchPhone] = useState("");
+  const [debouncedPhone, setDebouncedPhone] = useState("");
+
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [feedbackRow, setFeedbackRow] = useState(null);
   const [feedbackReason, setFeedbackReason] = useState("");
@@ -93,6 +97,14 @@ const SalesCommandCenter = () => {
     feedbackMessageError: "",
     dateError: "",
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedPhone(searchPhone);
+      setPaginationModel((prev) => ({ ...prev, page: 0 }));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchPhone]);
 
   // ─── Reset page to 0 whenever filter changes ───────────────────────────────
   useEffect(() => {
@@ -144,6 +156,10 @@ const SalesCommandCenter = () => {
     formData.append("PageNumber", paginationModel.page + 1);
     formData.append("leadOutcome", getLeadOutcomeValue(statusFilter));
 
+    if (debouncedPhone.trim()) {
+      formData.append("phoneNumber", debouncedPhone.trim());
+    }
+
     if (bucket === "Phone Added – Trial Not Clicked") {
       postDataStudent(formData);
     } else if (bucket === "Trial Clicked – Not Started") {
@@ -151,7 +167,15 @@ const SalesCommandCenter = () => {
     } else if (bucket === "Subscription Cancelled") {
       postSubCancelled(formData);
     }
-  }, [date, startDate, endDate, paginationModel, bucket, statusFilter]);
+  }, [
+    date,
+    startDate,
+    endDate,
+    paginationModel,
+    bucket,
+    statusFilter,
+    debouncedPhone,
+  ]);
 
   // ─── Helper: get row count for current status tab ──────────────────────────
   const getRowCountByStatus = (data, status) => {
@@ -161,6 +185,7 @@ const SalesCommandCenter = () => {
     if (status === "Scheduled") return data?.followUpUsers;
     if (status === "Converted") return data?.convertedUsers;
     if (status === "Link Sent") return data?.paymentLinkSentUsers;
+    if (status === "Will Sub. Later") return data?.willSubscribeLaterUsers;
     return data?.allUsers;
   };
 
@@ -224,6 +249,10 @@ const SalesCommandCenter = () => {
     formData.append("PageSize", paginationModel.pageSize);
     formData.append("PageNumber", paginationModel.page + 1);
     formData.append("leadOutcome", getLeadOutcomeValue(statusFilter));
+
+    if (debouncedPhone.trim()) {
+      formData.append("phoneNumber", debouncedPhone.trim());
+    }
 
     try {
       if (bucket === "Phone Added – Trial Not Clicked") {
@@ -668,7 +697,11 @@ const SalesCommandCenter = () => {
       reasonColumn,
       // baseColumns[4],
     ];
-  } else if (statusFilter === "Called" || statusFilter === "Link Sent" || statusFilter === "Will Sub. Later") {
+  } else if (
+    statusFilter === "Called" ||
+    statusFilter === "Link Sent" ||
+    statusFilter === "Will Sub. Later"
+  ) {
     columns = [
       baseColumns[0],
       baseColumns[1],
@@ -727,7 +760,11 @@ const SalesCommandCenter = () => {
           ],
           includeReason: true,
         };
-      } else if (statusFilter === "Called" || statusFilter === "Link Sent") {
+      } else if (
+        statusFilter === "Called" ||
+        statusFilter === "Link Sent" ||
+        statusFilter === "Will Sub. Later"
+      ) {
         return {
           keys: [...base, "calledAttempts", "lastCalledAt", "createdAt"],
           headers: [
@@ -812,6 +849,10 @@ const SalesCommandCenter = () => {
       // ✅ FIX: pass the active tab's status filter
       formData.append("leadOutcome", getLeadOutcomeValue(statusFilter));
 
+      if (debouncedPhone.trim()) {
+        formData.append("phoneNumber", debouncedPhone.trim());
+      }
+
       try {
         let res;
         if (bucket === "Phone Added – Trial Not Clicked") {
@@ -878,6 +919,14 @@ const SalesCommandCenter = () => {
             gap: 3,
           }}
         >
+          <TextField
+            size="small"
+            fullWidth
+            label="Search by phone number"
+            sx={{ width: 250 }}
+            value={searchPhone}
+            onChange={(e) => setSearchPhone(e.target.value)}
+          />
           <CustomRangeSelect
             value={bucket}
             label={"Select Bucket"}
@@ -1007,7 +1056,7 @@ const SalesCommandCenter = () => {
               }}
             >
               <p>
-                <b>
+                {/* <b>
                   {(() => {
                     const total = summaryData?.allUsers ?? 0;
                     return total > 0
@@ -1015,7 +1064,8 @@ const SalesCommandCenter = () => {
                       : 0;
                   })()}
                   %
-                </b>
+                </b> */}
+                <b>{summaryData?.conversionRate ?? 0}%</b>
               </p>
               <Typography sx={{ color: "#9ca3af" }}>Conv. Rate</Typography>
             </Box>
