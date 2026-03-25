@@ -15,7 +15,14 @@ import ReactApexChart from "react-apexcharts";
 import { formatDateToReadableString, formatDayMonth } from "../../utils/Hooks";
 import { useNavigate } from "react-router-dom";
 
-const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
+const AttendanceSummary = ({
+  date,
+  startDate,
+  endDate,
+  plan,
+  platform,
+  region,
+}) => {
   const navigate = useNavigate();
 
   const [expanded, setExpanded] = useState(false);
@@ -44,15 +51,18 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
       to,
       plan,
       platform,
+      region,
     });
-  }, [date, startDate, endDate, plan, platform]);
+  }, [date, startDate, endDate, plan, platform, region]);
 
   const lastFetchedKeyRef = useRef("");
 
   const buildFormData = () => {
     const formData = new FormData();
     formData.append("FilterType", date);
-    formData.append("SubPlan", plan);
+    // formData.append("SubPlan", plan);
+    // formData.append("SubPlan", 0);
+    formData.append("region", region);
 
     if (platform !== 4) {
       formData.append("platform", platform);
@@ -88,11 +98,11 @@ const AttendanceSummary = ({ date, startDate, endDate, plan, platform }) => {
       const isMonthlyView = !!data.data[0]?.month;
 
       const categories = data.data.map((entry) =>
-        isMonthlyView ? entry.month : formatDayMonth(entry.date)
+        isMonthlyView ? entry.month : formatDayMonth(entry.date),
       );
 
       const attendanceSeries = data.data.map(
-        (entry) => entry.attendancePercentage
+        (entry) => entry.attendancePercentage,
       );
       const timeSpentSeries = data.data.map((entry) => entry.averageTimeSpent);
 

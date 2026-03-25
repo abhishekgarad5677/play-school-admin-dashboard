@@ -14,7 +14,7 @@ import ApexCharts from "react-apexcharts";
 import { useGetAgeGroupCountMutation } from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 
-const AgeData = ({ date, startDate, endDate, plan, platform }) => {
+const AgeData = ({ date, startDate, endDate, plan, platform, region }) => {
   const [expanded, setExpanded] = useState(false);
   const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
 
@@ -39,13 +39,16 @@ const AgeData = ({ date, startDate, endDate, plan, platform }) => {
       to,
       plan, // currently not sent, but keeping so change triggers refetch if you later enable it
       platform,
+      region,
     });
-  }, [date, startDate, endDate, plan, platform]);
+  }, [date, startDate, endDate, plan, platform, region]);
 
   const lastFetchedKeyRef = useRef("");
 
   const buildFormData = () => {
     const formData = new FormData();
+    // formData.append("SubPlan", 0);
+    formData.append("region", region);
 
     if (date !== "custom") {
       formData.append("FilterType", date);

@@ -4,20 +4,23 @@ import Grid from "@mui/material/Grid2";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import {
-  useGetDashboardSummaryMutation,
-} from "../../redux/slices/apiSlice";
+import { useGetDashboardSummaryMutation } from "../../redux/slices/apiSlice";
 import SendToMobileIcon from "@mui/icons-material/SendToMobile";
-import {
-  formatDateToReadableString,
-} from "../../utils/Hooks";
+import { formatDateToReadableString } from "../../utils/Hooks";
 import { useNavigate } from "react-router-dom";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
-const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
+const DashboardSummary = ({
+  date,
+  startDate,
+  endDate,
+  plan,
+  platform,
+  region,
+}) => {
   const [data, setData] = useState([]);
 
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
@@ -27,7 +30,9 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
     if (date !== "custom") {
       const formData = new FormData();
       formData.append("FilterType", date);
-      formData.append("SubPlan", plan);
+      formData.append("region", region);
+      // formData.append("SubPlan", plan);
+      // formData.append("SubPlan", 0);
       if (platform !== 4) {
         formData.append("platform", platform);
       }
@@ -40,10 +45,11 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
       formData.append("FilterType", date);
       formData.append("FromDate", formattedStart);
       formData.append("ToDate", formattedEnd);
+      formData.append("region", region);
 
       postDashboardData(formData);
     }
-  }, [date, startDate, endDate, plan, platform]);
+  }, [date, startDate, endDate, plan, platform, region]);
 
   const formatInternationalRevenue = (revenueObj) => {
     // null / undefined / not an object
@@ -361,23 +367,18 @@ const DashboardSummary = ({ date, startDate, endDate, plan, platform }) => {
             if (isSubscribedCard) navigate("/subscribed-users");
             else if (isDropOffCard) navigate("/UnsubscribedUsers");
             else if (freeTrial) navigate("/free-trial-started");
-            else if (freeTrialEnded)
-              navigate("/cash-free-trial-started");
+            else if (freeTrialEnded) navigate("/cash-free-trial-started");
             else if (domesticRevenue) navigate("/domestic-revenue");
-            else if (domesticInternational)
-              navigate("/international-revenue");
-            else if (razorpayFreeTiral)
-              navigate("/razor-pay-free-trial-users");
+            else if (domesticInternational) navigate("/international-revenue");
+            else if (razorpayFreeTiral) navigate("/razor-pay-free-trial-users");
             else if (freeTrialStartedCount) navigate("/subscription-status");
             else if (subscriptionDueCount) navigate("/subscription-status");
             else if (subscriptionDueCountToday)
               navigate("/subscription-status");
-            else if (subscriptionStartedCount)
-              navigate("/subscription-status");
+            else if (subscriptionStartedCount) navigate("/subscription-status");
             else if (subscriptionCancelledCount)
               navigate("/subscription-status");
-            else if (subscriptionRenewedCount)
-              navigate("/subscription-status");
+            else if (subscriptionRenewedCount) navigate("/subscription-status");
             else if (subscriptionCancelledCountSameDay)
               navigate("/subscription-status");
           };

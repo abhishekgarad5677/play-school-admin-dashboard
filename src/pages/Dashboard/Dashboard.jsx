@@ -23,17 +23,48 @@ import {
   appFilterOptions,
   subPlans,
   userTypeOptions,
+  regionOptions,
 } from "../../utils/constant";
 import AttendanceSummary from "./AttendanceSummary";
 import ActiveUserSummary from "./ActiveUserSummary";
 import ActiveUserMetricsSummary from "./ActiveUserMetricsSummary";
 
 const Dashboard = () => {
-  const [date, setDate] = useState("today");
-  const [platform, setPlatform] = useState(4);
+  // const [date, setDate] = useState("today");
+  // const [platform, setPlatform] = useState(0);
+  // const [region, setRegion] = useState(0);
+  // const [plan, setPlan] = useState(0);
+  // const [userType, setUserType] = useState(1);
+  // const [dateRange, setDateRange] = useState([null, null]);
+  // const [startDate, endDate] = dateRange;
+
+  const [date, setDate] = useState(
+    () => sessionStorage.getItem("selectedDate") || "today",
+  );
+  const [platform, setPlatform] = useState(
+    () => Number(sessionStorage.getItem("selectedPlatform")) || 0,
+  );
+  const [region, setRegion] = useState(
+    () => Number(sessionStorage.getItem("selectedRegion")) || 0,
+  );
   const [plan, setPlan] = useState(0);
   const [userType, setUserType] = useState(1);
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [dateRange, setDateRange] = useState(() => {
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+
+    // ✅ Guard against "null" strings or missing values
+    if (
+      storedStartDate &&
+      storedEndDate &&
+      storedStartDate !== "null" &&
+      storedEndDate !== "null"
+    ) {
+      return [new Date(storedStartDate), new Date(storedEndDate)];
+    }
+    return [null, null];
+  });
+
   const [startDate, endDate] = dateRange;
 
   const handleDateChange = (event) => {
@@ -41,34 +72,26 @@ const Dashboard = () => {
     setDate(selectedDate);
 
     if (selectedDate === "custom") {
-      // Store the custom date range in sessionStorage
       sessionStorage.setItem("selectedDate", selectedDate);
-      sessionStorage.setItem("startDate", startDate);
-      sessionStorage.setItem("endDate", endDate);
+      // ✅ Only store dates if they are actually selected
+      if (startDate) sessionStorage.setItem("startDate", startDate);
+      if (endDate) sessionStorage.setItem("endDate", endDate);
     } else {
-      // Store the selected date (e.g., "today", "yesterday", etc.)
       sessionStorage.setItem("selectedDate", selectedDate);
       sessionStorage.removeItem("startDate");
       sessionStorage.removeItem("endDate");
     }
   };
 
-  useEffect(() => {
-    const storedDate = sessionStorage.getItem("selectedDate");
-    const storedStartDate = sessionStorage.getItem("startDate");
-    const storedEndDate = sessionStorage.getItem("endDate");
+  const handlePlatformChange = (event) => {
+    setPlatform(event.target.value);
+    sessionStorage.setItem("selectedPlatform", event.target.value);
+  };
 
-    if (storedDate) {
-      setDate(storedDate); // Set the stored date to default value
-    }
-    if (storedStartDate && storedEndDate) {
-      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
-    }
-  }, []);
-
-  // const handlePlatformChange = (event) => {
-  //   setPlatform(event.target.value);
-  // };
+  const handleRegionChange = (event) => {
+    setRegion(event.target.value);
+    sessionStorage.setItem("selectedRegion", event.target.value);
+  };
 
   const handlePlanChange = (event) => {
     setPlan(event.target.value);
@@ -106,24 +129,30 @@ const Dashboard = () => {
           }}
         >
           {/* subscription plan select dropdown */}
-          <CustomRangeSelect
+          {/* <CustomRangeSelect
             value={plan}
             label={"Select Plan"}
             onChange={handlePlanChange}
             options={subPlans}
-          />
-          <CustomRangeSelect
+          /> */}
+          {/* <CustomRangeSelect
             value={userType}
             label={"User Type"}
             onChange={handleUserType}
             options={userTypeOptions}
-          />
+          /> */}
           {/* app select dropdown */}
           {/* <CustomRangeSelect
             value={platform}
-            label={"App"}
+            label={"Platform"}
             onChange={handlePlatformChange}
             options={appFilterOptions}
+          />
+          <CustomRangeSelect
+            value={region}
+            label={"Region"}
+            onChange={handleRegionChange}
+            options={regionOptions}
           /> */}
           {/* date select dropdown */}
           <CustomRangeSelect
@@ -141,8 +170,9 @@ const Dashboard = () => {
               onChange={(update) => {
                 setDateRange(update);
                 const [start, end] = update;
-                sessionStorage.setItem("startDate", start); // Store the start date
-                sessionStorage.setItem("endDate", end); // Store the end date
+                // ✅ Only store if values are not null
+                if (start) sessionStorage.setItem("startDate", start);
+                if (end) sessionStorage.setItem("endDate", end);
               }}
               dateFormat="dd/MM/yyyy"
               placeholderText="Select date range"
@@ -166,14 +196,24 @@ const Dashboard = () => {
           endDate={endDate}
           plan={plan}
           platform={platform}
+          region={region}
         />
-        <ActiveUserMetricsSummary />
+        {/* <ActiveUserMetricsSummary /> */}
+        <ActiveUserMetricsSummary
+          date={date}
+          startDate={startDate}
+          endDate={endDate}
+          plan={plan}
+          platform={platform}
+          region={region}
+        />
         <ActiveUserSummary
           date={date}
           startDate={startDate}
           endDate={endDate}
           plan={plan}
           platform={platform}
+          region={region}
         />
         <LocationData
           date={date}
@@ -182,6 +222,7 @@ const Dashboard = () => {
           plan={plan}
           platform={platform}
           userType={userType}
+          region={region}
         />
         <AgeData
           date={date}
@@ -189,6 +230,7 @@ const Dashboard = () => {
           endDate={endDate}
           plan={plan}
           platform={platform}
+          region={region}
         />
         {/* <GameSummary /> */}
         <AttendanceSummary
@@ -197,6 +239,7 @@ const Dashboard = () => {
           endDate={endDate}
           plan={plan}
           platform={platform}
+          region={region}
         />
         {/* <AttendanceData
           date={date}

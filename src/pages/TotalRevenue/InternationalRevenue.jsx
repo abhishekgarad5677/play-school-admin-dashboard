@@ -15,15 +15,15 @@ import {
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
-import { dateFilterOptions } from "../../utils/constant";
+import { appFilterOptions, dateFilterOptions } from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
 
 const InternationalRevenue = () => {
   const [data, setData] = useState();
-  const [date, setDate] = useState("today");
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  // const [date, setDate] = useState("today");
+  // const [dateRange, setDateRange] = useState([null, null]);
+  // const [startDate, endDate] = dateRange;
   const [rowCount, setRowCount] = useState(0);
 
   const [paginationModel, setPaginationModel] = useState({
@@ -31,41 +31,58 @@ const InternationalRevenue = () => {
     pageSize: 10,
   });
 
+  const [date, setDate] = useState(
+    () => sessionStorage.getItem("selectedDate") || "today",
+  );
+
+  const [dateRange, setDateRange] = useState(() => {
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+    if (
+      storedStartDate &&
+      storedEndDate &&
+      storedStartDate !== "null" &&
+      storedEndDate !== "null"
+    ) {
+      return [new Date(storedStartDate), new Date(storedEndDate)];
+    }
+    return [null, null];
+  });
+
+  const [startDate, endDate] = dateRange;
+
+  const [platform, setPlatform] = useState(
+    () => Number(sessionStorage.getItem("selectedPlatform")) || 0,
+  );
+
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
     setDate(selectedDate);
 
     if (selectedDate === "custom") {
-      // Store the custom date range in sessionStorage
       sessionStorage.setItem("selectedDate", selectedDate);
-      sessionStorage.setItem("startDate", startDate);
-      sessionStorage.setItem("endDate", endDate);
+      if (startDate) sessionStorage.setItem("startDate", startDate);
+      if (endDate) sessionStorage.setItem("endDate", endDate);
     } else {
-      // Store the selected date (e.g., "today", "yesterday", etc.)
       sessionStorage.setItem("selectedDate", selectedDate);
       sessionStorage.removeItem("startDate");
       sessionStorage.removeItem("endDate");
     }
   };
 
-  useEffect(() => {
-    const storedDate = sessionStorage.getItem("selectedDate");
-    const storedStartDate = sessionStorage.getItem("startDate");
-    const storedEndDate = sessionStorage.getItem("endDate");
-
-    if (storedDate) {
-      setDate(storedDate); // Set the stored date to default value
-    }
-    if (storedStartDate && storedEndDate) {
-      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
-    }
-  }, []);
+  const handlePlatformChange = (event) => {
+    setPlatform(event.target.value);
+    sessionStorage.setItem("selectedPlatform", event.target.value);
+  };
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
     useGetInternationalRevenueMutation();
 
   useEffect(() => {
+    if (date === "custom" && (!startDate || !endDate)) return;
+
     const formData = new FormData();
+    formData.append("platform", platform);
 
     if (date !== "custom") {
       formData.append("FilterType", date);
@@ -79,7 +96,7 @@ const InternationalRevenue = () => {
     formData.append("PageNumber", paginationModel.page + 1); // API is 1-indexed
 
     postDataStudent(formData);
-  }, [date, startDate, endDate, paginationModel]);
+  }, [date, startDate, endDate, paginationModel, platform]);
 
   useEffect(() => {
     if (studentsData) {
@@ -123,7 +140,7 @@ const InternationalRevenue = () => {
     const rows = array.map((row) =>
       keys
         .map((key) => `"${String(row[key] ?? "").replace(/"/g, '""')}"`)
-        .join(",")
+        .join(","),
     );
     return [header, ...rows].join("\n");
   };
@@ -141,6 +158,7 @@ const InternationalRevenue = () => {
       const formData = new FormData();
 
       formData.append("FilterType", date);
+      formData.append("platform", platform);
 
       if (date === "custom" && startDate && endDate) {
         formData.append("FromDate", formatDateToReadableString(startDate));
@@ -195,7 +213,7 @@ const InternationalRevenue = () => {
           items={[
             {
               label: "International Revenue",
-              href: "/dashboard/domestic-revenue",
+              href: "/international-revenue",
               icon: <AccountBalanceWalletIcon fontSize="small" />,
             },
           ]}
@@ -209,6 +227,12 @@ const InternationalRevenue = () => {
             gap: 3,
           }}
         >
+          {/* <CustomRangeSelect
+            value={platform}
+            label={"Platform"}
+            onChange={handlePlatformChange}
+            options={appFilterOptions}
+          /> */}
           <CustomRangeSelect
             value={date}
             label={"Date"}

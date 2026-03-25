@@ -99,11 +99,11 @@ export const dateFilterOptions = [
 ];
 
 export const appFilterOptions = [
-  { label: "All", value: 4 },
+  { label: "All", value: 0 },
   { label: "Android", value: 1 },
   { label: "Ios", value: 2 },
-  { label: "Website", value: 3 },
-  { label: "Other", value: 0 },
+  // { label: "Website", value: 3 },
+  // { label: "Other", value: 0 },
 ];
 
 export const subPlans = [
@@ -116,6 +116,12 @@ export const subPlans = [
 export const userTypeOptions = [
   { label: "Subscribed Users", value: 1 },
   { label: "All Users", value: 0 },
+];
+
+export const regionOptions = [
+  { label: "All", value: 0 },
+  { label: "Domestic", value: 1 },
+  { label: "International", value: 2 },
 ];
 
 // export const phoneNumberAddedButFreeTrialNotClicked = [

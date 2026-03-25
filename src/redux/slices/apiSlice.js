@@ -269,11 +269,11 @@ export const apiSlice = createApi({
         };
       },
     }),
-    getActiveUserMetrics: builder.query({
-      query: (params) => ({
+    getActiveUserMetrics: builder.mutation({
+      query: (data) => ({
         url: `Data/admin/active-user-metrics`,
-        method: "GET",
-        params,
+        method: "POST",
+        body: data,
       }),
     }),
     getSubscriptionStatus: builder.mutation({
@@ -460,7 +460,7 @@ export const {
   useGetCashFreeTrialDataMutation,
   useGetRazorPayFreeTrialDataMutation,
   useGetAnalyticsEventsQuery,
-  useGetActiveUserMetricsQuery,
+  useGetActiveUserMetricsMutation,
   useGetSubscriptionStatusMutation,
   useGetStudentDetailsMutation,
   useGetInternationalRevenueMutation,

@@ -22,6 +22,7 @@ const LocationData = ({
   plan,
   platform,
   userType,
+  region,
 }) => {
   const navigate = useNavigate();
 
@@ -53,10 +54,11 @@ const LocationData = ({
       from,
       to,
       plan,
-      // platform, // uncomment if you send platform in API
+      platform, // uncomment if you send platform in API
       userType,
+      region,
     });
-  }, [date, startDate, endDate, plan, userType]);
+  }, [date, startDate, endDate, plan, userType, region, platform]);
 
   // Prevent duplicate calls for same params (optional but nice)
   const lastFetchedKeyRef = useRef("");
@@ -64,12 +66,14 @@ const LocationData = ({
   const buildFormData = () => {
     const formData = new FormData();
 
-    formData.append("SubPlan", plan);
-    formData.append("UsersType", userType);
+    // formData.append("SubPlan", plan);
+    // formData.append("SubPlan", 0);
+    // formData.append("UsersType", userType);
+    formData.append("region", region);
+    formData.append("platform", platform);
 
     if (date !== "custom") {
       formData.append("FilterType", date);
-      // if (platform !== 4) formData.append("platform", platform);
     } else if (startDate && endDate) {
       formData.append("FilterType", "custom");
       formData.append("FromDate", formatDateToReadableString(startDate));
@@ -186,7 +190,7 @@ const LocationData = ({
               <ApexCharts
                 {...getChartConfig(
                   countryData.country.map((c) => c.country),
-                  countryData.country.map((c) => c.count)
+                  countryData.country.map((c) => c.count),
                 )}
                 type="bar"
                 height={350}
@@ -206,7 +210,7 @@ const LocationData = ({
               <ApexCharts
                 {...getChartConfig(
                   countryData.state.map((s) => s.state),
-                  countryData.state.map((s) => s.count)
+                  countryData.state.map((s) => s.count),
                 )}
                 type="bar"
                 height={350}
@@ -226,7 +230,7 @@ const LocationData = ({
               <ApexCharts
                 {...getChartConfig(
                   countryData.city.map((c) => c.city),
-                  countryData.city.map((c) => c.count)
+                  countryData.city.map((c) => c.count),
                 )}
                 type="bar"
                 height={350}

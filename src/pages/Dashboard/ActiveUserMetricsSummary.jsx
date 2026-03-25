@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -11,23 +11,70 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid2";
 import PeopleIcon from "@mui/icons-material/People";
-import { useGetActiveUserMetricsQuery } from "../../redux/slices/apiSlice";
+import { useGetActiveUserMetricsMutation } from "../../redux/slices/apiSlice";
+import { formatDateToReadableString } from "../../utils/Hooks";
 
-const ActiveUserMetricsSummary = () => {
+const ActiveUserMetricsSummary = ({
+  date,
+  startDate,
+  endDate,
+  plan,
+  platform,
+  region,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
-
-  // ✅ API will not run until accordion opened
-  const {
-    data: userActiveData,
-    isLoading,
-    error,
-  } = useGetActiveUserMetricsQuery(undefined, { skip: !hasOpenedOnce });
-
   const [userData, setUserData] = useState([]);
 
+  const [postActiveUserMetrics, { isLoading, error, data: userActiveData }] =
+    useGetActiveUserMetricsMutation();
+
+  const requestKey = useMemo(() => {
+    const from =
+      date === "custom" && startDate
+        ? formatDateToReadableString(startDate)
+        : "";
+    const to =
+      date === "custom" && endDate ? formatDateToReadableString(endDate) : "";
+
+    return JSON.stringify({ date, from, to, plan, platform, region });
+  }, [date, startDate, endDate, plan, platform, region]);
+
+  const lastFetchedKeyRef = useRef("");
+
+  const buildFormData = () => {
+    const formData = new FormData();
+    formData.append("FilterType", date);
+
+    if (date === "custom") {
+      if (!startDate || !endDate) return null;
+      formData.append("FromDate", formatDateToReadableString(startDate));
+      formData.append("ToDate", formatDateToReadableString(endDate));
+      return formData;
+    }
+
+    // formData.append("SubPlan", 0);
+    formData.append("region", region);
+    if (platform !== 4) formData.append("platform", platform);
+
+    return formData;
+  };
+
   useEffect(() => {
-    if (userActiveData && userActiveData?.status === true) {
+    if (!hasOpenedOnce) return;
+    if (!expanded) return;
+    if (lastFetchedKeyRef.current === requestKey) return;
+
+    const formData = buildFormData();
+    if (!formData) return;
+
+    lastFetchedKeyRef.current = requestKey;
+    postActiveUserMetrics(formData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasOpenedOnce, expanded, requestKey, postActiveUserMetrics]);
+
+  useEffect(() => {
+    if (userActiveData?.status === true) {
       setUserData([
         {
           title: "Daily Active Users",

@@ -17,7 +17,14 @@ import { formatDateToReadableString, formatPlayTime } from "../../utils/Hooks";
 import { useNavigate } from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
 
-const ActiveUserSummary = ({ date, startDate, endDate, plan, platform }) => {
+const ActiveUserSummary = ({
+  date,
+  startDate,
+  endDate,
+  plan,
+  platform,
+  region,
+}) => {
   const navigate = useNavigate();
 
   const [expanded, setExpanded] = useState(false);
@@ -45,8 +52,9 @@ const ActiveUserSummary = ({ date, startDate, endDate, plan, platform }) => {
       to,
       plan,
       platform,
+      region,
     });
-  }, [date, startDate, endDate, plan, platform]);
+  }, [date, startDate, endDate, plan, platform, region]);
 
   const lastFetchedKeyRef = useRef("");
 
@@ -61,7 +69,9 @@ const ActiveUserSummary = ({ date, startDate, endDate, plan, platform }) => {
       return formData;
     }
 
-    formData.append("SubPlan", plan);
+    // formData.append("SubPlan", plan);
+    // formData.append("SubPlan", 0);
+    formData.append("region", region);
     if (platform !== 4) formData.append("platform", platform);
 
     return formData;

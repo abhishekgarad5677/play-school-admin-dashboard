@@ -10,7 +10,11 @@ import { useGetallstudentsinfoMutation } from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import DatePicker from "react-datepicker";
 import { TableWithExport } from "../../components/table/TableWithExport";
-import { dateFilterOptions } from "../../utils/constant";
+import {
+  dateFilterOptions,
+  appFilterOptions,
+  regionOptions,
+} from "../../utils/constant";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
 import { saveAs } from "file-saver";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -18,10 +22,37 @@ import StudentDetailsModal from "../../components/common/StudentDetailsModal";
 
 const Students = () => {
   const [data, setData] = useState();
-  const [date, setDate] = useState("today");
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
   const [rowCount, setRowCount] = useState(0);
+  // const [date, setDate] = useState("today");
+  // const [dateRange, setDateRange] = useState([null, null]);
+  // const [startDate, endDate] = dateRange;
+
+  const [date, setDate] = useState(
+    () => sessionStorage.getItem("selectedDate") || "today",
+  );
+
+  const [dateRange, setDateRange] = useState(() => {
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+    if (
+      storedStartDate &&
+      storedEndDate &&
+      storedStartDate !== "null" &&
+      storedEndDate !== "null"
+    ) {
+      return [new Date(storedStartDate), new Date(storedEndDate)];
+    }
+    return [null, null];
+  });
+
+  const [startDate, endDate] = dateRange;
+
+  const [platform, setPlatform] = useState(
+    () => Number(sessionStorage.getItem("selectedPlatform")) || 0,
+  );
+  const [region, setRegion] = useState(
+    () => Number(sessionStorage.getItem("selectedRegion")) || 0,
+  );
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedStudentId, setSelectedStudentId] = useState(null);
@@ -46,36 +77,35 @@ const Students = () => {
     setDate(selectedDate);
 
     if (selectedDate === "custom") {
-      // Store the custom date range in sessionStorage
       sessionStorage.setItem("selectedDate", selectedDate);
-      sessionStorage.setItem("startDate", startDate);
-      sessionStorage.setItem("endDate", endDate);
+      if (startDate) sessionStorage.setItem("startDate", startDate);
+      if (endDate) sessionStorage.setItem("endDate", endDate);
     } else {
-      // Store the selected date (e.g., "today", "yesterday", etc.)
       sessionStorage.setItem("selectedDate", selectedDate);
       sessionStorage.removeItem("startDate");
       sessionStorage.removeItem("endDate");
     }
   };
 
-  useEffect(() => {
-    const storedDate = sessionStorage.getItem("selectedDate");
-    const storedStartDate = sessionStorage.getItem("startDate");
-    const storedEndDate = sessionStorage.getItem("endDate");
+  const handlePlatformChange = (event) => {
+    setPlatform(event.target.value);
+    sessionStorage.setItem("selectedPlatform", event.target.value);
+  };
 
-    if (storedDate) {
-      setDate(storedDate); // Set the stored date to default value
-    }
-    if (storedStartDate && storedEndDate) {
-      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
-    }
-  }, []);
+  const handleRegionChange = (event) => {
+    setRegion(event.target.value);
+    sessionStorage.setItem("selectedRegion", event.target.value);
+  };
 
   const [postDataStudent, { isLoading, error, data: studentsData }] =
     useGetallstudentsinfoMutation();
 
   useEffect(() => {
+    if (date === "custom" && (!startDate || !endDate)) return;
+
     const formData = new FormData();
+    formData.append("region", region);
+    formData.append("platform", platform);
 
     if (date !== "custom") {
       formData.append("FilterType", date);
@@ -89,7 +119,7 @@ const Students = () => {
     formData.append("PageNumber", paginationModel.page + 1); // API is 1-indexed
 
     postDataStudent(formData);
-  }, [date, startDate, endDate, paginationModel]);
+  }, [date, startDate, endDate, paginationModel, region, platform]);
 
   useEffect(() => {
     if (studentsData) {
@@ -210,7 +240,7 @@ const Students = () => {
     const rows = array.map((row) =>
       keys
         .map((key) => `"${String(row[key] ?? "").replace(/"/g, '""')}"`)
-        .join(",")
+        .join(","),
     );
     return [header, ...rows].join("\n");
   };
@@ -228,6 +258,8 @@ const Students = () => {
       const formData = new FormData();
 
       formData.append("FilterType", date);
+      formData.append("region", region);
+      formData.append("platform", platform);
 
       if (date === "custom" && startDate && endDate) {
         formData.append("FromDate", formatDateToReadableString(startDate));
@@ -274,11 +306,11 @@ const Students = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "end",
           alignItems: "center",
         }}
       >
-        <CustomBreadcrumbs
+        {/* <CustomBreadcrumbs
           items={[
             {
               label: "Students",
@@ -286,7 +318,7 @@ const Students = () => {
               icon: <ChildCareIcon fontSize="small" />,
             },
           ]}
-        />
+        /> */}
         <Box
           sx={{
             marginBottom: 2,
@@ -296,6 +328,18 @@ const Students = () => {
             gap: 3,
           }}
         >
+          {/* <CustomRangeSelect
+            value={platform}
+            label={"Platform"}
+            onChange={handlePlatformChange}
+            options={appFilterOptions}
+          />
+          <CustomRangeSelect
+            value={region}
+            label={"Region"}
+            onChange={handleRegionChange}
+            options={regionOptions}
+          /> */}
           <CustomRangeSelect
             value={date}
             label={"Date"}
