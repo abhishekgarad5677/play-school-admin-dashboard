@@ -82,7 +82,7 @@ const InternationalRevenue = () => {
     if (date === "custom" && (!startDate || !endDate)) return;
 
     const formData = new FormData();
-    formData.append("platform", platform);
+    // formData.append("platform", platform);
 
     if (date !== "custom") {
       formData.append("FilterType", date);
@@ -158,7 +158,7 @@ const InternationalRevenue = () => {
       const formData = new FormData();
 
       formData.append("FilterType", date);
-      formData.append("platform", platform);
+      // formData.append("platform", platform);
 
       if (date === "custom" && startDate && endDate) {
         formData.append("FromDate", formatDateToReadableString(startDate));
