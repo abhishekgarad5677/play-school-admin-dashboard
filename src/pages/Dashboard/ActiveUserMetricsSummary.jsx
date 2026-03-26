@@ -50,12 +50,14 @@ const ActiveUserMetricsSummary = ({
       if (!startDate || !endDate) return null;
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
+      formData.append("region", region);
+      formData.append("platform", platform);
       return formData;
     }
 
     // formData.append("SubPlan", 0);
     formData.append("region", region);
-    if (platform !== 4) formData.append("platform", platform);
+    formData.append("platform", platform);
 
     return formData;
   };

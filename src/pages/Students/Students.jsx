@@ -328,7 +328,7 @@ const Students = () => {
             gap: 3,
           }}
         >
-          {/* <CustomRangeSelect
+          <CustomRangeSelect
             value={platform}
             label={"Platform"}
             onChange={handlePlatformChange}
@@ -339,7 +339,7 @@ const Students = () => {
             label={"Region"}
             onChange={handleRegionChange}
             options={regionOptions}
-          /> */}
+          />
           <CustomRangeSelect
             value={date}
             label={"Date"}

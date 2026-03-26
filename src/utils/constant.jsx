@@ -101,7 +101,7 @@ export const dateFilterOptions = [
 export const appFilterOptions = [
   { label: "All", value: 0 },
   { label: "Android", value: 1 },
-  { label: "Ios", value: 2 },
+  { label: "iOS", value: 2 },
   // { label: "Website", value: 3 },
   // { label: "Other", value: 0 },
 ];
@@ -120,8 +120,8 @@ export const userTypeOptions = [
 
 export const regionOptions = [
   { label: "All", value: 0 },
-  { label: "Domestic", value: 1 },
-  { label: "International", value: 2 },
+  { label: "India", value: 1 },
+  { label: "Rest of World", value: 2 },
 ];
 
 // export const phoneNumberAddedButFreeTrialNotClicked = [

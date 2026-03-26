@@ -323,19 +323,19 @@ const Subscription = () => {
             gap: 3,
           }}
         >
-          {/* <CustomRangeSelect
+          <CustomRangeSelect
             value={platform}
             label={"Platform"}
             onChange={handlePlatformChange}
             options={appFilterOptions}
-          /> */}
+          />
           {/* region select dropdown */}
-          {/* <CustomRangeSelect
+          <CustomRangeSelect
             value={region}
             label={"Region"}
             onChange={handleRegionChange}
             options={regionOptions}
-          /> */}
+          />
           <CustomRangeSelect
             value={date}
             label={"Date"}

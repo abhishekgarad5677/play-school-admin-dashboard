@@ -333,7 +333,7 @@ const RazorpayFreeTrial = () => {
           }}
         >
           {/* app select dropdown */}
-          {/* <CustomRangeSelect
+          <CustomRangeSelect
             value={platform}
             label={"Platform"}
             onChange={handlePlatformChange}
@@ -344,7 +344,7 @@ const RazorpayFreeTrial = () => {
             label={"Region"}
             onChange={handleRegionChange}
             options={regionOptions}
-          /> */}
+          />
           <CustomRangeSelect
             value={date}
             label={"Date"}

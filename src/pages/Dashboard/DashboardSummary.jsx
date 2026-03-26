@@ -31,11 +31,9 @@ const DashboardSummary = ({
       const formData = new FormData();
       formData.append("FilterType", date);
       formData.append("region", region);
+      formData.append("platform", platform);
       // formData.append("SubPlan", plan);
       // formData.append("SubPlan", 0);
-      if (platform !== 4) {
-        formData.append("platform", platform);
-      }
       postDashboardData(formData);
     } else if (date === "custom" && startDate && endDate) {
       const formattedStart = formatDateToReadableString(startDate);
@@ -46,6 +44,7 @@ const DashboardSummary = ({
       formData.append("FromDate", formattedStart);
       formData.append("ToDate", formattedEnd);
       formData.append("region", region);
+      formData.append("platform", platform);
 
       postDashboardData(formData);
     }
@@ -321,128 +320,274 @@ const DashboardSummary = ({
       </Typography>
     );
 
+  // return (
+  //   <>
+  //     <Grid container mb={2} spacing={2}>
+  //       {data?.map((card, index) => {
+  //         const isSubscribedCard = card.title === "Subscribed Users";
+  //         const isDropOffCard = card.title === "Drop Offs After Sign In";
+  //         const freeTrial = card.title === "Play Services Started";
+  //         const freeTrialEnded = card.title === "Cash Free Trial Started";
+  //         const domesticRevenue = card.title === "Total Revenue Domestic";
+  //         const domesticInternational =
+  //           card.title === "Total Revenue International";
+  //         const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
+  //         const freeTrialStartedCount =
+  //           card.title === "Free Trial Started Count";
+  //         const subscriptionDueCount = card.title === "Subscription Due Count";
+  //         const subscriptionDueCountToday =
+  //           card.title === "Subscription Due Today Count (includes pending)";
+  //         const subscriptionStartedCount =
+  //           card.title === "Subscription Started Count";
+  //         const subscriptionCancelledCount =
+  //           card.title === "Subscription Cancelled Count";
+  //         const subscriptionRenewedCount =
+  //           card.title === "Subscription Renewed Count";
+  //         const subscriptionCancelledCountSameDay =
+  //           card.title === "Free Trial Cancelled Count Same Day";
+
+  //         const isClickable =
+  //           isSubscribedCard ||
+  //           isDropOffCard ||
+  //           freeTrial ||
+  //           freeTrialEnded ||
+  //           domesticRevenue ||
+  //           domesticInternational ||
+  //           razorpayFreeTiral ||
+  //           freeTrialStartedCount ||
+  //           subscriptionDueCount ||
+  //           subscriptionDueCountToday ||
+  //           subscriptionStartedCount ||
+  //           subscriptionCancelledCount ||
+  //           subscriptionRenewedCount ||
+  //           subscriptionCancelledCountSameDay;
+
+  //         const handleClick = () => {
+  //           if (isSubscribedCard) navigate("/subscribed-users");
+  //           else if (isDropOffCard) navigate("/UnsubscribedUsers");
+  //           else if (freeTrial) navigate("/free-trial-started");
+  //           else if (freeTrialEnded) navigate("/cash-free-trial-started");
+  //           else if (domesticRevenue) navigate("/domestic-revenue");
+  //           else if (domesticInternational) navigate("/international-revenue");
+  //           else if (razorpayFreeTiral) navigate("/razor-pay-free-trial-users");
+  //           else if (freeTrialStartedCount) navigate("/subscription-status");
+  //           else if (subscriptionDueCount) navigate("/subscription-status");
+  //           else if (subscriptionDueCountToday)
+  //             navigate("/subscription-status");
+  //           else if (subscriptionStartedCount) navigate("/subscription-status");
+  //           else if (subscriptionCancelledCount)
+  //             navigate("/subscription-status");
+  //           else if (subscriptionRenewedCount) navigate("/subscription-status");
+  //           else if (subscriptionCancelledCountSameDay)
+  //             navigate("/subscription-status");
+  //         };
+
+  //         const content = (
+  //           <Paper
+  //             elevation={0}
+  //             sx={{
+  //               backgroundColor: card.color,
+  //               p: 2,
+  //               textAlign: "center",
+  //               borderRadius: 2,
+  //               transition: "transform 0.2s ease-in-out",
+  //               "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
+  //               cursor: isClickable ? "pointer" : "default",
+  //             }}
+  //           >
+  //             <Box mb={1}>{card.icon}</Box>
+  //             <Typography
+  //               variant="subtitle2"
+  //               sx={{ fontWeight: 500, fontSize: 12 }}
+  //               dangerouslySetInnerHTML={{
+  //                 __html: (() => {
+  //                   const titlesToBreak = [
+  //                     "Free Trial Started Count",
+  //                     "Subscription Due Count",
+  //                     "Subscription Started Count",
+  //                     "Subscription Cancelled Count",
+  //                     "Subscription Renewed Count",
+  //                   ];
+
+  //                   if (titlesToBreak.includes(card.title)) {
+  //                     return card.title
+  //                       .replace(/ Count$/, "<br />Count")
+  //                       .replace(/ Due /, "<br />Due ")
+  //                       .replace(/ Started /, "<br />Started ")
+  //                       .replace(/ Cancelled /, "<br />Cancelled ")
+  //                       .replace(/ Renewed /, "<br />Renewed ");
+  //                   }
+
+  //                   return card.title;
+  //                 })(),
+  //               }}
+  //             />
+
+  //             <Typography
+  //               variant="h5"
+  //               sx={{ color: card.valueColor, fontWeight: "bold" }}
+  //             >
+  //               {card.value}
+  //             </Typography>
+  //           </Paper>
+  //         );
+
+  //         return (
+  //           <Grid size={card?.size} key={index}>
+  //             {isClickable ? (
+  //               <Box onClick={handleClick}>{content}</Box>
+  //             ) : (
+  //               content
+  //             )}
+  //           </Grid>
+  //         );
+  //       })}
+  //     </Grid>
+  //   </>
+  // );
+
   return (
     <>
       <Grid container mb={2} spacing={2}>
-        {data?.map((card, index) => {
-          const isSubscribedCard = card.title === "Subscribed Users";
-          const isDropOffCard = card.title === "Drop Offs After Sign In";
-          const freeTrial = card.title === "Play Services Started";
-          const freeTrialEnded = card.title === "Cash Free Trial Started";
-          const domesticRevenue = card.title === "Total Revenue Domestic";
-          const domesticInternational =
-            card.title === "Total Revenue International";
-          const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
-          const freeTrialStartedCount =
-            card.title === "Free Trial Started Count";
-          const subscriptionDueCount = card.title === "Subscription Due Count";
-          const subscriptionDueCountToday =
-            card.title === "Subscription Due Today Count (includes pending)";
-          const subscriptionStartedCount =
-            card.title === "Subscription Started Count";
-          const subscriptionCancelledCount =
-            card.title === "Subscription Cancelled Count";
-          const subscriptionRenewedCount =
-            card.title === "Subscription Renewed Count";
-          const subscriptionCancelledCountSameDay =
-            card.title === "Free Trial Cancelled Count Same Day";
+        {data
+          ?.filter((card) => {
+            if (card.title === "Total Revenue Domestic") {
+              return region === 0 || region === 1;
+            }
+            if (card.title === "Total Revenue International") {
+              return region === 0 || region === 2;
+            }
+            return true;
+          })
+          .map((card, index) => {
+            const isSubscribedCard = card.title === "Subscribed Users";
+            const isDropOffCard = card.title === "Drop Offs After Sign In";
+            const freeTrial = card.title === "Play Services Started";
+            const freeTrialEnded = card.title === "Cash Free Trial Started";
+            const domesticRevenue = card.title === "Total Revenue Domestic";
+            const domesticInternational =
+              card.title === "Total Revenue International";
+            const razorpayFreeTiral =
+              card.title === "Razorpay Free Trial Users";
+            const freeTrialStartedCount =
+              card.title === "Free Trial Started Count";
+            const subscriptionDueCount =
+              card.title === "Subscription Due Count";
+            const subscriptionDueCountToday =
+              card.title === "Subscription Due Today Count (includes pending)";
+            const subscriptionStartedCount =
+              card.title === "Subscription Started Count";
+            const subscriptionCancelledCount =
+              card.title === "Subscription Cancelled Count";
+            const subscriptionRenewedCount =
+              card.title === "Subscription Renewed Count";
+            const subscriptionCancelledCountSameDay =
+              card.title === "Free Trial Cancelled Count Same Day";
 
-          const isClickable =
-            isSubscribedCard ||
-            isDropOffCard ||
-            freeTrial ||
-            freeTrialEnded ||
-            domesticRevenue ||
-            domesticInternational ||
-            razorpayFreeTiral ||
-            freeTrialStartedCount ||
-            subscriptionDueCount ||
-            subscriptionDueCountToday ||
-            subscriptionStartedCount ||
-            subscriptionCancelledCount ||
-            subscriptionRenewedCount ||
-            subscriptionCancelledCountSameDay;
+            const isClickable =
+              isSubscribedCard ||
+              isDropOffCard ||
+              freeTrial ||
+              freeTrialEnded ||
+              domesticRevenue ||
+              domesticInternational ||
+              razorpayFreeTiral ||
+              freeTrialStartedCount ||
+              subscriptionDueCount ||
+              subscriptionDueCountToday ||
+              subscriptionStartedCount ||
+              subscriptionCancelledCount ||
+              subscriptionRenewedCount ||
+              subscriptionCancelledCountSameDay;
 
-          const handleClick = () => {
-            if (isSubscribedCard) navigate("/subscribed-users");
-            else if (isDropOffCard) navigate("/UnsubscribedUsers");
-            else if (freeTrial) navigate("/free-trial-started");
-            else if (freeTrialEnded) navigate("/cash-free-trial-started");
-            else if (domesticRevenue) navigate("/domestic-revenue");
-            else if (domesticInternational) navigate("/international-revenue");
-            else if (razorpayFreeTiral) navigate("/razor-pay-free-trial-users");
-            else if (freeTrialStartedCount) navigate("/subscription-status");
-            else if (subscriptionDueCount) navigate("/subscription-status");
-            else if (subscriptionDueCountToday)
-              navigate("/subscription-status");
-            else if (subscriptionStartedCount) navigate("/subscription-status");
-            else if (subscriptionCancelledCount)
-              navigate("/subscription-status");
-            else if (subscriptionRenewedCount) navigate("/subscription-status");
-            else if (subscriptionCancelledCountSameDay)
-              navigate("/subscription-status");
-          };
+            const handleClick = () => {
+              if (isSubscribedCard) navigate("/subscribed-users");
+              else if (isDropOffCard) navigate("/UnsubscribedUsers");
+              else if (freeTrial) navigate("/free-trial-started");
+              else if (freeTrialEnded) navigate("/cash-free-trial-started");
+              else if (domesticRevenue) navigate("/domestic-revenue");
+              else if (domesticInternational)
+                navigate("/international-revenue");
+              else if (razorpayFreeTiral)
+                navigate("/razor-pay-free-trial-users");
+              else if (freeTrialStartedCount) navigate("/subscription-status");
+              else if (subscriptionDueCount) navigate("/subscription-status");
+              else if (subscriptionDueCountToday)
+                navigate("/subscription-status");
+              else if (subscriptionStartedCount)
+                navigate("/subscription-status");
+              else if (subscriptionCancelledCount)
+                navigate("/subscription-status");
+              else if (subscriptionRenewedCount)
+                navigate("/subscription-status");
+              else if (subscriptionCancelledCountSameDay)
+                navigate("/subscription-status");
+            };
 
-          const content = (
-            <Paper
-              elevation={0}
-              sx={{
-                backgroundColor: card.color,
-                p: 2,
-                textAlign: "center",
-                borderRadius: 2,
-                transition: "transform 0.2s ease-in-out",
-                "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
-                cursor: isClickable ? "pointer" : "default",
-              }}
-            >
-              <Box mb={1}>{card.icon}</Box>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontWeight: 500, fontSize: 12 }}
-                dangerouslySetInnerHTML={{
-                  __html: (() => {
-                    const titlesToBreak = [
-                      "Free Trial Started Count",
-                      "Subscription Due Count",
-                      "Subscription Started Count",
-                      "Subscription Cancelled Count",
-                      "Subscription Renewed Count",
-                    ];
-
-                    if (titlesToBreak.includes(card.title)) {
-                      return card.title
-                        .replace(/ Count$/, "<br />Count")
-                        .replace(/ Due /, "<br />Due ")
-                        .replace(/ Started /, "<br />Started ")
-                        .replace(/ Cancelled /, "<br />Cancelled ")
-                        .replace(/ Renewed /, "<br />Renewed ");
-                    }
-
-                    return card.title;
-                  })(),
+            const content = (
+              <Paper
+                elevation={0}
+                sx={{
+                  backgroundColor: card.color,
+                  p: 2,
+                  textAlign: "center",
+                  borderRadius: 2,
+                  transition: "transform 0.2s ease-in-out",
+                  "&:hover": isClickable ? { transform: "scale(1.03)" } : {},
+                  cursor: isClickable ? "pointer" : "default",
                 }}
-              />
-
-              <Typography
-                variant="h5"
-                sx={{ color: card.valueColor, fontWeight: "bold" }}
               >
-                {card.value}
-              </Typography>
-            </Paper>
-          );
+                <Box mb={1}>{card.icon}</Box>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 500, fontSize: 12 }}
+                  dangerouslySetInnerHTML={{
+                    __html: (() => {
+                      const titlesToBreak = [
+                        "Free Trial Started Count",
+                        "Subscription Due Count",
+                        "Subscription Started Count",
+                        "Subscription Cancelled Count",
+                        "Subscription Renewed Count",
+                      ];
+                      if (titlesToBreak.includes(card.title)) {
+                        return card.title
+                          .replace(/ Count$/, "<br />Count")
+                          .replace(/ Due /, "<br />Due ")
+                          .replace(/ Started /, "<br />Started ")
+                          .replace(/ Cancelled /, "<br />Cancelled ")
+                          .replace(/ Renewed /, "<br />Renewed ");
+                      }
+                      return card.title;
+                    })(),
+                  }}
+                />
+                <Typography
+                  variant="h5"
+                  sx={{ color: card.valueColor, fontWeight: "bold" }}
+                >
+                  {card.value}
+                </Typography>
+              </Paper>
+            );
 
-          return (
-            <Grid size={card?.size} key={index}>
-              {isClickable ? (
-                <Box onClick={handleClick}>{content}</Box>
-              ) : (
-                content
-              )}
-            </Grid>
-          );
-        })}
+            // ✅ Expand to full width when it's the only revenue card shown
+            const gridSize =
+              (card.title === "Total Revenue Domestic" && region === 1) ||
+              (card.title === "Total Revenue International" && region === 2)
+                ? 12
+                : card?.size;
+
+            return (
+              <Grid size={gridSize} key={index}>
+                {isClickable ? (
+                  <Box onClick={handleClick}>{content}</Box>
+                ) : (
+                  content
+                )}
+              </Grid>
+            );
+          })}
       </Grid>
     </>
   );

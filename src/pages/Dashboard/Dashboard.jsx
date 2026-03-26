@@ -142,7 +142,7 @@ const Dashboard = () => {
             options={userTypeOptions}
           /> */}
           {/* app select dropdown */}
-          {/* <CustomRangeSelect
+          <CustomRangeSelect
             value={platform}
             label={"Platform"}
             onChange={handlePlatformChange}
@@ -153,7 +153,7 @@ const Dashboard = () => {
             label={"Region"}
             onChange={handleRegionChange}
             options={regionOptions}
-          /> */}
+          />
           {/* date select dropdown */}
           <CustomRangeSelect
             value={date}

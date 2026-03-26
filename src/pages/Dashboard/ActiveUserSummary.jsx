@@ -66,6 +66,8 @@ const ActiveUserSummary = ({
       if (!startDate || !endDate) return null; // don't call without dates
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
+      formData.append("region", region);
+      formData.append("platform", platform);
       return formData;
     }
 
