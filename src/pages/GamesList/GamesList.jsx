@@ -59,7 +59,7 @@ const GamesList = () => {
           </Tooltip> */}
           <Tooltip title="View">
             <RemoveRedEyeIcon
-              onClick={() => navigate(`/dashboard/view-game/${params.row.id}`)}
+              onClick={() => navigate(`/view-game/${params.row.id}`)}
               sx={{ color: "#5d87ff", cursor: "pointer" }}
             />
           </Tooltip>
@@ -86,7 +86,7 @@ const GamesList = () => {
           items={[
             {
               label: "Add Games",
-              href: "/dashboard/games-list",
+              href: "/games-list",
               icon: <SportsEsportsIcon fontSize="small" />,
             },
           ]}

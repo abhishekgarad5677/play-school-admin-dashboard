@@ -45,6 +45,7 @@ import { useSelector } from "react-redux";
 import SalesCommandCenter from "../../pages/bucket/UserBucketsNew";
 import { useEffect } from "react";
 import Reports from "../../pages/Reports/Reports";
+import UserCouponReport from "../../pages/UserCouponReport/UserCouponReport";
 
 const drawerWidth = 244;
 
@@ -381,6 +382,7 @@ export default function DefaultLayout() {
             <Route path="reports" element={<Reports />} />
             <Route path="manage-admin" element={<AdminManager />} />
             <Route path="manage-permission" element={<ManagePermission />} />
+            <Route path="user-coupon-report" element={<UserCouponReport />} />
             <Route path="*" element={<h2>❌ Page Not Found</h2>} />
             {/* <Route path="play-services-started" element={<FreeTrialStarted />} /> */}
             {/* <Route path="free-trial-ended" element={<FreeTrialEnded />} /> */}

@@ -55,7 +55,7 @@ const AddGames = () => {
   useEffect(() => {
     if (data?.status === true) {
       toast.success("Game Added successfully");
-      navigate(`/dashboard/view-game/${id}`);
+      navigate(`/view-game/${id}`);
     }
   }, [data, navigate]);
 
@@ -90,7 +90,7 @@ const AddGames = () => {
           alignItems: "center",
           justifyContent: "flex-start",
         }}
-        to={`/dashboard/view-game/${id}`}
+        to={`/view-game/${id}`}
       >
         <ArrowBackIosIcon sx={{ fontSize: 14 }} />
         back

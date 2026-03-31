@@ -109,7 +109,7 @@ const AddGamesCategory = () => {
           alignItems: "center",
           justifyContent: "flex-start",
         }}
-        to={"/dashboard/games-list"}
+        to={"/manage-games"}
       >
         <ArrowBackIosIcon sx={{ fontSize: 14 }} />
         back

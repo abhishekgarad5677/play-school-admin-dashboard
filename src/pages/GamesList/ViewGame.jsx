@@ -86,7 +86,7 @@ const ViewGame = () => {
           items={[
             {
               label: "Add Games",
-              href: "/dashboard/games-list",
+              href: "/games-list",
               icon: <SportsEsportsIcon fontSize="small" />,
             },
           ]}
@@ -110,7 +110,7 @@ const ViewGame = () => {
           alignItems: "center",
           justifyContent: "flex-start",
         }}
-        to={"/dashboard/games-list"}
+        to={"/manage-games"}
       >
         <ArrowBackIosIcon sx={{ fontSize: 14 }} />
         back

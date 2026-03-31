@@ -36,6 +36,11 @@ export const SideBarRoutes = [
     path: "/razor-pay-free-trial-users",
     icon: <PeopleIcon />,
   },
+  {
+    title: "User Coupon Report",
+    path: "/user-coupon-report",
+    icon: <AssignmentIcon />,
+  },
   // {
   //   title: "Play Services Started",
   //   path: "/play-services-started",
