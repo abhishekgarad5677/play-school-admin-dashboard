@@ -32,8 +32,6 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
   const [getDetails, { data, isLoading }] =
     useGetUserBucketStudentDetailsMutation();
 
-  console.log("student details");
-
   useEffect(() => {
     if (open && studentId) {
       const formData = new FormData();
@@ -41,8 +39,6 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
       getDetails(formData);
     }
   }, [open, studentId]);
-
-  console.log(data);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
@@ -62,7 +58,7 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
           <Paper sx={{ width: "100%", p: 3 }}>
             {/* ✅ Student Info — always shown */}
             <Typography variant="h6" gutterBottom>
-              Student Information
+              Child's Information
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
@@ -119,7 +115,7 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
                   color="text.disabled"
                   textAlign="center"
                 >
-                  This user hasn't recorded any attendance or activity yet.
+                  This user hasn't recorded any activity yet.
                 </Typography>
               </Box>
             ) : (
