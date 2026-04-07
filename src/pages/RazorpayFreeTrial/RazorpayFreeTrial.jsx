@@ -167,7 +167,8 @@ const RazorpayFreeTrial = () => {
         <Chip
           size="small"
           label={
-            params?.row?.subscriptionStatus === "authenticated"
+            params?.row?.subscriptionStatus === "authenticated" ||
+            params?.row?.subscriptionStatus === "INITIAL_BUY"
               ? "Free Trial Started"
               : params?.row?.subscriptionStatus
           }

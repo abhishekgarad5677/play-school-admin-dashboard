@@ -32,7 +32,7 @@ export const SideBarRoutes = [
     icon: <InfoIcon />,
   },
   {
-    title: "Razorpay Free Trial Users",
+    title: "Free Trial Users",
     path: "/razor-pay-free-trial-users",
     icon: <PeopleIcon />,
   },

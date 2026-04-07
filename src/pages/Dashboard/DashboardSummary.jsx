@@ -74,7 +74,7 @@ const DashboardSummary = ({
           valueColor: "#E91E63",
         },
         {
-          title: "Razorpay Free Trial Users",
+          title: "Free Trial Users",
           size: 4,
           value: DashboardData?.data?.razorpayFreeTrial,
           icon: <PeopleIcon sx={{ fontSize: 40, color: "#5f2eff" }} />,
@@ -331,7 +331,7 @@ const DashboardSummary = ({
   //         const domesticRevenue = card.title === "Total Revenue Domestic";
   //         const domesticInternational =
   //           card.title === "Total Revenue International";
-  //         const razorpayFreeTiral = card.title === "Razorpay Free Trial Users";
+  //         const razorpayFreeTiral = card.title === "Free Trial Users";
   //         const freeTrialStartedCount =
   //           card.title === "Free Trial Started Count";
   //         const subscriptionDueCount = card.title === "Subscription Due Count";
@@ -467,8 +467,7 @@ const DashboardSummary = ({
             const domesticRevenue = card.title === "Total Revenue Domestic";
             const domesticInternational =
               card.title === "Total Revenue International";
-            const razorpayFreeTiral =
-              card.title === "Razorpay Free Trial Users";
+            const razorpayFreeTiral = card.title === "Free Trial Users";
             const freeTrialStartedCount =
               card.title === "Free Trial Started Count";
             const subscriptionDueCount =

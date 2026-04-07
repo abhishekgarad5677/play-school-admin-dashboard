@@ -53,6 +53,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ClearIcon from "@mui/icons-material/Clear";
 import { IconButton, InputAdornment } from "@mui/material";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import StudentDetailsModal from "../../components/common/StudentDetailsModal";
+import UserBucketStudentDetailsModal from "../../components/common/UserBucketStudentDetailsModal";
 
 const SalesCommandCenter = () => {
   const [date, setDate] = useState("today");
@@ -69,6 +72,21 @@ const SalesCommandCenter = () => {
   });
   const [statusFilter, setStatusFilter] = useState("Pending");
   const [sendingLinkRow, setSendingLinkRow] = useState({});
+
+  // child details
+
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
+
+  const handleOpenModal = (id) => {
+    setSelectedStudentId(id);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedStudentId(null);
+  };
 
   // search users by number
   const [searchPhone, setSearchPhone] = useState("");
@@ -546,6 +564,21 @@ const SalesCommandCenter = () => {
       renderCell: (params) => useFormattedDate(params?.row?.createdAt),
     },
     {
+      field: "child-info",
+      headerName: "User Activity",
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          size="small"
+          variant="outlined"
+          color="primary"
+          onClick={() => handleOpenModal(params.row.id)}
+        >
+          VIEW
+        </Button>
+      ),
+    },
+    {
       field: "action",
       headerName: "Action",
       width: 500,
@@ -685,6 +718,7 @@ const SalesCommandCenter = () => {
       baseColumns[4],
       reasonColumn,
       baseColumns[5],
+      baseColumns[6],
     ];
   } else if (statusFilter === "Converted") {
     columns = [
@@ -694,6 +728,7 @@ const SalesCommandCenter = () => {
       baseColumns[3],
       convertedDateColumn,
       baseColumns[4],
+      baseColumns[5],
       reasonColumn,
       // baseColumns[4],
     ];
@@ -712,6 +747,7 @@ const SalesCommandCenter = () => {
       lastCalledDateColumn,
       baseColumns[4],
       baseColumns[5],
+      baseColumns[6],
     ];
   }
 
@@ -1274,6 +1310,13 @@ const SalesCommandCenter = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      {selectedStudentId !== null && (
+        <UserBucketStudentDetailsModal
+          open={openModal}
+          onClose={handleCloseModal}
+          studentId={selectedStudentId}
+        />
+      )}
     </>
   );
 };

@@ -290,6 +290,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getUserBucketStudentDetails: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/student-summary",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getFreeTrialStartedFunnel: builder.mutation({
       query: (data) => ({
         url: "Data/admin/dashbaord/funnel-metrics",
@@ -463,6 +470,7 @@ export const {
   useGetActiveUserMetricsMutation,
   useGetSubscriptionStatusMutation,
   useGetStudentDetailsMutation,
+  useGetUserBucketStudentDetailsMutation,
   useGetInternationalRevenueMutation,
   useGetFreeTrialStartedFunnelMutation,
   useGetSubscriptionDueFunnelMutation,
