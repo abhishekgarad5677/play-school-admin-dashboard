@@ -304,6 +304,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getABFunnelMetrics: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/ab-funnel-metrics",
+        method: "POST",
+        body: data,
+      }),
+    }),
     getFreeTrialStartedAnalyticsCountFunnel: builder.mutation({
       query: (data) => ({
         url: "Analytics/analyticscount",
@@ -490,4 +497,5 @@ export const {
   useCheckPaymentStatusMutation,
   useCallCenterReportsMutation,
   useUserShopifyCouponReportMutation,
+  useGetABFunnelMetricsMutation,
 } = apiSlice;

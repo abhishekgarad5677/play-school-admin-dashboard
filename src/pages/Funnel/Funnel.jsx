@@ -28,6 +28,8 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import AnalyticsEventsChart from "./AnalyticsEventsChart";
 import UserJourneyFunnel from "./UserJourneyFunnel";
 import SubscriptionDueFunnel from "./SubscriptionDueFunnel";
+import ABFunnelMetrics from "./ABFunnelMetrics";
+import AFunnelMetrics from "./ABFunnelMetrics";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -309,21 +311,35 @@ const Funnel = () => {
             startDate={startDate}
             endDate={endDate}
           /> */}
-          <Grid container spacing={2}>
-            <Grid size={6}>
+          <Grid
+            alignItems={"center"}
+            justifyContent={"center"}
+            container
+            spacing={2}
+          >
+            <Grid size={8}>
               <UserJourneyFunnel
                 filterDate={date}
                 startDate={startDate}
                 endDate={endDate}
               />
             </Grid>
-            {/* <Grid size={6}>
-              <SubscriptionDueFunnel
+            <Grid size={6}>
+              <AFunnelMetrics
                 filterDate={date}
                 startDate={startDate}
                 endDate={endDate}
+                build={1}
               />
-            </Grid> */}
+            </Grid>
+            <Grid size={6}>
+              <AFunnelMetrics
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+                build={2}
+              />
+            </Grid>
           </Grid>
         </Box>
       </Paper>
