@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
-import { Box, Paper, Skeleton, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Paper,
+  Skeleton,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import { dateFilterOptions } from "../../utils/constant";
@@ -14,6 +23,7 @@ import {
   useGetFunnelSmsOtpFunnelMutation,
   useGetFunnel506BuildMutation,
   useGetFunnelDataSevenDayMutation,
+  useGetFreeTrialStartedAnalyticsCountFunnelMutation,
 } from "../../redux/slices/apiSlice";
 import ATestingFunnel from "./ATestingFunnel";
 import BTestingFunnel from "./BTestingFunnel";
@@ -103,6 +113,17 @@ const Funnel = () => {
     },
   ] = useGetFunnelDataSevenDayMutation();
 
+  const [data, setData] = useState([]); // ✅ initialize as array instead of ""
+
+  const [
+    postDashboardDataCount,
+    {
+      isLoading: loadingDataCount,
+      error: dataCountError,
+      data: DashboardDataCount,
+    },
+  ] = useGetFreeTrialStartedAnalyticsCountFunnelMutation();
+
   useEffect(() => {
     const formData = new FormData();
 
@@ -113,6 +134,7 @@ const Funnel = () => {
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
     }
+    postDashboardDataCount(formData);
     // postGetAllFunnelData(formData);
     // postGetABTestingFunnel(formData);
     // postGoogleSignInData(formData);
@@ -120,6 +142,10 @@ const Funnel = () => {
     // post506BuildData(formData);
     // postSevenDayTrialData(formData);
   }, [date, startDate, endDate]);
+
+  useEffect(() => {
+    setData(DashboardDataCount);
+  }, [DashboardDataCount]);
 
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
@@ -183,6 +209,29 @@ const Funnel = () => {
             },
           ]}
         />
+        {/* <Typography fontSize="18px">
+          Total Installs -{" "}
+          <Box component="span" fontWeight={600}>
+            {loadingDataCount ? "loading..." : data?.[0]?.eventCount}
+          </Box>
+        </Typography> */}
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography fontSize="14x" color="text.secondary">
+            Total Installs
+          </Typography>
+          {loadingDataCount ? (
+            <Skeleton variant="rounded" width={60} height={28} />
+          ) : (
+            <Chip
+              label={data?.[0]?.eventCount ?? 0}
+              color="primary"
+              size="small"
+              sx={{ fontWeight: 700, fontSize: "16px" }}
+            />
+          )}
+        </Box>
+
         <Box
           sx={{
             marginBottom: 2,
@@ -317,13 +366,13 @@ const Funnel = () => {
             container
             spacing={2}
           >
-            <Grid size={8}>
+            {/* <Grid size={8}>
               <UserJourneyFunnel
                 filterDate={date}
                 startDate={startDate}
                 endDate={endDate}
               />
-            </Grid>
+            </Grid> */}
             <Grid size={6}>
               <AFunnelMetrics
                 filterDate={date}
