@@ -46,6 +46,7 @@ import SalesCommandCenter from "../../pages/bucket/UserBucketsNew";
 import { useEffect } from "react";
 import Reports from "../../pages/Reports/Reports";
 import UserCouponReport from "../../pages/UserCouponReport/UserCouponReport";
+import FunnelOld from "../../pages/Funnel/FunnelOld";
 
 const drawerWidth = 244;
 
@@ -362,6 +363,7 @@ export default function DefaultLayout() {
             <Route path="games" element={<Games />} />
             <Route path="location-analytics" element={<TopRegion />} />
             <Route path="funnel-metrics" element={<Funnel />} />
+            <Route path="funnel-metrics-old" element={<FunnelOld />} />
             <Route path="manage-games" element={<GamesList />} />
             <Route path="add-games-category" element={<AddGamesCategory />} />
             <Route path="add-games/:id" element={<AddGames />} />

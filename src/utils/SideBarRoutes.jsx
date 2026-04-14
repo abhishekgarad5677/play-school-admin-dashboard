@@ -17,8 +17,13 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 export const SideBarRoutes = [
   { title: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
   {
-    title: "Funnel Metrics",
+    title: "Funnel Metrics A/B",
     path: "/funnel-metrics",
+    icon: <BarChartIcon />,
+  },
+  {
+    title: "Funnel Metrics Old",
+    path: "/funnel-metrics-old",
     icon: <BarChartIcon />,
   },
   {

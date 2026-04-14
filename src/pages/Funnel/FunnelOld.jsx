@@ -63,7 +63,7 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-const Funnel = () => {
+const FunnelOld = () => {
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -134,7 +134,7 @@ const Funnel = () => {
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
     }
-    postDashboardDataCount(formData);
+    // postDashboardDataCount(formData);
     // postGetAllFunnelData(formData);
     // postGetABTestingFunnel(formData);
     // postGoogleSignInData(formData);
@@ -203,8 +203,8 @@ const Funnel = () => {
         <CustomBreadcrumbs
           items={[
             {
-              label: "Funnel Metrics A/B",
-              href: "/funnel",
+              label: "Funnel Metrics Old",
+              href: "/funnel-metrics-old",
               icon: <BarChartIcon fontSize="small" />,
             },
           ]}
@@ -218,13 +218,13 @@ const Funnel = () => {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography fontSize="14x" fontWeight={600} color="text.secondary">
-            Total Installs:
+            Data Till:
           </Typography>
           {loadingDataCount ? (
             <Skeleton variant="rounded" width={60} height={28} />
           ) : (
             <Chip
-              label={data?.[0]?.eventCount ?? 0}
+              label={"10th April 2026"}
               color="primary"
               size="small"
               sx={{ fontWeight: 700, fontSize: "16px" }}
@@ -249,7 +249,7 @@ const Funnel = () => {
           />
           {date === "custom" && (
             <DatePicker
-              maxDate={new Date()}
+              // maxDate={new Date()}
               selectsRange
               startDate={startDate}
               endDate={endDate}
@@ -366,14 +366,14 @@ const Funnel = () => {
             container
             spacing={2}
           >
-            {/* <Grid size={8}>
+            <Grid size={8}>
               <UserJourneyFunnel
                 filterDate={date}
                 startDate={startDate}
                 endDate={endDate}
               />
-            </Grid> */}
-            <Grid size={6}>
+            </Grid>
+            {/* <Grid size={6}>
               <AFunnelMetrics
                 filterDate={date}
                 startDate={startDate}
@@ -388,7 +388,7 @@ const Funnel = () => {
                 endDate={endDate}
                 build={2}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Paper>
@@ -396,4 +396,4 @@ const Funnel = () => {
   );
 };
 
-export default Funnel;
+export default FunnelOld;
