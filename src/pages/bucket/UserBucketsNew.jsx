@@ -736,16 +736,6 @@ const SalesCommandCenter = () => {
     },
   ];
 
-  const planExpiryDateColumn = {
-    field: "planExpiryDate",
-    headerName: "Plan Expiry Date",
-    width: 200,
-    renderCell: (params) => {
-      const v = params?.row?.planExpiryDate;
-      return v ? dayjs(v).format("DD MMM YYYY, hh:mm A") : "-";
-    },
-  };
-
   let columns = baseColumns;
 
   if (statusFilter === "Scheduled") {
@@ -811,7 +801,6 @@ const SalesCommandCenter = () => {
       baseColumns[2], // Phone Number
       baseColumns[3], // Email
       baseColumns[4], // Date (createdAt)
-      planExpiryDateColumn, // ✅ only here
       baseColumns[5], // User Activity
       baseColumns[6], // Action
     ];
@@ -886,14 +875,13 @@ const SalesCommandCenter = () => {
       } else {
         // Pending (default)
         return {
-          keys: [...base, "createdAt", "planExpiryDate"],
+          keys: [...base, "createdAt"],
           headers: [
             "Parent's Name",
             "Phone Number",
             "Email",
             "Child Name",
             "Date",
-            "Plan Expiry Date",
           ],
           includeReason: false,
         };
@@ -918,9 +906,6 @@ const SalesCommandCenter = () => {
           value = value ? dayjs(value).format("DD MMM YYYY") : "-";
         } else if (key === "createdAt") {
           value = value ? dayjs(value).format("DD MMM YYYY") : "-";
-        } else if (key === "planExpiryDate") {
-          // ✅ add this
-          value = value ? dayjs(value).format("DD MMM YYYY, hh:mm A") : "-";
         }
 
         return `"${String(value).replace(/"/g, '""')}"`;
