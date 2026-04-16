@@ -475,7 +475,7 @@ export const getLeadReasonLabel = (value, options) => {
 };
 
 export const bucketCategory = [
-  { label: "Subscription Cancelled", value: "Subscription Cancelled" },
+  { label: "Subscription Not Taken", value: "Subscription Cancelled" },
   // {
   //   label: "Trial Clicked – Not Started",
   //   value: "Trial Clicked – Not Started",
