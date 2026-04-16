@@ -108,6 +108,7 @@ const SalesCommandCenter = () => {
     row: null,
     channel: null,
     label: "",
+    isFreeTrial: false,
   });
 
   const [errors, setErrors] = useState({
@@ -202,8 +203,10 @@ const SalesCommandCenter = () => {
     if (status === "Called") return data?.calledUsers;
     if (status === "Scheduled") return data?.followUpUsers;
     if (status === "Converted") return data?.convertedUsers;
-    if (status === "Link Sent") return data?.paymentLinkSentUsers;
+    if (status === "Payment Link Sent") return data?.paymentLinkSentUsers;
     if (status === "Will Sub. Later") return data?.willSubscribeLaterUsers;
+    if (status === "FT Link Sent") return data?.freeTrialLinkSentUsers;
+    if (status === "FT Extended") return data?.freeTrialExtendedUsers;
     return data?.allUsers;
   };
 
@@ -404,20 +407,34 @@ const SalesCommandCenter = () => {
   };
 
   // ─── Send payment link ──────────────────────────────────────────────────────
-  const handleSendLinkUI = async (row, NotificationChannel) => {
+  const handleSendLinkUI = async (row, NotificationChannel, isFreeTrial) => {
     const formData = new FormData();
     formData.append("UserId", row?.userId);
-    // formData.append("PlanId", 110);
+    // formData.append("PlanId", 110); // test
     formData.append("PlanId", 145);
     formData.append("LeadType", getLeadTypeValue(bucket));
     formData.append("NotificationChannel", NotificationChannel);
+    formData.append("IsFreeTrial", isFreeTrial);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     try {
-      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: true }));
+      // setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: true }));
+      setSendingLinkRow((prev) => ({
+        ...prev,
+        [row?.userId]: isFreeTrial ? "ft" : "payment",
+      }));
+
       const res = await postSendPaymentLink(formData).unwrap();
 
       if (res?.status === true) {
-        toast.success("Payment link sent");
+        if (isFreeTrial) {
+          toast.success("Free Trial link sent");
+        } else {
+          toast.success("Payment link sent");
+        }
         await handleGetUpdateData();
       } else {
         toast.error("Error sending payment link");
@@ -425,7 +442,8 @@ const SalesCommandCenter = () => {
     } catch (error) {
       toast.error("Error sending payment link");
     } finally {
-      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: false }));
+      // setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: false }));
+      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: null }));
     }
   };
 
@@ -581,12 +599,13 @@ const SalesCommandCenter = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 500,
+      width: 700,
       renderCell: (params) => {
         const reasonValue = Number(params?.row?.reason ?? 0);
         const selectedValue = getLeadReasonLabel(reasonValue, selectOption);
         const isConverted = selectedValue === "Converted - Paid";
-        const isPaymentsent = selectedValue === "Payment link sent";
+        const isPaymentsent =
+          selectedValue === "Payment link sent" || "Free Trial Link Sent";
 
         return (
           <Box
@@ -607,53 +626,13 @@ const SalesCommandCenter = () => {
               Add Feedback
             </Button>
 
-            {/* {!isConverted && (
-              <>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="success"
-                  startIcon={<WhatsAppIcon />}
-                  disabled={sendingLinkRow?.[params?.row?.userId]}
-                  onClick={() => handleSendLinkUI(params?.row, 0)}
-                >
-                  {sendingLinkRow?.[params?.row?.userId]
-                    ? "Sending..."
-                    : "Send Link"}
-                </Button>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="success"
-                  startIcon={<WhatsAppIcon />}
-                  disabled={sendingLinkRow?.[params?.row?.userId]}
-                  onClick={() => handleSendLinkUI(params?.row, 1)}
-                >
-                  {sendingLinkRow?.[params?.row?.userId]
-                    ? "Sending..."
-                    : "Send Email"}
-                </Button>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="success"
-                  startIcon={<WhatsAppIcon />}
-                  disabled={sendingLinkRow?.[params?.row?.userId]}
-                  onClick={() => handleSendLinkUI(params?.row, 2)}
-                >
-                  {sendingLinkRow?.[params?.row?.userId]
-                    ? "Sending..."
-                    : "Send Message"}
-                </Button>
-              </>
-            )} */}
-
             {!isConverted && (
-              <FormControl size="small" sx={{ minWidth: 140 }}>
+              <FormControl size="small" sx={{ minWidth: 130 }}>
                 <Select
                   displayEmpty
                   value=""
-                  disabled={sendingLinkRow?.[params?.row?.userId]}
+                  // disabled={sendingLinkRow?.[params?.row?.userId]}
+                  disabled={sendingLinkRow?.[params?.row?.userId] === "ft"}
                   onChange={(e) => {
                     const channel = e.target.value;
                     const labels = {
@@ -665,13 +644,66 @@ const SalesCommandCenter = () => {
                       row: params?.row,
                       channel,
                       label: labels[channel],
+                      isFreeTrial: true,
                     });
                     setSendConfirmOpen(true);
                   }}
+                  // renderValue={() =>
+                  //   sendingLinkRow?.[params?.row?.userId]
+                  //     ? "Sending..."
+                  //     : "Send FT Link"
+                  // }
                   renderValue={() =>
-                    sendingLinkRow?.[params?.row?.userId]
+                    sendingLinkRow?.[params?.row?.userId] === "ft"
                       ? "Sending..."
-                      : "Send Link"
+                      : "Send FT Link"
+                  }
+                  sx={{ fontSize: "13px" }}
+                >
+                  <MenuItem value={0}>
+                    <WhatsAppIcon
+                      fontSize="small"
+                      sx={{ mr: 1, color: "#25D366" }}
+                    />
+                    Send WhatsApp Link
+                  </MenuItem>
+                  <MenuItem value={1}>📧 Send Email</MenuItem>
+                  <MenuItem value={2}>💬 Send Message</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+
+            {!isConverted && (
+              <FormControl size="small" sx={{ minWidth: 170 }}>
+                <Select
+                  displayEmpty
+                  value=""
+                  // disabled={sendingLinkRow?.[params?.row?.userId]}
+                  disabled={sendingLinkRow?.[params?.row?.userId] === "payment"}
+                  onChange={(e) => {
+                    const channel = e.target.value;
+                    const labels = {
+                      0: "Send WhatsApp Link",
+                      1: "Send Email",
+                      2: "Send Message",
+                    };
+                    setPendingSend({
+                      row: params?.row,
+                      channel,
+                      label: labels[channel],
+                      isFreeTrial: false,
+                    });
+                    setSendConfirmOpen(true);
+                  }}
+                  // renderValue={() =>
+                  //   sendingLinkRow?.[params?.row?.userId]
+                  //     ? "Sending..."
+                  //     : "Send Payment Link"
+                  // }
+                  renderValue={() =>
+                    sendingLinkRow?.[params?.row?.userId] === "payment"
+                      ? "Sending..."
+                      : "Send Payment Link"
                   }
                   sx={{ fontSize: "13px" }}
                 >
@@ -732,10 +764,22 @@ const SalesCommandCenter = () => {
       reasonColumn,
       // baseColumns[4],
     ];
+  } else if (statusFilter === "FT Extended") {
+    columns = [
+      baseColumns[0],
+      baseColumns[1],
+      baseColumns[2],
+      baseColumns[3],
+      baseColumns[4],
+      baseColumns[5],
+      reasonColumn,
+      // baseColumns[4],
+    ];
   } else if (
     statusFilter === "Called" ||
-    statusFilter === "Link Sent" ||
-    statusFilter === "Will Sub. Later"
+    statusFilter === "Payment Link Sent" ||
+    statusFilter === "Will Sub. Later" ||
+    statusFilter === "FT Link Sent"
   ) {
     columns = [
       baseColumns[0],
@@ -798,8 +842,10 @@ const SalesCommandCenter = () => {
         };
       } else if (
         statusFilter === "Called" ||
-        statusFilter === "Link Sent" ||
-        statusFilter === "Will Sub. Later"
+        statusFilter === "Payment Link Sent" ||
+        statusFilter === "Will Sub. Later" ||
+        statusFilter === "FT Link Sent" ||
+        statusFilter === "FT Extended"
       ) {
         return {
           keys: [...base, "calledAttempts", "lastCalledAt", "createdAt"],
@@ -1030,9 +1076,11 @@ const SalesCommandCenter = () => {
           {[
             "Pending",
             "Called",
-            "Link Sent",
             "Scheduled",
             "Will Sub. Later",
+            "FT Link Sent",
+            "FT Extended",
+            "Payment Link Sent",
             "Converted",
           ].map((t) => (
             <Button
@@ -1055,14 +1103,23 @@ const SalesCommandCenter = () => {
               },
               { value: summaryData?.pendingUsers ?? 0, label: "Pending" },
               { value: summaryData?.calledUsers ?? 0, label: "Called" },
-              {
-                value: summaryData?.paymentLinkSentUsers ?? 0,
-                label: "Link Sent",
-              },
+
               { value: summaryData?.followUpUsers ?? 0, label: "Schedule" },
               {
                 value: summaryData?.willSubscribeLaterUsers ?? 0,
                 label: "Will Sub. Later",
+              },
+              {
+                value: summaryData?.freeTrialLinkSentUsers ?? 0,
+                label: "FT Link Sent",
+              },
+              {
+                value: summaryData?.freeTrialExtendedUsers ?? 0,
+                label: "FT Extended",
+              },
+              {
+                value: summaryData?.paymentLinkSentUsers ?? 0,
+                label: "Payment Link Sent",
               },
               { value: summaryData?.convertedUsers ?? 0, label: "Converted" },
             ].map(({ value, label }) => (
@@ -1078,7 +1135,7 @@ const SalesCommandCenter = () => {
                 <p>
                   <b>{value}</b>
                 </p>
-                <Typography sx={{ color: "#9ca3af" }}>{label}</Typography>
+                <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>{label}</Typography>
               </Box>
             ))}
 
@@ -1103,9 +1160,10 @@ const SalesCommandCenter = () => {
                 </b> */}
                 <b>{summaryData?.conversionRate ?? 0}%</b>
               </p>
-              <Typography sx={{ color: "#9ca3af" }}>Conv. Rate</Typography>
+              <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>Conv. Rate</Typography>
             </Box>
           </Box>
+          
         )}
       </Box>
 
@@ -1164,7 +1222,9 @@ const SalesCommandCenter = () => {
                       disabled={
                         option.value === 1 ||
                         option.value === 16 ||
-                        option.value === 6
+                        option.value === 6 ||
+                        option.value === 19 ||
+                        option.value === 20
                       } // ✅ disabled but visible
                       sx={{
                         // ✅ optional: style them to look clearly disabled
@@ -1292,7 +1352,12 @@ const SalesCommandCenter = () => {
           <Button
             onClick={() => {
               setSendConfirmOpen(false);
-              setPendingSend({ row: null, channel: null, label: "" });
+              setPendingSend({
+                row: null,
+                channel: null,
+                label: "",
+                isFreeTrial: false,
+              });
             }}
           >
             Cancel
@@ -1302,14 +1367,24 @@ const SalesCommandCenter = () => {
             color="success"
             onClick={async () => {
               setSendConfirmOpen(false);
-              await handleSendLinkUI(pendingSend.row, pendingSend.channel);
-              setPendingSend({ row: null, channel: null, label: "" });
+              await handleSendLinkUI(
+                pendingSend.row,
+                pendingSend.channel,
+                pendingSend.isFreeTrial,
+              );
+              setPendingSend({
+                row: null,
+                channel: null,
+                label: "",
+                isFreeTrial: false,
+              });
             }}
           >
             Confirm
           </Button>
         </DialogActions>
       </Dialog>
+
       {selectedStudentId !== null && (
         <UserBucketStudentDetailsModal
           open={openModal}

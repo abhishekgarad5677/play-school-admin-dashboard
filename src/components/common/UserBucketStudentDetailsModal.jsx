@@ -211,14 +211,14 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
                 {/* Game Play Info Table */}
                 <Box sx={{ mt: 4 }}>
                   <Typography variant="h6" gutterBottom>
-                    Game Play Summary
+                    Activities Summary
                   </Typography>
                   <Divider sx={{ mb: 2 }} />
                   <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell>
-                          <strong>Game Name</strong>
+                          <strong>Activity Name</strong>
                         </TableCell>
                         <TableCell align="right">
                           <strong>Time Spent</strong>
@@ -242,7 +242,7 @@ const UserBucketStudentDetailsModal = ({ open, onClose, studentId }) => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={3} align="center">
-                            No game activity found
+                            No activity found
                           </TableCell>
                         </TableRow>
                       )}
