@@ -102,7 +102,7 @@ export const appFilterOptions = [
   { label: "All", value: 0 },
   { label: "Android", value: 1 },
   { label: "iOS", value: 2 },
-  // { label: "Website", value: 3 },
+  { label: "Website", value: 3 },
   // { label: "Other", value: 0 },
 ];
 
