@@ -574,7 +574,7 @@ const SalesCommandCenter = () => {
     { field: "name", headerName: "Parent's Name", width: 190 },
     { field: "childName", headerName: "Child name", width: 160 },
     { field: "phoneNumber", headerName: "Phone Number", width: 170 },
-    { field: "email", headerName: "Email", width: 220 },
+    { field: "email", headerName: "Email", width: 250 },
     {
       field: "createdAt",
       headerName: "Date",
@@ -736,6 +736,16 @@ const SalesCommandCenter = () => {
     },
   ];
 
+  const planExpiryDateColumn = {
+    field: "planExpiryDate",
+    headerName: "Plan Expiry Date",
+    width: 200,
+    renderCell: (params) => {
+      const v = params?.row?.planExpiryDate;
+      return v ? dayjs(v).format("DD MMM YYYY, hh:mm A") : "-";
+    },
+  };
+
   let columns = baseColumns;
 
   if (statusFilter === "Scheduled") {
@@ -792,6 +802,18 @@ const SalesCommandCenter = () => {
       baseColumns[4],
       baseColumns[5],
       baseColumns[6],
+    ];
+  } else {
+    // Pending tab — add planExpiryDate after the Date column
+    columns = [
+      baseColumns[0], // Parent's Name
+      baseColumns[1], // Child Name
+      baseColumns[2], // Phone Number
+      baseColumns[3], // Email
+      baseColumns[4], // Date (createdAt)
+      planExpiryDateColumn, // ✅ only here
+      baseColumns[5], // User Activity
+      baseColumns[6], // Action
     ];
   }
 
@@ -864,13 +886,14 @@ const SalesCommandCenter = () => {
       } else {
         // Pending (default)
         return {
-          keys: [...base, "createdAt"],
+          keys: [...base, "createdAt", "planExpiryDate"],
           headers: [
             "Parent's Name",
             "Phone Number",
             "Email",
             "Child Name",
             "Date",
+            "Plan Expiry Date",
           ],
           includeReason: false,
         };
@@ -895,6 +918,9 @@ const SalesCommandCenter = () => {
           value = value ? dayjs(value).format("DD MMM YYYY") : "-";
         } else if (key === "createdAt") {
           value = value ? dayjs(value).format("DD MMM YYYY") : "-";
+        } else if (key === "planExpiryDate") {
+          // ✅ add this
+          value = value ? dayjs(value).format("DD MMM YYYY, hh:mm A") : "-";
         }
 
         return `"${String(value).replace(/"/g, '""')}"`;
@@ -1135,7 +1161,9 @@ const SalesCommandCenter = () => {
                 <p>
                   <b>{value}</b>
                 </p>
-                <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>{label}</Typography>
+                <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>
+                  {label}
+                </Typography>
               </Box>
             ))}
 
@@ -1160,10 +1188,11 @@ const SalesCommandCenter = () => {
                 </b> */}
                 <b>{summaryData?.conversionRate ?? 0}%</b>
               </p>
-              <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>Conv. Rate</Typography>
+              <Typography sx={{ color: "#9ca3af", fontSize: 13 }}>
+                Conv. Rate
+              </Typography>
             </Box>
           </Box>
-          
         )}
       </Box>
 
