@@ -301,10 +301,25 @@ const DashboardSummary = ({
         <Grid size={4}>
           <Skeleton variant="rounded" width={"100%"} height={150} />
         </Grid>
-        <Grid size={3}>
+        <Grid size={2}>
           <Skeleton variant="rounded" width={"100%"} height={150} />
         </Grid>
-        <Grid size={3}>
+        <Grid size={2}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={2}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={2}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={2}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={2}>
+          <Skeleton variant="rounded" width={"100%"} height={150} />
+        </Grid>
+        <Grid size={6}>
           <Skeleton variant="rounded" width={"100%"} height={150} />
         </Grid>
         <Grid size={6}>

@@ -197,28 +197,44 @@ const Students = () => {
     //   width: 180,
     //   renderCell: (params) => useFormattedDate(params?.row?.dateOfBirth),
     // },
-    { field: "city", headerName: "City", width: 150 },
-    { field: "state", headerName: "State", width: 150 },
-    { field: "country", headerName: "Country", width: 150 },
-    // { field: "studentId", headerName: "Student ID", width: 100 },
     {
-      field: "gender",
-      headerName: "Gender",
-      width: 100,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.gender}
-          sx={{
-            backgroundColor:
-              params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
+      field: "city",
+      headerName: "City",
+      width: 150,
+      renderCell: (params) => (params?.row?.city ? params?.row?.city : "-"),
     },
+    {
+      field: "state",
+      headerName: "State",
+      width: 150,
+      renderCell: (params) => (params?.row?.state ? params?.row?.state : "-"),
+    },
+    {
+      field: "country",
+      headerName: "Country",
+      width: 150,
+      renderCell: (params) =>
+        params?.row?.country ? params?.row?.country : "-",
+    },
+    // { field: "studentId", headerName: "Student ID", width: 100 },
+    // {
+    //   field: "gender",
+    //   headerName: "Gender",
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Chip
+    //       size="small"
+    //       label={params?.row?.gender}
+    //       sx={{
+    //         backgroundColor:
+    //           params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
+    //         color: "white",
+    //         fontWeight: "medium",
+    //         padding: "5px",
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       field: "actions",
       headerName: "Actions",

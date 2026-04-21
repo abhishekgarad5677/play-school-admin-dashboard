@@ -154,9 +154,25 @@ const RazorpayFreeTrial = () => {
         </div>
       ),
     },
-    { field: "country", headerName: "Country", width: 160 },
-    { field: "state", headerName: "State", width: 160 },
-    { field: "city", headerName: "City", width: 160 },
+    {
+      field: "country",
+      headerName: "Country",
+      width: 160,
+      renderCell: (params) =>
+        params?.row?.country ? params?.row?.country : "-",
+    },
+    {
+      field: "state",
+      headerName: "State",
+      width: 160,
+      renderCell: (params) => (params?.row?.state ? params?.row?.state : "-"),
+    },
+    {
+      field: "city",
+      headerName: "City",
+      width: 160,
+      renderCell: (params) => (params?.row?.city ? params?.row?.city : "-"),
+    },
     // { field: "childsName", headerName: "Child's Name", width: 170 },
     // { field: "email", headerName: "Email", width: 300 },
     {
@@ -199,24 +215,24 @@ const RazorpayFreeTrial = () => {
       renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
     },
     // { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      width: 100,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.gender}
-          sx={{
-            backgroundColor:
-              params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
-    },
+    // {
+    //   field: "gender",
+    //   headerName: "Gender",
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Chip
+    //       size="small"
+    //       label={params?.row?.gender}
+    //       sx={{
+    //         backgroundColor:
+    //           params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
+    //         color: "white",
+    //         fontWeight: "medium",
+    //         padding: "5px",
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       field: "dateOfBirth",
       headerName: "Age",

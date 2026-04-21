@@ -46,7 +46,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <PeopleIcon />
-          Student Details
+          User Activity Details
         </Box>
       </DialogTitle>
 
@@ -59,7 +59,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
           <Paper sx={{ width: "100%", p: 3 }}>
             {/* Student Info */}
             <Typography variant="h6" gutterBottom>
-              Student Information
+              Child's Information
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
@@ -182,7 +182,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
             {/* Game Play Info Table */}
             <Box sx={{ mt: 4 }}>
               <Typography variant="h6" gutterBottom>
-                Game Play Summary
+                Activity Summary
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -190,7 +190,7 @@ const StudentDetailsModal = ({ open, onClose, studentId }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <strong>Game Name</strong>
+                      <strong>Activity Name</strong>
                     </TableCell>
                     <TableCell align="right">
                       <strong>Time Spent</strong>

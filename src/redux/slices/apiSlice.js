@@ -437,6 +437,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getPosthogEventCount: builder.mutation({
+      query: (data) => ({
+        url: "Analytics/posthog-event-count",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -498,4 +505,5 @@ export const {
   useCallCenterReportsMutation,
   useUserShopifyCouponReportMutation,
   useGetABFunnelMetricsMutation,
+  useGetPosthogEventCountMutation,
 } = apiSlice;

@@ -208,24 +208,24 @@ const Subscription = () => {
       renderCell: (params) => useFormattedDate(params?.row?.planExpiryDate),
     },
     { field: "phoneNumber", headerName: "Phone Number", width: 150 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      width: 100,
-      renderCell: (params) => (
-        <Chip
-          size="small"
-          label={params?.row?.gender}
-          sx={{
-            backgroundColor:
-              params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
-            color: "white",
-            fontWeight: "medium",
-            padding: "5px",
-          }}
-        />
-      ),
-    },
+    // {
+    //   field: "gender",
+    //   headerName: "Gender",
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Chip
+    //       size="small"
+    //       label={params?.row?.gender}
+    //       sx={{
+    //         backgroundColor:
+    //           params?.row?.gender === "Boy" ? "#448aff" : "#e666fb",
+    //         color: "white",
+    //         fontWeight: "medium",
+    //         padding: "5px",
+    //       }}
+    //     />
+    //   ),
+    // },
   ];
 
   const convertToCSV = (array) => {

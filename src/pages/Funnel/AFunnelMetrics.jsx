@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Skeleton } from "@mui/material";
-import { useGetABFunnelMetricsMutation } from "../../redux/slices/apiSlice";
+import {
+  useGetABFunnelMetricsMutation,
+  useGetPosthogEventCountMutation,
+} from "../../redux/slices/apiSlice";
 import { formatDateToReadableString } from "../../utils/Hooks";
 import ExportChildDetailsData from "../../components/funnel/ExportChildDetailsData";
 import ExportPhoneNumberDetails from "../../components/funnel/ExportPhoneNumberDetails";
@@ -32,12 +35,12 @@ const FUNNEL_ORDER_A_BUILD = [
   "pending",
   "halted",
 ];
+
 const FUNNEL_ORDER_B_BUILD = [
   "signup",
   "freeTrialsClicked",
+  "freeTrialInterstitial", // ← new posthog step
   "freeTrialSuccess",
-  // "childDetails",
-  // "phoneNumberAdded",
   "subscriptionCancelled",
   "due",
   "subscriptionSuccess",
@@ -56,11 +59,23 @@ const LABEL_MAP = {
   subscriptionSuccess: "Subscription Success",
   pending: "Subscription Pending",
   halted: "Subscription Halted",
+  freeTrialInterstitial: "Mandate Info Page Clicked", // ← new
 };
 
 const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
     useGetABFunnelMetricsMutation();
+
+  const [
+    postHogDataEvent,
+    {
+      isLoading: loadingPostHogData,
+      error: postHogDataError,
+      data: postHogData,
+    },
+  ] = useGetPosthogEventCountMutation();
+
+  console.log(postHogData);
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [exportPhoneModalOpen, setExportPhoneModalOpen] = useState(false);
@@ -69,11 +84,14 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
 
   useEffect(() => {
     const formData = new FormData();
+    const posthogFormData = new FormData(); // separate FormData without ABTesting
 
     if (filterDate !== "custom") {
       formData.append("FilterType", filterDate);
       formData.append("ABTesting", build);
+      posthogFormData.append("FilterType", filterDate);
       postDashboardData(formData);
+      postHogDataEvent(posthogFormData);
       return;
     }
 
@@ -82,9 +100,15 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
       formData.append("ABTesting", build);
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
+
+      posthogFormData.append("FilterType", filterDate);
+      posthogFormData.append("FromDate", formatDateToReadableString(startDate));
+      posthogFormData.append("ToDate", formatDateToReadableString(endDate));
+
       postDashboardData(formData);
+      postHogDataEvent(posthogFormData);
     }
-  }, [filterDate, startDate, endDate, postDashboardData]);
+  }, [filterDate, startDate, endDate, postDashboardData, postHogDataEvent]);
 
   const wrapLabel = (val, maxChars = 18) => {
     if (val === null || val === undefined) return "";
@@ -113,6 +137,7 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
   };
 
   // Now built solely from DashboardData
+  // 3. In the mergedMap useMemo — inject the posthog count under the new key
   const mergedMap = useMemo(() => {
     const map = {};
     const obj = DashboardData?.data ?? {};
@@ -120,8 +145,14 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
       const v = obj[k];
       map[k] = typeof v === "number" ? v : 0;
     });
+
+    // Inject posthog event count for Build B's interstitial step
+    if (postHogData?.count !== undefined) {
+      map["freeTrialInterstitial"] = postHogData.count;
+    }
+
     return map;
-  }, [DashboardData]);
+  }, [DashboardData, postHogData]);
 
   const { keys, categories, actualValues } = useMemo(() => {
     const keys =

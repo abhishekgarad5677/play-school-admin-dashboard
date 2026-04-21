@@ -38,8 +38,8 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import AnalyticsEventsChart from "./AnalyticsEventsChart";
 import UserJourneyFunnel from "./UserJourneyFunnel";
 import SubscriptionDueFunnel from "./SubscriptionDueFunnel";
-import ABFunnelMetrics from "./ABFunnelMetrics";
-import AFunnelMetrics from "./ABFunnelMetrics";
+import ABFunnelMetrics from "./AFunnelMetrics";
+import AFunnelMetrics from "./AFunnelMetrics";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
