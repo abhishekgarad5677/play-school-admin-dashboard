@@ -444,6 +444,20 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    AddOrderId: builder.mutation({
+      query: (data) => ({
+        url: "ShopifyCoupons/admin/update-coupon",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    checkCouponRedeemStatus: builder.mutation({
+      query: (data) => ({
+        url: "ShopifyCoupons/admin/check-redemption",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -506,4 +520,6 @@ export const {
   useUserShopifyCouponReportMutation,
   useGetABFunnelMetricsMutation,
   useGetPosthogEventCountMutation,
+  useAddOrderIdMutation,
+  useCheckCouponRedeemStatusMutation
 } = apiSlice;
