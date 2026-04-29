@@ -14,6 +14,8 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CustomRangeSelect from "../../utils/CustomRangeSelect";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import DatePicker from "react-datepicker";
 import {
   bucketCategory,
@@ -70,6 +72,7 @@ const SalesCommandCenter = () => {
     page: 0,
     pageSize: 10,
   });
+  const [sortAscending, setSortAscending] = useState(false);
   const [statusFilter, setStatusFilter] = useState("Pending");
   const [sendingLinkRow, setSendingLinkRow] = useState({});
 
@@ -179,6 +182,8 @@ const SalesCommandCenter = () => {
       formData.append("phoneNumber", debouncedPhone.trim());
     }
 
+    formData.append("sortGameCountAscending", sortAscending);
+
     if (bucket === "Phone Added – Trial Not Clicked") {
       postDataStudent(formData);
     } else if (bucket === "Trial Clicked – Not Started") {
@@ -194,6 +199,7 @@ const SalesCommandCenter = () => {
     bucket,
     statusFilter,
     debouncedPhone,
+    sortAscending,
   ]);
 
   // ─── Helper: get row count for current status tab ──────────────────────────
@@ -274,6 +280,8 @@ const SalesCommandCenter = () => {
     if (debouncedPhone.trim()) {
       formData.append("phoneNumber", debouncedPhone.trim());
     }
+
+    formData.append("sortGameCountAscending", sortAscending);
 
     try {
       if (bucket === "Phone Added – Trial Not Clicked") {
@@ -573,6 +581,35 @@ const SalesCommandCenter = () => {
   const baseColumns = [
     { field: "name", headerName: "Parent's Name", width: 190 },
     { field: "childName", headerName: "Child name", width: 160 },
+    {
+      field: "gameCount",
+      width: 150,
+      sortable: false,
+      renderHeader: () => {
+        const [hovered, setHovered] = useState(false);
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            Game Count
+            {hovered &&
+              (sortAscending ? (
+                <ArrowUpwardIcon sx={{ fontSize: 15 }} />
+              ) : (
+                <ArrowDownwardIcon sx={{ fontSize: 15 }} />
+              ))}
+          </div>
+        );
+      },
+    },
     { field: "phoneNumber", headerName: "Phone Number", width: 170 },
     { field: "email", headerName: "Email", width: 250 },
     {
@@ -740,40 +777,39 @@ const SalesCommandCenter = () => {
 
   if (statusFilter === "Scheduled") {
     columns = [
-      baseColumns[0],
-      baseColumns[1],
-      baseColumns[2],
-      baseColumns[3],
+      baseColumns[0], // name
+      baseColumns[1], // childName
+      // baseColumns[2], // gameCount ✅
+      baseColumns[3], // phoneNumber
       callAttemptsColumn,
       lastCalledDateColumn,
       scheduledDateColumn,
-      baseColumns[4],
+      baseColumns[4], // email
       reasonColumn,
-      baseColumns[5],
-      baseColumns[6],
+      baseColumns[5], // createdAt
+      baseColumns[6], // child-info (User Activity)
+      baseColumns[7], // action ✅ was missing before
     ];
   } else if (statusFilter === "Converted") {
     columns = [
       baseColumns[0],
       baseColumns[1],
-      baseColumns[2],
-      baseColumns[3],
+      // baseColumns[2], // gameCount ✅
+      baseColumns[3], // phoneNumber
       convertedDateColumn,
-      baseColumns[4],
-      baseColumns[5],
+      baseColumns[4], // email
+      baseColumns[5], // createdAt
       reasonColumn,
-      // baseColumns[4],
     ];
   } else if (statusFilter === "FT Extended") {
     columns = [
       baseColumns[0],
       baseColumns[1],
-      baseColumns[2],
-      baseColumns[3],
-      baseColumns[4],
-      baseColumns[5],
+      // baseColumns[2], // gameCount ✅
+      baseColumns[3], // phoneNumber
+      baseColumns[4], // email
+      baseColumns[5], // createdAt
       reasonColumn,
-      // baseColumns[4],
     ];
   } else if (
     statusFilter === "Called" ||
@@ -784,25 +820,27 @@ const SalesCommandCenter = () => {
     columns = [
       baseColumns[0],
       baseColumns[1],
-      baseColumns[2],
-      baseColumns[3],
+      // baseColumns[2], // gameCount ✅
+      baseColumns[3], // phoneNumber
       reasonColumn,
       callAttemptsColumn,
       lastCalledDateColumn,
-      baseColumns[4],
-      baseColumns[5],
-      baseColumns[6],
+      baseColumns[4], // email
+      baseColumns[5], // createdAt
+      baseColumns[6], // child-info
+      baseColumns[7], // action ✅
     ];
   } else {
-    // Pending tab — add planExpiryDate after the Date column
+    // Pending
     columns = [
-      baseColumns[0], // Parent's Name
-      baseColumns[1], // Child Name
-      baseColumns[2], // Phone Number
-      baseColumns[3], // Email
-      baseColumns[4], // Date (createdAt)
-      baseColumns[5], // User Activity
-      baseColumns[6], // Action
+      baseColumns[0],
+      baseColumns[1],
+      baseColumns[2], // gameCount ✅
+      baseColumns[3], // phoneNumber
+      baseColumns[4], // email
+      baseColumns[5], // createdAt
+      baseColumns[6], // child-info
+      baseColumns[7], // action ✅
     ];
   }
 
@@ -875,12 +913,13 @@ const SalesCommandCenter = () => {
       } else {
         // Pending (default)
         return {
-          keys: [...base, "createdAt"],
+          keys: [...base, "gameCount", "createdAt"],
           headers: [
             "Parent's Name",
             "Phone Number",
             "Email",
             "Child Name",
+            "Game Count",
             "Date",
           ],
           includeReason: false,
@@ -945,6 +984,7 @@ const SalesCommandCenter = () => {
       if (debouncedPhone.trim()) {
         formData.append("phoneNumber", debouncedPhone.trim());
       }
+      formData.append("sortGameCountAscending", sortAscending);
 
       try {
         let res;
@@ -1193,6 +1233,11 @@ const SalesCommandCenter = () => {
             rowCount={rowCount}
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
+            onColumnHeaderClick={(params) => {
+              if (params.field === "gameCount") {
+                setSortAscending((prev) => !prev);
+              }
+            }}
           />
         )}
       </Paper>

@@ -62,9 +62,11 @@ const LABEL_MAP = {
   freeTrialInterstitial: "Mandate Info Page Clicked", // ← new
 };
 
-const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
+const AFunnelMetrics = ({ filterDate, startDate, endDate, build, data }) => {
   const [postDashboardData, { isLoading, error, data: DashboardData }] =
     useGetABFunnelMetricsMutation();
+
+  console.log(data);
 
   const [
     postHogDataEvent,
@@ -74,8 +76,6 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
       data: postHogData,
     },
   ] = useGetPosthogEventCountMutation();
-
-  console.log(postHogData);
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [exportPhoneModalOpen, setExportPhoneModalOpen] = useState(false);
@@ -138,6 +138,22 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
 
   // Now built solely from DashboardData
   // 3. In the mergedMap useMemo — inject the posthog count under the new key
+  // const mergedMap = useMemo(() => {
+  //   const map = {};
+  //   const obj = DashboardData?.data ?? {};
+  //   Object.keys(obj).forEach((k) => {
+  //     const v = obj[k];
+  //     map[k] = typeof v === "number" ? v : 0;
+  //   });
+
+  //   // Inject posthog event count for Build B's interstitial step
+  //   if (postHogData?.count !== undefined) {
+  //     map["freeTrialInterstitial"] = postHogData.count;
+  //   }
+
+  //   return map;
+  // }, [DashboardData, postHogData]);
+
   const mergedMap = useMemo(() => {
     const map = {};
     const obj = DashboardData?.data ?? {};
@@ -146,13 +162,14 @@ const AFunnelMetrics = ({ filterDate, startDate, endDate, build }) => {
       map[k] = typeof v === "number" ? v : 0;
     });
 
-    // Inject posthog event count for Build B's interstitial step
-    if (postHogData?.count !== undefined) {
-      map["freeTrialInterstitial"] = postHogData.count;
-    }
+    // ✅ Use data prop instead of postHogData for freeTrialInterstitial
+    const mandateEvent = data?.find(
+      (e) => e.eventName === "mandate_page_clicked",
+    );
+    map["freeTrialInterstitial"] = mandateEvent?.eventCount ?? 0;
 
     return map;
-  }, [DashboardData, postHogData]);
+  }, [DashboardData, data]); // ✅ replace postHogData with data in deps
 
   const { keys, categories, actualValues } = useMemo(() => {
     const keys =

@@ -379,6 +379,7 @@ const Funnel = () => {
                 startDate={startDate}
                 endDate={endDate}
                 build={1}
+                data={data}
               />
             </Grid>
             <Grid size={6}>
@@ -387,6 +388,7 @@ const Funnel = () => {
                 startDate={startDate}
                 endDate={endDate}
                 build={2}
+                data={data}
               />
             </Grid>
           </Grid>

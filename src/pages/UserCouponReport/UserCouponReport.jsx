@@ -39,12 +39,34 @@ import { toast } from "react-toastify"; // ✅ NEW — make sure toast is import
 
 const COUPON_PASSWORD = import.meta.env.VITE_USER_COUPON_PASSWORD;
 
-const SummaryCard = ({ label, value }) => (
-  <Paper sx={{ p: 2, minWidth: 160, textAlign: "center" }}>
-    <Typography variant="h5" fontWeight={600}>
+const SummaryCard = ({ label, value, isActive, onClick }) => (
+  <Paper
+    onClick={onClick}
+    sx={{
+      p: 2,
+      minWidth: 160,
+      textAlign: "center",
+      cursor: "pointer",
+      border: "2px solid",
+      borderColor: isActive ? "primary.main" : "transparent",
+      backgroundColor: isActive ? "primary.50" : "background.paper",
+      boxShadow: isActive ? 2 : 1,
+      transition: "all 0.2s ease",
+      "&:hover": { borderColor: "primary.light", boxShadow: 3 },
+    }}
+  >
+    <Typography
+      variant="h5"
+      fontWeight={600}
+      color={isActive ? "primary.main" : "text.primary"}
+    >
       {value ?? 0}
     </Typography>
-    <Typography variant="body2" color="text.secondary">
+    <Typography
+      variant="body2"
+      color={isActive ? "primary.main" : "text.secondary"}
+      fontWeight={isActive ? 600 : 400}
+    >
       {label}
     </Typography>
   </Paper>
@@ -59,6 +81,7 @@ const UserCouponReport = () => {
   const [orderPassword, setOrderPassword] = useState("");
   const [orderPasswordError, setOrderPasswordError] = useState("");
   const [showOrderPassword, setShowOrderPassword] = useState(false);
+  const [redemptionFilter, setRedemptionFilter] = useState("all");
 
   // coupon reveal states
   const [showCoupon, setShowCoupon] = useState(false);
@@ -77,6 +100,18 @@ const UserCouponReport = () => {
     page: 0,
     pageSize: 10,
   });
+
+  // search users by number, email and coupon code
+  const [searchPhone, setSearchPhone] = useState("");
+  const [debouncedPhone, setDebouncedPhone] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedPhone(searchPhone);
+      setPaginationModel((prev) => ({ ...prev, page: 0 }));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchPhone]);
 
   const [date, setDate] = useState(
     () => sessionStorage.getItem("selectedDate") || "today",
@@ -160,6 +195,11 @@ const UserCouponReport = () => {
     formData.append("PageSize", paginationModel.pageSize);
     formData.append("PageNumber", paginationModel.page + 1);
     if (showCoupon) formData.append("viewCoupon", true);
+    if (debouncedPhone.trim()) {
+      formData.append("search", debouncedPhone.trim());
+    }
+    if (redemptionFilter !== "all")
+      formData.append("redemptionFilter", redemptionFilter); // ✅ NEW
     postDataStudent(formData);
   };
 
@@ -249,14 +289,27 @@ const UserCouponReport = () => {
     formData.append("PageSize", paginationModel.pageSize);
     formData.append("PageNumber", paginationModel.page + 1);
     if (showCoupon) formData.append("viewCoupon", true);
+    if (debouncedPhone.trim()) {
+      formData.append("search", debouncedPhone.trim());
+    }
+    if (redemptionFilter !== "all")
+      formData.append("redemptionFilter", redemptionFilter); // ✅ NEW
     postDataStudent(formData);
-  }, [date, startDate, endDate, paginationModel, showCoupon]);
+  }, [
+    date,
+    startDate,
+    endDate,
+    paginationModel,
+    showCoupon,
+    debouncedPhone,
+    redemptionFilter,
+  ]);
 
   useEffect(() => {
     if (studentsData) {
       const inner = studentsData?.data?.data;
       setData(inner?.coupons);
-      setRowCount(inner?.totalGenerated);
+      setRowCount(inner?.totalFiltered);
       setSummary(inner);
     }
   }, [studentsData]);
@@ -385,6 +438,12 @@ const UserCouponReport = () => {
         formData.append("ToDate", formatDateToReadableString(endDate));
       }
       if (showCoupon) formData.append("viewCoupon", true);
+      if (debouncedPhone.trim()) {
+        formData.append("search", debouncedPhone.trim());
+      }
+      if (redemptionFilter !== "all")
+        formData.append("redemptionFilter", redemptionFilter); // ✅ NEW
+      formData.append("PageSize", batchSize);
       formData.append("PageSize", batchSize);
       formData.append("PageNumber", page);
 
@@ -457,7 +516,14 @@ const UserCouponReport = () => {
             variant={showCoupon ? "filled" : "outlined"}
             sx={{ cursor: "pointer", fontWeight: 500, px: 0.5 }}
           />
-
+          <TextField
+            size="small"
+            fullWidth
+            label="Search by email/phone/coupon-code"
+            sx={{ width: 250 }}
+            value={searchPhone}
+            onChange={(e) => setSearchPhone(e.target.value)}
+          />
           <CustomRangeSelect
             value={date}
             label={"Date"}
@@ -506,11 +572,29 @@ const UserCouponReport = () => {
           <SummaryCard
             label="Total Generated Coupons"
             value={summary.totalGenerated}
+            isActive={redemptionFilter === "all"}
+            onClick={() => {
+              setRedemptionFilter("all");
+              setPaginationModel((prev) => ({ ...prev, page: 0 }));
+            }}
           />
-          <SummaryCard label="Coupons Redeemed" value={summary.redeemedCount} />
+          <SummaryCard
+            label="Coupons Redeemed"
+            value={summary.redeemedCount}
+            isActive={redemptionFilter === "redeemed"}
+            onClick={() => {
+              setRedemptionFilter("redeemed");
+              setPaginationModel((prev) => ({ ...prev, page: 0 }));
+            }}
+          />
           <SummaryCard
             label="Coupons Not Redeemed"
             value={summary.notRedeemedCount}
+            isActive={redemptionFilter === "not_redeemed"}
+            onClick={() => {
+              setRedemptionFilter("not_redeemed");
+              setPaginationModel((prev) => ({ ...prev, page: 0 }));
+            }}
           />
         </Box>
       )}

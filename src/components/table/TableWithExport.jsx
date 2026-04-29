@@ -38,6 +38,7 @@ export const TableWithExport = (props) => {
       disableColumnMenu
       disableRowSelectionOnClick
       // slots={{ toolbar: CustomToolbar }}
+      {...props}
       sx={{
         border: 0,
         width: "100%",
