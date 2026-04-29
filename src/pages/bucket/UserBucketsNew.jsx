@@ -599,7 +599,7 @@ const SalesCommandCenter = () => {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-            Game Count
+            Activities Count
             {hovered &&
               (sortAscending ? (
                 <ArrowUpwardIcon sx={{ fontSize: 15 }} />
