@@ -402,6 +402,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    subscriptionCancelledActive: builder.mutation({
+      query: (data) => ({
+        url: "UserBuckets/admin/subscription-cancelled-active",
+        method: "POST",
+        body: data,
+      }),
+    }),
     addFeedback: builder.mutation({
       query: (data) => ({
         url: "UserBuckets/admin/add-feedback",
@@ -454,6 +461,13 @@ export const apiSlice = createApi({
     checkCouponRedeemStatus: builder.mutation({
       query: (data) => ({
         url: "ShopifyCoupons/admin/check-redemption",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getFunnelRetryMetrics: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/funnel-retry-metrics",
         method: "POST",
         body: data,
       }),
@@ -521,5 +535,7 @@ export const {
   useGetABFunnelMetricsMutation,
   useGetPosthogEventCountMutation,
   useAddOrderIdMutation,
-  useCheckCouponRedeemStatusMutation
+  useCheckCouponRedeemStatusMutation,
+  useSubscriptionCancelledActiveMutation,
+  useGetFunnelRetryMetricsMutation
 } = apiSlice;

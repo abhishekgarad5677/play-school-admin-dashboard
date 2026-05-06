@@ -40,6 +40,7 @@ import UserJourneyFunnel from "./UserJourneyFunnel";
 import SubscriptionDueFunnel from "./SubscriptionDueFunnel";
 import ABFunnelMetrics from "./AFunnelMetrics";
 import AFunnelMetrics from "./AFunnelMetrics";
+import RetryFunnelMetrics from "./RetryFunnelMetrics";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -362,7 +363,7 @@ const Funnel = () => {
           /> */}
           <Grid
             alignItems={"center"}
-            justifyContent={"center"}
+            justifyContent={"start"}
             container
             spacing={2}
           >
@@ -389,6 +390,13 @@ const Funnel = () => {
                 endDate={endDate}
                 build={2}
                 data={data}
+              />
+            </Grid>
+            <Grid size={6}>
+              <RetryFunnelMetrics
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
               />
             </Grid>
           </Grid>
