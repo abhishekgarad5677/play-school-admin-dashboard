@@ -14,11 +14,11 @@ const FUNNEL_ORDER = [
 ];
 
 const LABEL_MAP = {
-  freeTrialFailed: "Free Trial Failed",
-  freeTrialRetry: "Free Trial Retry",
-  monthlyClicked: "Monthly Clicked",
-  freeTrialRetrySuccess: "Free Trial Retry Success",
-  monthlySubscriptionClicked: "Monthly Sub Clicked",
+  freeTrialFailed: "Free Trial Page Viewed",
+  freeTrialRetry: "Free Trial Retry Clicked",
+  monthlyClicked: "Monthly Subs Clicked",
+  freeTrialRetrySuccess: "Free Trial Retry Started",
+  monthlySubscriptionClicked: "Monthly Subs Started",
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
