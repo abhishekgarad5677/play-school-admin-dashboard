@@ -205,7 +205,7 @@ const PaymentFunnel = () => {
         <CustomBreadcrumbs
           items={[
             {
-              label: "Payment Funnel A/B (P.G)",
+              label: "Funnel Metrics A/B (P.G)",
               href: "/payment-funnel",
               icon: <BarChartIcon fontSize="small" />,
             },

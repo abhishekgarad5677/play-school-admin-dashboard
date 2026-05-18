@@ -27,7 +27,7 @@ export const SideBarRoutes = [
     icon: <BarChartIcon />,
   },
   {
-    title: "Payment Funnel A/B (P.G)",
+    title: "Funnel Metrics A/B (P.G)",
     path: "/payment-funnel",
     icon: <BarChartIcon />,
   },
