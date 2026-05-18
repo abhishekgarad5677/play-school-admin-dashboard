@@ -297,6 +297,13 @@ const PaymentFunnel = () => {
                 data={data}
               />
             </Grid>
+            <Grid size={6}>
+              <RetryFunnelMetrics
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </Grid>
           </Grid>
         </Box>
       </Paper>
