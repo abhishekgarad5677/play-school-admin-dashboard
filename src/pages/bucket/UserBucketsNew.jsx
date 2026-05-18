@@ -27,6 +27,7 @@ import {
   getLeadTypeValue,
   phoneNumberAddedButFreeTrialNotClicked,
   subscriptionCancelled,
+  subscriptionCancelledActive,
 } from "../../utils/constant";
 import {
   useAddFeedbackMutation,
@@ -35,6 +36,7 @@ import {
   usePhoneNumberAddedFreeTrialNotClickedMutation,
   useSendPaymentLinkMutation,
   useSubscriptionCancelledMutation,
+  useSubscriptionCancelledActiveMutation,
 } from "../../redux/slices/apiSlice";
 import TableSkeleton from "../../components/skeleton/TableSkeleton";
 import { TableWithExport } from "../../components/table/TableWithExport";
@@ -112,6 +114,7 @@ const SalesCommandCenter = () => {
     channel: null,
     label: "",
     isFreeTrial: false,
+    planId: null,
   });
 
   const [errors, setErrors] = useState({
@@ -158,6 +161,11 @@ const SalesCommandCenter = () => {
     postSubCancelled,
     { isLoading: subCancelledLoading, data: subCancelledData },
   ] = useSubscriptionCancelledMutation();
+  const [
+    postSubCancelledActive,
+    { isLoading: subCancelledActiveLoading, data: subCancelledActiveData },
+  ] = useSubscriptionCancelledActiveMutation();
+
   const [postSendPaymentLink] = useSendPaymentLinkMutation();
   const [postCheckPaymentStatus] = useCheckPaymentStatusMutation();
   const [addFeedback] = useAddFeedbackMutation();
@@ -190,6 +198,8 @@ const SalesCommandCenter = () => {
       postFreeTrialCliked(formData);
     } else if (bucket === "Subscription Cancelled") {
       postSubCancelled(formData);
+    } else if (bucket === "Subscription Cancelled Active") {
+      postSubCancelledActive(formData);
     }
   }, [
     date,
@@ -236,8 +246,24 @@ const SalesCommandCenter = () => {
       setSummaryData(subCancelledData?.data);
       setRowCount(getRowCountByStatus(subCancelledData?.data, statusFilter));
       setSelectOption(subscriptionCancelled);
+    } else if (
+      subCancelledActiveData &&
+      bucket === "Subscription Cancelled Active"
+    ) {
+      setData(subCancelledActiveData?.data?.users);
+      setSummaryData(subCancelledActiveData?.data);
+      setRowCount(
+        getRowCountByStatus(subCancelledActiveData?.data, statusFilter),
+      );
+      setSelectOption(subscriptionCancelledActive);
     }
-  }, [studentsData, freeTrialClikedData, subCancelledData, statusFilter]);
+  }, [
+    studentsData,
+    freeTrialClikedData,
+    subCancelledData,
+    subCancelledActiveData,
+    statusFilter,
+  ]);
 
   // ─── Date filter handlers ───────────────────────────────────────────────────
   const handleDateChange = (event) => {
@@ -288,6 +314,8 @@ const SalesCommandCenter = () => {
         await postDataStudent(formData).unwrap();
       } else if (bucket === "Trial Clicked – Not Started") {
         await postFreeTrialCliked(formData).unwrap();
+      } else if (bucket === "Subscription Cancelled Active") {
+        await postSubCancelledActive(formData).unwrap();
       } else {
         await postSubCancelled(formData).unwrap();
       }
@@ -415,11 +443,17 @@ const SalesCommandCenter = () => {
   };
 
   // ─── Send payment link ──────────────────────────────────────────────────────
-  const handleSendLinkUI = async (row, NotificationChannel, isFreeTrial) => {
+  const handleSendLinkUI = async (
+    row,
+    NotificationChannel,
+    isFreeTrial,
+    planId,
+  ) => {
     const formData = new FormData();
     formData.append("UserId", row?.userId);
+    formData.append("PlanId", planId);
     // formData.append("PlanId", 110); // test
-    formData.append("PlanId", 145);
+    // formData.append("PlanId", 145);
     formData.append("LeadType", getLeadTypeValue(bucket));
     formData.append("NotificationChannel", NotificationChannel);
     formData.append("IsFreeTrial", isFreeTrial);
@@ -428,31 +462,29 @@ const SalesCommandCenter = () => {
       console.log(key, value);
     }
 
-    try {
-      // setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: true }));
-      setSendingLinkRow((prev) => ({
-        ...prev,
-        [row?.userId]: isFreeTrial ? "ft" : "payment",
-      }));
+    // try {
+    //   setSendingLinkRow((prev) => ({
+    //     ...prev,
+    //     [row?.userId]: isFreeTrial ? "ft" : "payment",
+    //   }));
 
-      const res = await postSendPaymentLink(formData).unwrap();
+    //   const res = await postSendPaymentLink(formData).unwrap();
 
-      if (res?.status === true) {
-        if (isFreeTrial) {
-          toast.success("Free Trial link sent");
-        } else {
-          toast.success("Payment link sent");
-        }
-        await handleGetUpdateData();
-      } else {
-        toast.error("Error sending payment link");
-      }
-    } catch (error) {
-      toast.error("Error sending payment link");
-    } finally {
-      // setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: false }));
-      setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: null }));
-    }
+    //   if (res?.status === true) {
+    //     if (isFreeTrial) {
+    //       toast.success("Free Trial link sent");
+    //     } else {
+    //       toast.success("Payment link sent");
+    //     }
+    //     await handleGetUpdateData();
+    //   } else {
+    //     toast.error("Error sending payment link");
+    //   }
+    // } catch (error) {
+    //   toast.error("Error sending payment link");
+    // } finally {
+    //   setSendingLinkRow((prev) => ({ ...prev, [row?.userId]: null }));
+    // }
   };
 
   // ─── Check payment status ───────────────────────────────────────────────────
@@ -636,7 +668,7 @@ const SalesCommandCenter = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 700,
+      width: 800,
       renderCell: (params) => {
         const reasonValue = Number(params?.row?.reason ?? 0);
         const selectedValue = getLeadReasonLabel(reasonValue, selectOption);
@@ -682,14 +714,11 @@ const SalesCommandCenter = () => {
                       channel,
                       label: labels[channel],
                       isFreeTrial: true,
+                      // planId: 110,
+                      planId: 145,
                     });
                     setSendConfirmOpen(true);
                   }}
-                  // renderValue={() =>
-                  //   sendingLinkRow?.[params?.row?.userId]
-                  //     ? "Sending..."
-                  //     : "Send FT Link"
-                  // }
                   renderValue={() =>
                     sendingLinkRow?.[params?.row?.userId] === "ft"
                       ? "Sending..."
@@ -711,7 +740,7 @@ const SalesCommandCenter = () => {
             )}
 
             {!isConverted && (
-              <FormControl size="small" sx={{ minWidth: 170 }}>
+              <FormControl size="small" sx={{ minWidth: 210 }}>
                 <Select
                   displayEmpty
                   value=""
@@ -729,18 +758,15 @@ const SalesCommandCenter = () => {
                       channel,
                       label: labels[channel],
                       isFreeTrial: false,
+                      // planId: 110,
+                      planId: 145,
                     });
                     setSendConfirmOpen(true);
                   }}
-                  // renderValue={() =>
-                  //   sendingLinkRow?.[params?.row?.userId]
-                  //     ? "Sending..."
-                  //     : "Send Payment Link"
-                  // }
                   renderValue={() =>
                     sendingLinkRow?.[params?.row?.userId] === "payment"
                       ? "Sending..."
-                      : "Send Payment Link"
+                      : "Send Payment Link Yearly"
                   }
                   sx={{ fontSize: "13px" }}
                 >
@@ -756,6 +782,49 @@ const SalesCommandCenter = () => {
                 </Select>
               </FormControl>
             )}
+
+            {/* {!isConverted && (
+              <FormControl size="small" sx={{ minWidth: 210 }}>
+                <Select
+                  displayEmpty
+                  value=""
+                  // disabled={sendingLinkRow?.[params?.row?.userId]}
+                  disabled={sendingLinkRow?.[params?.row?.userId] === "payment"}
+                  onChange={(e) => {
+                    const channel = e.target.value;
+                    const labels = {
+                      0: "Send WhatsApp Link",
+                      1: "Send Email",
+                      2: "Send Message",
+                    };
+                    setPendingSend({
+                      row: params?.row,
+                      channel,
+                      label: labels[channel],
+                      isFreeTrial: false,
+                      planId: 113,
+                    });
+                    setSendConfirmOpen(true);
+                  }}
+                  renderValue={() =>
+                    sendingLinkRow?.[params?.row?.userId] === "payment"
+                      ? "Sending..."
+                      : "Send Payment Link Monthly"
+                  }
+                  sx={{ fontSize: "13px" }}
+                >
+                  <MenuItem value={0}>
+                    <WhatsAppIcon
+                      fontSize="small"
+                      sx={{ mr: 1, color: "#25D366" }}
+                    />
+                    Send WhatsApp Link
+                  </MenuItem>
+                  <MenuItem value={1}>📧 Send Email</MenuItem>
+                  <MenuItem value={2}>💬 Send Message</MenuItem>
+                </Select>
+              </FormControl>
+            )} */}
 
             {!isConverted && isPaymentsent && (
               <Button
@@ -994,6 +1063,8 @@ const SalesCommandCenter = () => {
           res = await postFreeTrialCliked(formData).unwrap();
         } else if (bucket === "Subscription Cancelled") {
           res = await postSubCancelled(formData).unwrap();
+        } else if (bucket === "Subscription Cancelled Active") {
+          res = await postSubCancelledActive(formData).unwrap();
         }
 
         const currentBatch = res?.data?.users || [];
@@ -1145,7 +1216,12 @@ const SalesCommandCenter = () => {
           ))}
         </Box>
 
-        {!(isLoading || freeTrialClikedLoading || subCancelledLoading) && (
+        {!(
+          isLoading ||
+          freeTrialClikedLoading ||
+          subCancelledLoading ||
+          subCancelledActiveLoading
+        ) && (
           <Box sx={{ display: "flex", gap: 1.5, justifyContent: "end" }}>
             {[
               {
@@ -1223,7 +1299,10 @@ const SalesCommandCenter = () => {
 
       {/* Data table */}
       <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
-        {isLoading || freeTrialClikedLoading || subCancelledLoading ? (
+        {isLoading ||
+        freeTrialClikedLoading ||
+        subCancelledLoading ||
+        subCancelledActiveLoading ? (
           <TableSkeleton rows={10} columns={6} />
         ) : (
           <TableWithExport
@@ -1416,6 +1495,7 @@ const SalesCommandCenter = () => {
                 channel: null,
                 label: "",
                 isFreeTrial: false,
+                planId: null,
               });
             }}
           >
@@ -1430,12 +1510,14 @@ const SalesCommandCenter = () => {
                 pendingSend.row,
                 pendingSend.channel,
                 pendingSend.isFreeTrial,
+                pendingSend.planId,
               );
               setPendingSend({
                 row: null,
                 channel: null,
                 label: "",
                 isFreeTrial: false,
+                planId: null,
               });
             }}
           >

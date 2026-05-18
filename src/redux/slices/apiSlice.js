@@ -472,6 +472,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    getPaymentFunnelMetrics: builder.mutation({
+      query: (data) => ({
+        url: "Data/admin/dashbaord/payment-funnel-metrics",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -537,5 +544,6 @@ export const {
   useAddOrderIdMutation,
   useCheckCouponRedeemStatusMutation,
   useSubscriptionCancelledActiveMutation,
-  useGetFunnelRetryMetricsMutation
+  useGetFunnelRetryMetricsMutation,
+  useGetPaymentFunnelMetricsMutation
 } = apiSlice;

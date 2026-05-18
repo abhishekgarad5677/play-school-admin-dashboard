@@ -1,0 +1,307 @@
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import CustomRangeSelect from "../../utils/CustomRangeSelect";
+import {
+  Box,
+  Chip,
+  Paper,
+  Skeleton,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
+import CustomBreadcrumbs from "../../components/breadcrumb/CustomBreadcrumbs";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import { dateFilterOptions } from "../../utils/constant";
+import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid2";
+import {
+  useGetABTestingFunnelMutation,
+  useGetAllFunnelDataMutation,
+  useGetFunnelGoogleSignInDataMutation,
+  useGetFunnelSmsOtpFunnelMutation,
+  useGetFunnel506BuildMutation,
+  useGetFunnelDataSevenDayMutation,
+  useGetFreeTrialStartedAnalyticsCountFunnelMutation,
+} from "../../redux/slices/apiSlice";
+import ATestingFunnel from "./ATestingFunnel";
+import BTestingFunnel from "./BTestingFunnel";
+import AllFunnelData from "./AllFunnelData";
+import { formatDateToReadableString } from "../../utils/Hooks";
+import GoogleSignInDataFunnel from "./GoogleSignInData";
+import SmsOtpFunnel from "./SmsOtpFunnel";
+import Funnel506Abuild from "./Funnel506Abuild";
+import Funnel506Bbuild from "./Funnel506Bbuild";
+import SevenDayTrialFunnel from "./SevenDayTrialFunnel";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import AnalyticsEventsChart from "./AnalyticsEventsChart";
+import UserJourneyFunnel from "./UserJourneyFunnel";
+import SubscriptionDueFunnel from "./SubscriptionDueFunnel";
+import ABFunnelMetrics from "./AFunnelMetrics";
+import AFunnelMetrics from "./AFunnelMetrics";
+import RetryFunnelMetrics from "./RetryFunnelMetrics";
+import PaymentFunnelChart from "./PaymentFunnelChart";
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+const PaymentFunnel = () => {
+  const [date, setDate] = useState("today");
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+  const [value, setValue] = useState(0);
+
+  const [postGetABTestingFunnel, { isLoading, error, data: funnelData }] =
+    useGetABTestingFunnelMutation();
+
+  const [
+    postGetAllFunnelData,
+    {
+      isLoading: allFunnelDataLoading,
+      error: allFunnelDataError,
+      data: allFunnelData,
+    },
+  ] = useGetAllFunnelDataMutation();
+
+  const [
+    postGoogleSignInData,
+    {
+      isLoading: GoogleSignInDataLoading,
+      error: GoogleSignInDataError,
+      data: GoogleSignInData,
+    },
+  ] = useGetFunnelGoogleSignInDataMutation();
+
+  const [
+    postSmsOtpData,
+    { isLoading: smsOtpLoading, error: smsOtpError, data: smsOtpData },
+  ] = useGetFunnelSmsOtpFunnelMutation();
+
+  const [
+    post506BuildData,
+    {
+      isLoading: new506BuildDataLoading,
+      error: new506BuildDataError,
+      data: new506BuildData,
+    },
+  ] = useGetFunnel506BuildMutation();
+
+  const [
+    postSevenDayTrialData,
+    {
+      isLoading: sevenDayTrialDataLoading,
+      error: sevenDayTrialDataError,
+      data: sevenDayTrialData,
+    },
+  ] = useGetFunnelDataSevenDayMutation();
+
+  const [data, setData] = useState([]); // ✅ initialize as array instead of ""
+
+  const [
+    postDashboardDataCount,
+    {
+      isLoading: loadingDataCount,
+      error: dataCountError,
+      data: DashboardDataCount,
+    },
+  ] = useGetFreeTrialStartedAnalyticsCountFunnelMutation();
+
+  useEffect(() => {
+    const formData = new FormData();
+
+    if (date !== "custom") {
+      formData.append("FilterType", date);
+    } else if (date === "custom" && startDate && endDate) {
+      formData.append("FilterType", date);
+      formData.append("FromDate", formatDateToReadableString(startDate));
+      formData.append("ToDate", formatDateToReadableString(endDate));
+    }
+    postDashboardDataCount(formData);
+    // postGetAllFunnelData(formData);
+    // postGetABTestingFunnel(formData);
+    // postGoogleSignInData(formData);
+    // postSmsOtpData(formData);
+    // post506BuildData(formData);
+    // postSevenDayTrialData(formData);
+  }, [date, startDate, endDate]);
+
+  useEffect(() => {
+    setData(DashboardDataCount);
+  }, [DashboardDataCount]);
+
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+
+    if (selectedDate === "custom") {
+      // Store the custom date range in sessionStorage
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.setItem("startDate", startDate);
+      sessionStorage.setItem("endDate", endDate);
+    } else {
+      // Store the selected date (e.g., "today", "yesterday", etc.)
+      sessionStorage.setItem("selectedDate", selectedDate);
+      sessionStorage.removeItem("startDate");
+      sessionStorage.removeItem("endDate");
+    }
+  };
+
+  useEffect(() => {
+    const storedDate = sessionStorage.getItem("selectedDate");
+    const storedStartDate = sessionStorage.getItem("startDate");
+    const storedEndDate = sessionStorage.getItem("endDate");
+
+    if (storedDate) {
+      setDate(storedDate); // Set the stored date to default value
+    }
+    if (storedStartDate && storedEndDate) {
+      setDateRange([new Date(storedStartDate), new Date(storedEndDate)]); // Set the date range if custom is selected
+    }
+  }, []);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
+
+  const minSelectableDate =
+    value === 1 || value === 2 ? new Date("06-20-2025") : null;
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <CustomBreadcrumbs
+          items={[
+            {
+              label: "Payment Funnel A/B (P.G)",
+              href: "/payment-funnel",
+              icon: <BarChartIcon fontSize="small" />,
+            },
+          ]}
+        />
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography fontSize="14x" fontWeight={600} color="text.secondary">
+            Total Installs:
+          </Typography>
+          {loadingDataCount ? (
+            <Skeleton variant="rounded" width={60} height={28} />
+          ) : (
+            <Chip
+              label={data?.[0]?.eventCount ?? 0}
+              color="primary"
+              size="small"
+              sx={{ fontWeight: 700, fontSize: "16px" }}
+            />
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            marginBottom: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 3,
+          }}
+        >
+          <CustomRangeSelect
+            value={date}
+            label={"Date"}
+            onChange={handleDateChange}
+            options={dateFilterOptions}
+          />
+          {date === "custom" && (
+            <DatePicker
+              maxDate={new Date()}
+              selectsRange
+              startDate={startDate}
+              endDate={endDate}
+              onChange={(update) => {
+                setDateRange(update);
+                const [start, end] = update;
+                sessionStorage.setItem("startDate", start); // Store the start date
+                sessionStorage.setItem("endDate", end); // Store the end date
+              }}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Select date range"
+              customInput={
+                <TextField
+                  size="small"
+                  fullWidth
+                  label="Custom Date Range"
+                  sx={{ width: 250 }}
+                />
+              }
+            />
+          )}
+        </Box>
+      </Box>
+      <Paper sx={{ height: "auto", width: "100%", padding: 3 }}>
+        <Box sx={{ width: "100%" }}>
+          <Grid
+            alignItems={"center"}
+            justifyContent={"start"}
+            container
+            spacing={2}
+          >
+            <Grid size={6}>
+              <PaymentFunnelChart
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+                build={1}
+                PaymentType={1}
+                data={data}
+              />
+            </Grid>
+            <Grid size={6}>
+              <PaymentFunnelChart
+                filterDate={date}
+                startDate={startDate}
+                endDate={endDate}
+                build={2}
+                PaymentType={0}
+                data={data}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </>
+  );
+};
+
+export default PaymentFunnel;

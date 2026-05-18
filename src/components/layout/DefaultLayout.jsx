@@ -47,6 +47,7 @@ import { useEffect } from "react";
 import Reports from "../../pages/Reports/Reports";
 import UserCouponReport from "../../pages/UserCouponReport/UserCouponReport";
 import FunnelOld from "../../pages/Funnel/FunnelOld";
+import PaymentFunnel from "../../pages/Funnel/PaymentFunnel";
 
 const drawerWidth = 244;
 
@@ -301,7 +302,7 @@ export default function DefaultLayout() {
                       ele.path === location.pathname ? acticeIconStyle : null,
                       open
                         ? {
-                            mr: 1.5,
+                            mr: 0.7,
                           }
                         : {
                             mr: "auto",
@@ -364,6 +365,7 @@ export default function DefaultLayout() {
             <Route path="location-analytics" element={<TopRegion />} />
             <Route path="funnel-metrics" element={<Funnel />} />
             <Route path="funnel-metrics-old" element={<FunnelOld />} />
+            <Route path="payment-funnel" element={<PaymentFunnel />} />
             <Route path="manage-games" element={<GamesList />} />
             <Route path="add-games-category" element={<AddGamesCategory />} />
             <Route path="add-games/:id" element={<AddGames />} />

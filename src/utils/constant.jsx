@@ -126,8 +126,131 @@ export const regionOptions = [
 
 export const subscriptionCancelled = [
   {
-    label: "Converted - Paid (Using Link)",
+    label: "Converted - Paid Yearly (Using Link)",
     value: 1,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Converted - Paid Monthly (Using Link)",
+    value: 22,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Payment link sent",
+    value: 16,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Converted - Paid (Will Sub. Later)",
+    value: 6,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Free Trial Link Sent",
+    value: 19,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Free Trial Extended",
+    value: 20,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Will Subscribe Later",
+    value: 7,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Interested",
+    value: 17,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not Aware",
+    value: 18,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Not worth price",
+    value: 10,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "No answer",
+    value: 2,
+    scheduleDateRequired: true,
+    commentRequired: false,
+  },
+  {
+    label: "Too expensive",
+    value: 11,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "App performance issues",
+    value: 12,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "No reminder/engagement",
+    value: 13,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Child not interested",
+    value: 14,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "App crashed during payment",
+    value: 15,
+    scheduleDateRequired: true,
+    commentRequired: true,
+  },
+  {
+    label: "Invalid/Wrong number",
+    value: 3,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Callback Scheduled",
+    value: 4,
+    scheduleDateRequired: true,
+    commentRequired: true,
+  },
+  {
+    label: "Other (please specify)",
+    value: 5,
+    scheduleDateRequired: false,
+    commentRequired: true,
+  },
+];
+
+export const subscriptionCancelledActive = [
+  {
+    label: "Converted - Paid Yearly (Using Link)",
+    value: 1,
+    scheduleDateRequired: false,
+    commentRequired: false,
+  },
+  {
+    label: "Converted - Paid Monthly (Using Link)",
+    value: 22,
     scheduleDateRequired: false,
     commentRequired: false,
   },
@@ -477,6 +600,10 @@ export const getLeadReasonLabel = (value, options) => {
 export const bucketCategory = [
   { label: "Subscription Not Taken", value: "Subscription Cancelled" },
   // {
+  //   label: "Subscription Cancelled Active",
+  //   value: "Subscription Cancelled Active",
+  // },
+  // {
   //   label: "Trial Clicked – Not Started",
   //   value: "Trial Clicked – Not Started",
   // },
@@ -504,6 +631,6 @@ export const getLeadTypeValue = (bucket) => {
   if (bucket === "Phone Added – Trial Not Clicked") return 2;
   else if (bucket === "Trial Clicked – Not Started") return 1;
   else if (bucket === "Subscription Cancelled") return 0;
-
+  else if (bucket === "Subscription Cancelled Active") return 3;
   return 0; // fallback
 };
