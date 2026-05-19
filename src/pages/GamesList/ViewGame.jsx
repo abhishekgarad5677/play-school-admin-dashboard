@@ -97,7 +97,7 @@ const ViewGame = () => {
           sx={{
             width: { xs: "100%", sm: "auto", backgroundColor: "#5D87FF" },
           }}
-          onClick={() => navigate(`/dashboard/add-games/${id}`)}
+          onClick={() => navigate(`/add-games/${id}`)}
         >
           Add Game
         </Button>
