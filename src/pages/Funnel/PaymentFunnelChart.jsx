@@ -107,7 +107,7 @@ const PaymentFunnelChart = ({
       formData.append("FilterType", filterDate);
       // formData.append("ABTesting", build);
       formData.append("PaymentType", PaymentType);
-      
+
       formData.append("FromDate", formatDateToReadableString(startDate));
       formData.append("ToDate", formatDateToReadableString(endDate));
 
@@ -183,7 +183,7 @@ const PaymentFunnelChart = ({
 
   const { keys, categories, actualValues } = useMemo(() => {
     const keys =
-      build === 1
+      build === 1 || build === 3
         ? FUNNEL_ORDER_A_BUILD
         : build === 2
           ? FUNNEL_ORDER_B_BUILD
@@ -194,6 +194,14 @@ const PaymentFunnelChart = ({
     );
     return { keys, categories, actualValues };
   }, [mergedMap]);
+
+  const BUILD_TITLE_MAP = {
+    1: "Free Trial Started Funnel Build A (Play Service)",
+    2: "Free Trial Started Funnel Build B (Razorpay)",
+    3: "Free Trial Started Funnel Build A (Cashfree)",
+  };
+
+  const title = BUILD_TITLE_MAP[build] || "Free Trial Started Funnel";
 
   const [state, setState] = useState({
     series: [{ name: "Shape", data: [] }],
@@ -290,12 +298,7 @@ const PaymentFunnelChart = ({
 
       legend: { show: false },
       title: {
-        text:
-          build === 1
-            ? "Free Trial Started Funnel Build A (Play Service)"
-            : build === 2
-              ? "Free Trial Started Funnel Build B (Razorpay)"
-              : "Free Trial Started Funnel",
+        text: title,
         align: "center",
       },
       customActualValues: [],

@@ -181,6 +181,7 @@ import ManagePermission from "../pages/ManagePermission/ManagePermission";
 import SalesCommandCenter from "../pages/bucket/UserBucketsNew";
 import Reports from "../pages/Reports/Reports";
 import UserCouponReport from "../pages/UserCouponReport/UserCouponReport";
+import CashfreeFunnel from "../pages/Funnel/CashfreeFunnel";
 
 export const SideBarRoutes = [
   {
@@ -188,6 +189,20 @@ export const SideBarRoutes = [
     path: "/dashboard",
     icon: <DashboardIcon />,
     component: Dashboard, // ✅ reference, not JSX
+    showInSidebar: true,
+  },
+  {
+    title: "Funnel Metrics A/B (CF)",
+    path: "/funnel-metrics-cash-free",
+    icon: <BarChartIcon />,
+    component: CashfreeFunnel,
+    showInSidebar: true,
+  },
+  {
+    title: "Funnel Metrics A/B (P.G)",
+    path: "/payment-funnel",
+    icon: <BarChartIcon />,
+    component: PaymentFunnel,
     showInSidebar: true,
   },
   {
@@ -202,13 +217,6 @@ export const SideBarRoutes = [
     path: "/funnel-metrics-old",
     icon: <BarChartIcon />,
     component: FunnelOld,
-    showInSidebar: true,
-  },
-  {
-    title: "Funnel Metrics A/B (P.G)",
-    path: "/payment-funnel",
-    icon: <BarChartIcon />,
-    component: PaymentFunnel,
     showInSidebar: true,
   },
   {

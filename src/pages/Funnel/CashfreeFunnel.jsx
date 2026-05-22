@@ -65,7 +65,7 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-const PaymentFunnel = () => {
+const CashfreeFunnel = () => {
   const [date, setDate] = useState("today");
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -205,8 +205,8 @@ const PaymentFunnel = () => {
         <CustomBreadcrumbs
           items={[
             {
-              label: "Funnel Metrics A/B (P.G)",
-              href: "/payment-funnel",
+              label: "Funnel Metrics A/B (CF)",
+              href: "/funnel-metrics-cash-free",
               icon: <BarChartIcon fontSize="small" />,
             },
           ]}
@@ -217,7 +217,7 @@ const PaymentFunnel = () => {
             Data from:
           </Typography>
           <Chip
-            label={"18th May 2026 - 22nd May 2026"}
+            label={"22nd May 2026"}
             color="primary"
             size="small"
             sx={{ fontWeight: 700, fontSize: "16px" }}
@@ -294,8 +294,8 @@ const PaymentFunnel = () => {
                 filterDate={date}
                 startDate={startDate}
                 endDate={endDate}
-                build={1}
-                PaymentType={1}
+                build={3}
+                PaymentType={2}
                 data={data}
               />
             </Grid>
@@ -323,4 +323,4 @@ const PaymentFunnel = () => {
   );
 };
 
-export default PaymentFunnel;
+export default CashfreeFunnel;

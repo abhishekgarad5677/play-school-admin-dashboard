@@ -219,6 +219,18 @@ const Funnel = () => {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography fontSize="14x" fontWeight={600} color="text.secondary">
+            Data from:
+          </Typography>
+          <Chip
+            label={"10th April - 18th May 2026"}
+            color="primary"
+            size="small"
+            sx={{ fontWeight: 700, fontSize: "16px" }}
+          />
+          <Typography fontSize="14x" fontWeight={600} color="text.secondary">
+            |
+          </Typography>
+          <Typography fontSize="14x" fontWeight={600} color="text.secondary">
             Total Installs:
           </Typography>
           {loadingDataCount ? (
