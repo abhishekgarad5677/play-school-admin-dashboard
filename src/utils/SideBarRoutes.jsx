@@ -192,6 +192,13 @@ export const SideBarRoutes = [
     showInSidebar: true,
   },
   {
+    title: "Funnel Metrics A/B (Active)",
+    path: "/funnel-metrics",
+    icon: <BarChartIcon />,
+    component: Funnel,
+    showInSidebar: true,
+  },
+  {
     title: "Funnel Metrics A/B (CF)",
     path: "/funnel-metrics-cash-free",
     icon: <BarChartIcon />,
@@ -203,13 +210,6 @@ export const SideBarRoutes = [
     path: "/payment-funnel",
     icon: <BarChartIcon />,
     component: PaymentFunnel,
-    showInSidebar: true,
-  },
-  {
-    title: "Funnel Metrics A/B",
-    path: "/funnel-metrics",
-    icon: <BarChartIcon />,
-    component: Funnel,
     showInSidebar: true,
   },
   {

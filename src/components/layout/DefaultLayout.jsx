@@ -445,7 +445,7 @@ import PermissionRoute from "../../utils/PermissionRoute";
 import NotFound from "../../pages/NotFound/NotFound";
 // ✅ NEW: import PermissionRoute
 
-const drawerWidth = 244;
+const drawerWidth = 248;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
