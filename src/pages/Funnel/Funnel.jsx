@@ -403,6 +403,10 @@ const Funnel = () => {
                 build={2}
                 data={data}
               />
+              <Typography fontSize={12}>
+                <span sx={{ fontWeight: 800 }}>Mandate Info Page* </span> —
+                Firebase event · data delayed ~24 hrs
+              </Typography>
             </Grid>
             <Grid size={6}>
               <RetryFunnelMetrics

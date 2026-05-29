@@ -59,7 +59,7 @@ const LABEL_MAP = {
   subscriptionSuccess: "Subscription Success",
   pending: "Subscription Pending",
   halted: "Subscription Halted",
-  freeTrialInterstitial: "Mandate Info Page Clicked", // ← new
+  freeTrialInterstitial: "Mandate Info Page*", // ← new
 };
 
 const PaymentFunnelChart = ({
