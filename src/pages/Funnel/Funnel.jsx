@@ -222,7 +222,7 @@ const Funnel = () => {
             Data from:
           </Typography>
           <Chip
-            label={"10th April - 18th May 2026"}
+            label={"10th April - Present"}
             color="primary"
             size="small"
             sx={{ fontWeight: 700, fontSize: "16px" }}
