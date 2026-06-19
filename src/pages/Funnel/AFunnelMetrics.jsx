@@ -29,7 +29,7 @@ const FUNNEL_ORDER_A_BUILD = [
   "phoneNumberAdded",
   "freeTrialsClicked",
   "freeTrialSuccess",
-  "addressAdded",
+  // "addressAdded", // ← will push later
   "subscriptionCancelled",
   "due",
   "subscriptionSuccess",
@@ -42,7 +42,7 @@ const FUNNEL_ORDER_B_BUILD = [
   "freeTrialsClicked",
   "freeTrialInterstitial", // ← new posthog step
   "freeTrialSuccess",
-  "addressAdded",
+  // "addressAdded", // ← will push later
   "subscriptionCancelled",
   "due",
   "subscriptionSuccess",
@@ -56,7 +56,7 @@ const LABEL_MAP = {
   phoneNumberAdded: "Phone Number Added",
   freeTrialsClicked: "Free Trial Clicked",
   freeTrialSuccess: "Free Trial Started",
-  addressAdded: "Address Added",
+  // addressAdded: "Address Added", // ← will push later
   subscriptionCancelled: "Subscription Cancelled",
   due: "Sub Due After 7 Days",
   subscriptionSuccess: "Subscription Success",
