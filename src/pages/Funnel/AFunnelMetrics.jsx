@@ -29,6 +29,7 @@ const FUNNEL_ORDER_A_BUILD = [
   "phoneNumberAdded",
   "freeTrialsClicked",
   "freeTrialSuccess",
+  "addressAdded",
   "subscriptionCancelled",
   "due",
   "subscriptionSuccess",
@@ -41,6 +42,7 @@ const FUNNEL_ORDER_B_BUILD = [
   "freeTrialsClicked",
   "freeTrialInterstitial", // ← new posthog step
   "freeTrialSuccess",
+  "addressAdded",
   "subscriptionCancelled",
   "due",
   "subscriptionSuccess",
@@ -54,6 +56,7 @@ const LABEL_MAP = {
   phoneNumberAdded: "Phone Number Added",
   freeTrialsClicked: "Free Trial Clicked",
   freeTrialSuccess: "Free Trial Started",
+  addressAdded: "Address Added",
   subscriptionCancelled: "Subscription Cancelled",
   due: "Sub Due After 7 Days",
   subscriptionSuccess: "Subscription Success",
